@@ -6,18 +6,28 @@
  * To change this template use File | Settings | File Templates.
  */
 package {
+import com.laiyonghao.Uuid;
 import com.orchideus.guessWord.data.Bank;
 import com.orchideus.guessWord.data.Player;
 import com.orchideus.guessWord.data.Variables;
 import com.orchideus.guessWord.game.Game;
 import com.orchideus.guessWord.server.Server;
+import com.orchideus.guessWord.ui.Preloader;
 import com.orchideus.guessWord.ui.Screen;
+
+import flash.net.SharedObject;
+
+import starling.core.Starling;
 
 import starling.display.Sprite;
 import starling.events.Event;
 import starling.utils.AssetManager;
 
 public class App extends Sprite {
+
+    private var _assets:AssetManager;
+
+    private var _user: SharedObject;
 
     private var _server: Server;
 
@@ -29,15 +39,31 @@ public class App extends Sprite {
     }
 
     public function start(assets: AssetManager):void {
+        _assets = assets;
+        _assets.loadQueue(handleProgress);
+    }
+
+    private function handleProgress(ratio: Number):void {
+        if (ratio == 1) {
+            Starling.juggler.delayCall(initStart, 0.15);
+        }
+    }
+
+    private function initStart():void {
         _game = new Game();
 
-        _screen = new Screen();
+        _screen = new Screen(_game);
         addChild(_screen);
 
         _server = new Server();
 
-        // TODO: сделать параметры динамическими
-        _server.init("1", "vk", "3602860");
+        _user = SharedObject.getLocal("user");
+        if (!_user.data) {
+            _user.data.uuid = (new Uuid()).toString();
+        }
+
+//        _server.init("1", _user.data.uuid);
+        _server.init("1", "3602860");
 
         _server.addEventListener(Server.DATA, handleData);
         _server.getParameters();
@@ -48,9 +74,9 @@ public class App extends Sprite {
         switch (data.method) {
             case Server.GET_PARAMETERS:
                 Player.parse(data.player.params);
-                _game.init(data.player.params);
                 Bank.parse(data.bank);
                 Variables.parse(data.variables);
+                _game.initWord(data.word);
                 break;
 //            case Server.GET_PARAMETERS:
 //                break;

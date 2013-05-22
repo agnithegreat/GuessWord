@@ -31,7 +31,6 @@ public class Server extends EventDispatcher {
     public static const REMOVE_WRONG_PICTURE: String = "remove_wrong_picture";
 
     private static var auth_key: String;
-    private static var sn_name: String;
     private static var sn_id: String;
 
     private var _url: String = "http://37.200.65.66/controller.php";
@@ -51,9 +50,8 @@ public class Server extends EventDispatcher {
         _stack = new <URLRequest>[];
     }
 
-    public function init(key: String, sn: String, id: String):void {
+    public function init(key: String, id: String):void {
         auth_key = key;
-        sn_name = sn;
         sn_id = id;
     }
 
@@ -89,7 +87,7 @@ public class Server extends EventDispatcher {
         if (!data) {
             data = {};
         }
-        data[sn_name+"_id"] = sn_id;
+        data.vk_id = sn_id;
         requestVars.data = JSON.stringify(data);
 
         var request:URLRequest = new URLRequest(_url);

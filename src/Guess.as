@@ -75,7 +75,7 @@ public class Guess extends Sprite {
         _assets.enqueue(
                 dir.resolvePath("sounds"),
                 dir.resolvePath("fonts"),
-                dir.resolvePath(basicAssetsPath)
+                dir.resolvePath("textures")
         );
         initApp ();
     }

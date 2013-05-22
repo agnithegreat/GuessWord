@@ -8,9 +8,7 @@
 package {
 public class Constants {
 
-    public static const WIDTH: int = 960;
-    public static const HEIGHT: int = 640;
-
-    public static const TEXTURES_LIST_XML_URL:String = "textures/filesList.json";
+    public static const WIDTH: int = 768;
+    public static const HEIGHT: int = 1024;
 }
 }

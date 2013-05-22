@@ -12,7 +12,7 @@ public class Player {
     public static var level: int;
     public static var money: int;
 
-    public static function parse(data: Object) {
+    public static function parse(data: Object):void {
         level = data.level;
         money = data.money;
     }
