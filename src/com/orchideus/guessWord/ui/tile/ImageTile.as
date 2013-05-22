@@ -14,6 +14,7 @@ import flash.net.URLRequest;
 import starling.core.Starling;
 
 import starling.display.Image;
+import starling.display.Shape;
 
 import starling.display.Sprite;
 import starling.events.Touch;
@@ -22,22 +23,26 @@ import starling.events.TouchPhase;
 
 import starling.textures.Texture;
 
-public class ImageTile extends Sprite {
+public class ImageTile extends Shape {
+
+    public static const scaleAmount: Number = 0.49;
+    public static const delay: Number = 0.2;
 
     private var _preview: Boolean;
+
+//    private var _image: Image;
 
     public function ImageTile(url: String) {
         var loader:Loader = new Loader();
         loader.load(new URLRequest(url));
         loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onComplete);
 
-        scale(false);
         addEventListener(TouchEvent.TOUCH, handleTouch);
     }
 
     public function scale(animated: Boolean = true):void {
-        var newScale: Number = _preview ? 1 : 0.48;
-        Starling.juggler.tween(this, animated ? 0.2 : 0, {scaleX: newScale, scaleY: newScale});
+        var newScale: Number = _preview ? 1 : scaleAmount;
+        Starling.juggler.tween(this, animated ? delay : 0, {scaleX: newScale, scaleY: newScale});
         _preview = !_preview;
     }
 
@@ -53,8 +58,15 @@ public class ImageTile extends Sprite {
         var loadedBitmap: Bitmap = event.currentTarget.loader.content as Bitmap;
         var texture: Texture = Texture.fromBitmap(loadedBitmap);
 
-        var image: Image = new Image(texture);
-        addChild(image);
+        graphics.lineStyle(4, 0xFFFFFF);
+        graphics.beginTextureFill(texture);
+        graphics.drawRoundRect(0,0,512,512,10);
+        graphics.endFill();
+//
+//        _image = new Image(texture);
+//        addChild(_image);
+
+        scale(false);
     }
 }
 }

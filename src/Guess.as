@@ -16,6 +16,7 @@ import starling.utils.RectangleUtil;
 import starling.utils.ScaleMode;
 import starling.utils.formatString;
 
+[SWF(frameRate="60")]
 public class Guess extends Sprite {
 
 //    [Embed(source="../assets/textures/loaderSD.png")]
@@ -94,7 +95,7 @@ public class Guess extends Sprite {
         _starling = new Starling(App, stage, viewPort);
         _starling.stage.stageWidth  = Constants.WIDTH;
         _starling.stage.stageHeight = Constants.HEIGHT;
-//        _starling.showStats = true;
+        _starling.showStats = true;
         _starling.simulateMultitouch = false;
         _starling.enableErrorChecking = Capabilities.isDebugger;
 

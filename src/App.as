@@ -52,8 +52,10 @@ public class App extends Sprite {
     private function initStart():void {
         _game = new Game();
 
-        _screen = new Screen(_game);
+        _screen = new Screen(_game, _assets);
         addChild(_screen);
+
+//        addChild(new Preloader(_assets));
 
         _server = new Server();
 
