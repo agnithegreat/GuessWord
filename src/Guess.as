@@ -4,6 +4,7 @@ import flash.desktop.NativeApplication;
 import flash.display.Bitmap;
 import flash.display.Sprite;
 import flash.events.Event;
+import flash.filesystem.File;
 import flash.geom.Rectangle;
 import flash.system.Capabilities;
 
@@ -63,26 +64,20 @@ public class Guess extends Sprite {
                 ScaleMode.SHOW_ALL);
 
         // TODO: подготовить графику для retina
-//        _scaleFactor = viewPort.width < 1152 ? 1 : 2;
+//        _scaleFactor = viewPort.width < 1024 ? 1 : 2;
         _scaleFactor = 1;
         _assets = new AssetManager(_scaleFactor);
-        basicAssetsPath = formatString("textures/{0}x/final", _scaleFactor);
+        basicAssetsPath = formatString("textures/{0}x", _scaleFactor);
 
-        _assets.verbose = Capabilities.isDebugger;
+        _assets.verbose = true;
 
-//        var dir: File = new File(_config.data.path);
-////            _assets.verbose = false;
-//        _assets.enqueue(
-//                dir.resolvePath("sounds"),
-//                dir.resolvePath("fonts"),
-//                dir.resolvePath(basicAssetsPath)
-//        );
+        var dir: File = File.applicationDirectory;
+        _assets.enqueue(
+                dir.resolvePath("sounds"),
+                dir.resolvePath("fonts"),
+                dir.resolvePath(basicAssetsPath)
+        );
         initApp ();
-
-//            //загружаем xml файл c асетами:
-//            var urlLoader:URLLoader = new URLLoader ();
-//            urlLoader.addEventListener (flash.events.Event.COMPLETE, completeListener_loadTexturesListXml);
-//            urlLoader.load (new URLRequest (Constants.TEXTURES_LIST_XML_URL));
     }
 
     private function initApp ():void {
@@ -118,7 +113,7 @@ public class Guess extends Sprite {
 
 //        var bgTexture:Texture = Texture.fromBitmap(_background, false, false, _scaleFactor);
 
-//        app.start(_assets, _config.data.path);
+        app.start(_assets);
         _starling.start();
     }
 }
