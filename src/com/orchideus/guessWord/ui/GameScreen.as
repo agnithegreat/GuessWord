@@ -56,6 +56,38 @@ public class GameScreen extends Sprite {
         _picsContainer.y = 95;
         addChild(_picsContainer);
 
+        _pic1 = new ImageTile();
+        _pic1.pivotX = 0;
+        _pic1.pivotY = 0;
+        _pic1.x = 0;
+        _pic1.y = 0;
+        _pic1.addEventListener(TouchEvent.TOUCH, handleTouch);
+        _picsContainer.addChild(_pic1);
+
+        _pic2 = new ImageTile();
+        _pic2.pivotX = imageTile;
+        _pic2.pivotY = 0;
+        _pic2.x = tile;
+        _pic2.y = 0;
+        _pic2.addEventListener(TouchEvent.TOUCH, handleTouch);
+        _picsContainer.addChild(_pic2);
+
+        _pic3 = new ImageTile();
+        _pic3.pivotX = 0;
+        _pic3.pivotY = imageTile;
+        _pic3.x = 0;
+        _pic3.y = tile;
+        _pic3.addEventListener(TouchEvent.TOUCH, handleTouch);
+        _picsContainer.addChild(_pic3);
+
+        _pic4 = new ImageTile();
+        _pic4.pivotX = imageTile;
+        _pic4.pivotY = imageTile;
+        _pic4.x = tile;
+        _pic4.y = tile;
+        _pic4.addEventListener(TouchEvent.TOUCH, handleTouch);
+        _picsContainer.addChild(_pic4);
+
         _wordView = new WordView(_game.word, assets);
         _wordView.x = 768/2;
         _wordView.y = 720;
@@ -68,37 +100,10 @@ public class GameScreen extends Sprite {
     }
 
     private function handleInit(event: Event):void {
-        _pic1 = new ImageTile(_game.pic1);
-        _pic1.pivotX = 0;
-        _pic1.pivotY = 0;
-        _pic1.x = 0;
-        _pic1.y = 0;
-        _pic1.addEventListener(TouchEvent.TOUCH, handleTouch);
-        _picsContainer.addChild(_pic1);
-
-        _pic2 = new ImageTile(_game.pic2);
-        _pic2.pivotX = imageTile;
-        _pic2.pivotY = 0;
-        _pic2.x = tile;
-        _pic2.y = 0;
-        _pic2.addEventListener(TouchEvent.TOUCH, handleTouch);
-        _picsContainer.addChild(_pic2);
-
-        _pic3 = new ImageTile(_game.pic3);
-        _pic3.pivotX = 0;
-        _pic3.pivotY = imageTile;
-        _pic3.x = 0;
-        _pic3.y = tile;
-        _pic3.addEventListener(TouchEvent.TOUCH, handleTouch);
-        _picsContainer.addChild(_pic3);
-
-        _pic4 = new ImageTile(_game.pic4);
-        _pic4.pivotX = imageTile;
-        _pic4.pivotY = imageTile;
-        _pic4.x = tile;
-        _pic4.y = tile;
-        _pic4.addEventListener(TouchEvent.TOUCH, handleTouch);
-        _picsContainer.addChild(_pic4);
+        _pic1.init(_game.pic1);
+        _pic2.init(_game.pic2);
+        _pic3.init(_game.pic3);
+        _pic4.init(_game.pic4);
     }
 
     private function handleTouch(event: TouchEvent):void {

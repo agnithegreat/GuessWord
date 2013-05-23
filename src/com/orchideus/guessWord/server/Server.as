@@ -60,7 +60,7 @@ public class Server extends EventDispatcher {
     }
 
     public function checkWord(word_id: int, word: String):void {
-        sendRequest(CHECK_WORD, {"word_id": word_id, "word": word});
+        sendRequest(CHECK_WORD, {"word_id": String(word_id), "word": word});
     }
 
     public function removeLetters():void {
@@ -89,6 +89,7 @@ public class Server extends EventDispatcher {
         }
         data.vk_id = sn_id;
         requestVars.data = JSON.stringify(data);
+        trace(requestVars.data);
 
         var request:URLRequest = new URLRequest(_url);
         request.method = URLRequestMethod.GET;

@@ -30,7 +30,11 @@ public class ImageTile extends Shape {
 
     private var _image: Image;
 
-    public function ImageTile(url: String) {
+    public function ImageTile() {
+        _image = new Image(Texture.fromColor(1,1,0));
+    }
+
+    public function init(url: String):void {
         var loader:Loader = new Loader();
         loader.load(new URLRequest(url));
         loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onComplete);
@@ -56,7 +60,8 @@ public class ImageTile extends Shape {
         var loadedBitmap: Bitmap = event.currentTarget.loader.content as Bitmap;
         var texture: Texture = Texture.fromBitmap(loadedBitmap);
 
-        _image = new Image(texture);
+        _image.texture = texture;
+        _image.readjustSize();
 
         scaleX = scaleY = scaleAmount;
         updateGraphics();

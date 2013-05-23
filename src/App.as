@@ -66,14 +66,14 @@ public class App extends Sprite {
         }
 
 //        _server.init("1", _user.data.uuid);
-        _server.init("1", "3602860");
+        _server.init("1", "3602862");
 
         _server.addEventListener(Server.DATA, handleData);
         _server.getParameters();
     }
 
     private function handleSendWord(event: Event):void {
-        _server.checkWord(_game.word.word_id, _game.word.letters.join());
+        _server.checkWord(_game.word.word_id, _game.word.letters.join(""));
     }
 
     private function handleData(event: Event):void {
@@ -90,7 +90,11 @@ public class App extends Sprite {
                 break;
             case Server.CHECK_WORD:
                 if (data.result == "success") {
-
+                    Player.parse(data.player.params);
+                    // TODO: сделать обработчик, начислить бабло
+                    _game.word.clear();
+                    _game.init(data.player.params);
+                    _game.initWord(data.new_word);
                 } else {
                     _game.wordError();
                 }
