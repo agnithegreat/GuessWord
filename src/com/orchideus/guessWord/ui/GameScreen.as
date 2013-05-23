@@ -24,6 +24,8 @@ public class GameScreen extends Sprite {
     public static var tile: int = 395;
     public static var imageTile: int = 395;
 
+    private var _assets: AssetManager;
+
     private var _background: Image;
 
     private var _game: Game;
@@ -40,6 +42,8 @@ public class GameScreen extends Sprite {
     private var _lettersView: LettersView;
 
     public function GameScreen(game: Game, assets: AssetManager) {
+        _assets = assets;
+
         _background = new Image(assets.getTexture("back"));
         addChild(_background);
 
@@ -48,6 +52,7 @@ public class GameScreen extends Sprite {
 
         _game = game;
         _game.addEventListener(Game.INIT, handleInit);
+        _game.addEventListener(Game.WIN, handleWin);
 
         _picsContainer = new Sprite();
         _picsContainer.scaleX = 1.53;
@@ -113,12 +118,20 @@ public class GameScreen extends Sprite {
             if (image.zoomed) {
                 image.scale();
                 _zoomedImage = null;
+
+                _assets.playSound("Small_pic");
             } else if (!_zoomedImage) {
                 _picsContainer.addChild(image);
                 _zoomedImage = image;
                 image.scale();
+
+                _assets.playSound("Big_pic");
             }
         }
+    }
+
+    private function handleWin(event:Event):void {
+        _assets.playSound("Win");
     }
 }
 }

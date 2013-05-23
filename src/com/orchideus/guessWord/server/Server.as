@@ -89,7 +89,6 @@ public class Server extends EventDispatcher {
         }
         data.vk_id = sn_id;
         requestVars.data = JSON.stringify(data);
-        trace(requestVars.data);
 
         var request:URLRequest = new URLRequest(_url);
         request.method = URLRequestMethod.GET;

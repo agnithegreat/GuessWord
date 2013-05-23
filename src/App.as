@@ -66,7 +66,7 @@ public class App extends Sprite {
         }
 
 //        _server.init("1", _user.data.uuid);
-        _server.init("1", "3602862");
+        _server.init("1", "3602865");
 
         _server.addEventListener(Server.DATA, handleData);
         _server.getParameters();
@@ -90,6 +90,8 @@ public class App extends Sprite {
                 break;
             case Server.CHECK_WORD:
                 if (data.result == "success") {
+                    _game.win();
+
                     Player.parse(data.player.params);
                     // TODO: сделать обработчик, начислить бабло
                     _game.word.clear();

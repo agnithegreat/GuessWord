@@ -57,6 +57,8 @@ public class WordView extends Sprite {
         if (touch) {
             var index: int = _letters.indexOf(letter);
             _word.deleteLetter(index);
+
+            _assets.playSound("click");
         }
     }
 
@@ -80,6 +82,8 @@ public class WordView extends Sprite {
     private function handleError(event:Event):void {
         _container.removeChildren();
         addChild(_error);
+
+        _assets.playSound("Lose");
 
         pivotX = width/2;
     }

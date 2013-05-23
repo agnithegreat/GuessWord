@@ -66,6 +66,8 @@ public class LettersView extends Sprite {
         if (touch) {
             var index: int = _letters.indexOf(letter);
             _stack.selectLetter(index);
+
+            _assets.playSound("click");
         }
     }
 }

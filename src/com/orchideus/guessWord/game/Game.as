@@ -13,6 +13,7 @@ public class Game extends EventDispatcher {
 
     public static const INIT: String = "init_Game";
     public static const SEND_WORD: String = "send_word_Game";
+    public static const WIN: String = "win_Game";
 
     private var _word: Word;
     public function get word():Word {
@@ -76,6 +77,10 @@ public class Game extends EventDispatcher {
         _pic4 = data.pic4;
 
         dispatchEventWith(INIT);
+    }
+
+    public function win():void {
+        dispatchEventWith(WIN);
     }
 
     public function wordError():void {
