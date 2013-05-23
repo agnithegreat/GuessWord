@@ -10,42 +10,40 @@ import starling.events.EventDispatcher;
 
 public class LettersStack extends EventDispatcher {
 
-    public static const UPDATE: String = "update_LettersStack";
     public static const SELECT_LETTER: String = "select_letter_LettersStack";
 
-    private var _letters: Array;
-    public function get letters():Array {
+    private var _letters: Vector.<Letter>;
+    public function get letters():Vector.<Letter> {
         return _letters;
     }
 
     public function LettersStack() {
+        _letters = new <Letter>[];
+        for (var i:int = 0; i < 20; i++) {
+            _letters[i] = new Letter();
+        }
     }
 
     public function init(letters: Array):void {
-        _letters = letters;
-        update();
+        for (var i:int = 0; i < letters.length; i++) {
+            _letters[i].letter = letters[i];
+        }
     }
 
     public function selectLetter(id: int):void {
-        dispatchEventWith(SELECT_LETTER, false, _letters[id]);
-        _letters[id] = null;
-        update();
+        dispatchEventWith(SELECT_LETTER, false, _letters[id].letter);
+        _letters[id].letter = null;
     }
 
     public function addLetter(letter: String):void {
         var i: int = 0;
         while (true) {
-            if (!_letters[i]) {
-                _letters[i] = letter;
+            if (!_letters[i].letter) {
+                _letters[i].letter = letter;
                 break;
             }
             i++;
         }
-        update();
-    }
-
-    private function update():void {
-        dispatchEventWith(UPDATE);
     }
 }
 }

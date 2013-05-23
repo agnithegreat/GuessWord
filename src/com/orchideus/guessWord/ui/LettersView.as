@@ -29,7 +29,6 @@ public class LettersView extends Sprite {
 
     public function LettersView(stack: LettersStack, assets: AssetManager) {
         _stack = stack;
-        _stack.addEventListener(LettersStack.UPDATE, handleUpdate);
 
         _assets = assets;
 
@@ -37,8 +36,8 @@ public class LettersView extends Sprite {
         addChild(_container);
 
         _letters = new <LetterTile>[];
-        for (var i:int = 0; i < 20; i++) {
-            _letters[i] = new LetterTile(_assets.getTexture("empty_symbol"));
+        for (var i:int = 0; i < _stack.letters.length; i++) {
+            _letters[i] = new LetterTile(_stack.letters[i], _assets.getTexture("empty_symbol"), false);
             _letters[i].addEventListener(TouchEvent.TOUCH, handleTouch);
             _letters[i].x = (i%10)*TILE;
             _letters[i].y = int(i/10)*TILE;
@@ -46,18 +45,6 @@ public class LettersView extends Sprite {
         }
 
         pivotX = width/2;
-    }
-
-    private function handleUpdate(event: Event):void {
-        for (var i:int = 0; i < _letters.length; i++) {
-            var letter: String = _stack.letters[i];
-            if (letter) {
-                _letters[i].visible = true;
-                _letters[i].setLetter(letter);
-            } else {
-                _letters[i].visible = false;
-            }
-        }
     }
 
     private function handleTouch(event: TouchEvent):void {

@@ -20,7 +20,6 @@ import starling.utils.AssetManager;
 public class WordView extends Sprite {
 
     public static const TILE: int = 52;
-    public static const MAX_LETTERS: int = 15;
 
     private var _word: Word;
 
@@ -44,8 +43,8 @@ public class WordView extends Sprite {
         _error = new Image(assets.getTexture("error"));
 
         _letters = new <LetterTile>[];
-        for (var i:int = 0; i < MAX_LETTERS; i++) {
-            _letters[i] = new LetterTile(_assets.getTexture("empty_symbol"));
+        for (var i:int = 0; i < _word.letters.length; i++) {
+            _letters[i] = new LetterTile(_word.letters[i], _assets.getTexture("empty_symbol"));
             _letters[i].addEventListener(TouchEvent.TOUCH, handleTouch);
             _letters[i].x = i*TILE;
         }
@@ -54,7 +53,7 @@ public class WordView extends Sprite {
     private function handleTouch(event: TouchEvent):void {
         var letter: LetterTile = event.currentTarget as LetterTile;
         var touch: Touch = event.getTouch(letter, TouchPhase.ENDED);
-        if (touch) {
+        if (touch && letter.letter.letter) {
             var index: int = _letters.indexOf(letter);
             _word.deleteLetter(index);
 
@@ -70,8 +69,7 @@ public class WordView extends Sprite {
         }
 
         for (var i:int = 0; i < _letters.length; i++) {
-            if (i<_word.letters.length) {
-                _letters[i].setLetter(_word.letters[i]);
+            if (i < _word.length) {
                 _container.addChild(_letters[i]);
             }
         }

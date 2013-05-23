@@ -6,8 +6,11 @@
  * To change this template use File | Settings | File Templates.
  */
 package com.orchideus.guessWord.ui.tile {
+import com.orchideus.guessWord.game.Letter;
+
 import starling.display.Image;
 import starling.display.Sprite;
+import starling.events.Event;
 import starling.text.TextField;
 import starling.textures.Texture;
 
@@ -16,7 +19,19 @@ public class LetterTile extends Sprite {
     private var _back: Image;
     private var _tf: TextField;
 
-    public function LetterTile(texture: Texture) {
+    private var _letter: Letter;
+    public function get letter():Letter {
+        return _letter;
+    }
+
+    private var _visibleAlways: Boolean;
+
+    public function LetterTile(letter: Letter, texture: Texture, visibleAlways: Boolean = true) {
+        _letter = letter;
+        _letter.addEventListener(Letter.UPDATE, handleUpdate);
+
+        _visibleAlways = visibleAlways;
+
         _back = new Image(texture);
         addChild(_back);
 
@@ -24,8 +39,9 @@ public class LetterTile extends Sprite {
         addChild(_tf);
     }
 
-    public function setLetter(letter: String):void {
-        _tf.text = letter ? letter.toUpperCase() : "";
+    private function handleUpdate(event: Event):void {
+        _tf.text = _letter.letter ? _letter.letter.toUpperCase() : "";
+        visible = _visibleAlways || _letter.letter;
     }
 }
 }

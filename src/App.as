@@ -82,7 +82,7 @@ public class App extends Sprite {
     }
 
     private function handleSendWord(event: Event):void {
-        _server.checkWord(_game.word.word_id, _game.word.letters.join(""));
+        _server.checkWord(_game.word.word_id, _game.word.word);
     }
 
     private function handleData(event: Event):void {
