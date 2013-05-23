@@ -51,6 +51,7 @@ public class App extends Sprite {
 
     private function initStart():void {
         _game = new Game();
+        _game.addEventListener(Game.SEND_WORD, handleSendWord);
 
         _screen = new Screen(_game, _assets);
         addChild(_screen);
@@ -71,17 +72,28 @@ public class App extends Sprite {
         _server.getParameters();
     }
 
+    private function handleSendWord(event: Event):void {
+        _server.checkWord(_game.word.word_id, _game.word.letters.join());
+    }
+
     private function handleData(event: Event):void {
         var data: Object = event.data;
         switch (data.method) {
             case Server.GET_PARAMETERS:
-                Player.parse(data.player.params);
-                Bank.parse(data.bank);
-                Variables.parse(data.variables);
-                _game.initWord(data.word);
+                if (data.result == "success") {
+                    Player.parse(data.player.params);
+                    Bank.parse(data.bank);
+                    Variables.parse(data.variables);
+                    _game.initWord(data.word);
+                }
                 break;
-//            case Server.GET_PARAMETERS:
-//                break;
+            case Server.CHECK_WORD:
+                if (data.result == "success") {
+
+                } else {
+                    _game.word.error();
+                }
+                break;
 //            case Server.GET_PARAMETERS:
 //                break;
 //            case Server.GET_PARAMETERS:

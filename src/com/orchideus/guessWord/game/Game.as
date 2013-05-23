@@ -6,15 +6,24 @@
  * To change this template use File | Settings | File Templates.
  */
 package com.orchideus.guessWord.game {
+import starling.events.Event;
 import starling.events.EventDispatcher;
 
 public class Game extends EventDispatcher {
 
     public static const INIT: String = "init_Game";
+    public static const SEND_WORD: String = "send_word_Game";
 
-    private var _word_id: int;
-    private var _word_length: int;
+    private var _word: Word;
+    public function get word():Word {
+        return _word;
+    }
+
     private var _current_symbols: String;
+    public function get current_symbols():String {
+        return _current_symbols;
+    }
+
     private var _changed_pic: int;
     private var _removed_symboles: int;
     private var _current_word_start: int;
@@ -42,11 +51,13 @@ public class Game extends EventDispatcher {
     private var _availableLetters: Array;
 
     public function Game() {
+        _word = new Word();
+        _word.addEventListener(Word.FULL, handleWordFull);
     }
 
     public function initWord(data: Object):void {
-        _word_id = data.id;
-        _word_length = data.word_length;
+        _word.init(data.id, data.word_length);
+
         _current_word_start = data.current_word_start;
         _current_wrong_pic_url = data.current_wrong_pic_url;
         _current_wrong_pic_id = data.current_wrong_pic_id;
@@ -57,6 +68,10 @@ public class Game extends EventDispatcher {
         _pic4 = data.pic4;
 
         dispatchEventWith(INIT);
+    }
+
+    private function handleWordFull(event: Event):void {
+        dispatchEventWith(SEND_WORD);
     }
 }
 }

@@ -111,12 +111,11 @@ public class Server extends EventDispatcher {
 
         var data: Object = JSON.parse(_loader.data);
 
-        if (data.result != "fail") {
-            data.method = _currentRequest.data.method;
-            dispatchEventWith(DATA, false, data);
-        }
-
+        data.method = _currentRequest.data.method;
         _currentRequest = null;
+
+        dispatchEventWith(DATA, false, data);
+
 
         if (_stack.length>0) {
             processRequest(_stack.pop());
