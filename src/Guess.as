@@ -10,6 +10,7 @@ import flash.system.Capabilities;
 
 import starling.core.Starling;
 import starling.events.Event;
+import starling.textures.Texture;
 
 import starling.utils.AssetManager;
 import starling.utils.RectangleUtil;
@@ -19,9 +20,9 @@ import starling.utils.formatString;
 [SWF(frameRate="60")]
 public class Guess extends Sprite {
 
-//    [Embed(source="../assets/textures/loaderSD.png")]
-//    private static var Background:Class;
-//
+    [Embed(source="assets/preloader.png")]
+    private static var Background:Class;
+
 //    // Startup image for HD screens
 //    [Embed(source="../assets/textures/loaderHD.png")]
 //    private static var BackgroundHD:Class;
@@ -82,15 +83,16 @@ public class Guess extends Sprite {
     }
 
     private function initApp ():void {
+        _background = new Background();
 //        _background = _scaleFactor == 1 ? new Background() : new BackgroundHD();
 //        Background = BackgroundHD = null;
 
-//        _background.x = viewPort.x;
-//        _background.y = viewPort.y;
+        _background.x = viewPort.x;
+        _background.y = viewPort.y;
 //        _background.width  = viewPort.width;
 //        _background.height = viewPort.height;
-//        _background.smoothing = true;
-//        addChild(_background);
+        _background.smoothing = true;
+        addChild(_background);
 
         _starling = new Starling(App, stage, viewPort);
         _starling.stage.stageWidth  = Constants.WIDTH;
@@ -110,11 +112,11 @@ public class Guess extends Sprite {
 
     private function handleRootCreated(event: Object,  app: App):void {
         _starling.removeEventListener(starling.events.Event.ROOT_CREATED, handleRootCreated);
-//        removeChild(_background);
+        removeChild(_background);
 
-//        var bgTexture:Texture = Texture.fromBitmap(_background, false, false, _scaleFactor);
+        var bgTexture: Texture = Texture.fromBitmap(_background, false, false, _scaleFactor);
 
-        app.start(_assets);
+        app.start(_assets, bgTexture);
         _starling.start();
     }
 }

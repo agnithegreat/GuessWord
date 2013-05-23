@@ -31,7 +31,7 @@ public class ImageTile extends Shape {
     private var _image: Image;
 
     public function ImageTile() {
-        _image = new Image(Texture.fromColor(1,1,0));
+        _image = new Image(Texture.empty());
     }
 
     public function init(url: String):void {

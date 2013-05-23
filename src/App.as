@@ -18,14 +18,18 @@ import com.orchideus.guessWord.ui.Screen;
 import flash.net.SharedObject;
 
 import starling.core.Starling;
+import starling.display.Image;
 
 import starling.display.Sprite;
 import starling.events.Event;
+import starling.textures.Texture;
 import starling.utils.AssetManager;
 
 public class App extends Sprite {
 
     private var _assets:AssetManager;
+
+    private var _bg: Image;
 
     private var _user: SharedObject;
 
@@ -38,13 +42,18 @@ public class App extends Sprite {
     public function App() {
     }
 
-    public function start(assets: AssetManager):void {
+    public function start(assets: AssetManager, bgTexture: Texture):void {
+        _bg = new Image(bgTexture);
+        addChild(_bg);
+
         _assets = assets;
         _assets.loadQueue(handleProgress);
     }
 
     private function handleProgress(ratio: Number):void {
         if (ratio == 1) {
+            removeChild(_bg);
+
             Starling.juggler.delayCall(initStart, 0.15);
         }
     }
