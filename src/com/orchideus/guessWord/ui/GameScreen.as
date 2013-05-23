@@ -37,6 +37,7 @@ public class GameScreen extends Sprite {
     private var _pic4: ImageTile;
 
     private var _wordView: WordView;
+    private var _lettersView: LettersView;
 
     public function GameScreen(game: Game, assets: AssetManager) {
         _background = new Image(assets.getTexture("back"));
@@ -59,6 +60,11 @@ public class GameScreen extends Sprite {
         _wordView.x = 768/2;
         _wordView.y = 720;
         addChild(_wordView);
+
+        _lettersView = new LettersView(_game.stack, assets);
+        _lettersView.x = 768/2;
+        _lettersView.y = 820;
+        addChild(_lettersView);
     }
 
     private function handleInit(event: Event):void {

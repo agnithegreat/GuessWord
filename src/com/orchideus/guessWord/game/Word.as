@@ -13,6 +13,7 @@ public class Word extends EventDispatcher {
     public static const UPDATE: String = "update_Word";
     public static const FULL: String = "full_Word";
     public static const ERROR: String = "error_Word";
+    public static const DELETE_LETTER: String = "delete_letter_Word";
 
     private var _word_id: int;
     public function get word_id():int {
@@ -37,19 +38,35 @@ public class Word extends EventDispatcher {
     }
 
     public function setLetter(value: String):void {
-        _letters[_filled++] = value;
+        _letters[_filled] = value;
         update();
 
-        if (_filled==_letters.length) {
+        while (_letters[_filled]) {
+            _filled++;
+        }
+
+        if (_filled>=_letters.length) {
             dispatchEventWith(FULL);
         }
     }
 
+    public function deleteLetter(id: int):void {
+        if (_letters[id]) {
+            dispatchEventWith(DELETE_LETTER, false, _letters[id]);
+            _letters[id] = null;
+            _filled = Math.min(_filled, id);
+        }
+        update();
+    }
+
     public function clear():void {
-        init(_word_id, _letters.length);
+        for (var i:int = 0; i < _letters.length; i++) {
+            deleteLetter(i);
+        }
     }
 
     public function error():void {
+        clear();
         dispatchEventWith(ERROR);
     }
 

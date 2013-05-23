@@ -84,6 +84,7 @@ public class App extends Sprite {
                     Player.parse(data.player.params);
                     Bank.parse(data.bank);
                     Variables.parse(data.variables);
+                    _game.init(data.player.params);
                     _game.initWord(data.word);
                 }
                 break;
@@ -91,7 +92,7 @@ public class App extends Sprite {
                 if (data.result == "success") {
 
                 } else {
-                    _game.word.error();
+                    _game.wordError();
                 }
                 break;
 //            case Server.GET_PARAMETERS:

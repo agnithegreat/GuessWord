@@ -7,10 +7,14 @@
  */
 package com.orchideus.guessWord.ui {
 import com.orchideus.guessWord.game.Word;
+import com.orchideus.guessWord.ui.tile.LetterTile;
 
 import starling.display.Image;
 import starling.display.Sprite;
 import starling.events.Event;
+import starling.events.Touch;
+import starling.events.TouchEvent;
+import starling.events.TouchPhase;
 import starling.utils.AssetManager;
 
 public class WordView extends Sprite {
@@ -22,7 +26,7 @@ public class WordView extends Sprite {
 
     private var _assets: AssetManager;
 
-    private var _letters: Vector.<Image>;
+    private var _letters: Vector.<LetterTile>;
     private var _container: Sprite;
 
     private var _error: Image;
@@ -39,18 +43,33 @@ public class WordView extends Sprite {
 
         _error = new Image(assets.getTexture("error"));
 
-        _letters = new <Image>[];
+        _letters = new <LetterTile>[];
         for (var i:int = 0; i < MAX_LETTERS; i++) {
-            _letters[i] = new Image(_assets.getTexture("empty_symbol"));
+            _letters[i] = new LetterTile(_assets.getTexture("empty_symbol"));
+            _letters[i].addEventListener(TouchEvent.TOUCH, handleTouch);
             _letters[i].x = i*TILE;
+        }
+    }
+
+    private function handleTouch(event: TouchEvent):void {
+        var letter: LetterTile = event.currentTarget as LetterTile;
+        var touch: Touch = event.getTouch(letter, TouchPhase.ENDED);
+        if (touch) {
+            var index: int = _letters.indexOf(letter);
+            _word.deleteLetter(index);
         }
     }
 
     private function handleUpdate(event:Event):void {
         _container.removeChildren();
 
+        if (_error.parent) {
+            removeChild(_error);
+        }
+
         for (var i:int = 0; i < _letters.length; i++) {
             if (i<_word.letters.length) {
+                _letters[i].setLetter(_word.letters[i]);
                 _container.addChild(_letters[i]);
             }
         }
