@@ -12,15 +12,14 @@ import flash.events.Event;
 import flash.net.URLRequest;
 
 import starling.core.Starling;
-
 import starling.display.Image;
-import starling.display.Shape;
-
+import starling.display.Sprite;
 import starling.textures.Texture;
+import starling.utils.AssetManager;
 
-public class ImageTile extends Shape {
+public class ImageTile extends Sprite {
 
-    public static const scaleAmount: Number = 0.493;
+    public static const scaleAmount: Number = 0.5;
     public static const delay: Number = 0.2;
 
     private var _zoomed: Boolean;
@@ -28,10 +27,20 @@ public class ImageTile extends Shape {
         return _zoomed;
     }
 
+    private var _border: Image;
     private var _image: Image;
 
-    public function ImageTile() {
+    public function ImageTile(assets: AssetManager) {
+        _border = new Image(assets.getTexture("picture_under"));
+        _border.scaleX = 2;
+        _border.scaleY = 2;
+        addChild(_border);
+
         _image = new Image(Texture.empty());
+        _image.x = 17;
+        _image.y = 17;
+
+        scaleX = scaleY = scaleAmount;
     }
 
     public function init(url: String):void {
@@ -42,18 +51,8 @@ public class ImageTile extends Shape {
 
     public function scale(animated: Boolean = true):void {
         var newScale: Number = _zoomed ? scaleAmount : 1;
-        Starling.juggler.tween(this, animated ? delay : 0, {scaleX: newScale, scaleY: newScale, onUpdate: updateGraphics});
+        Starling.juggler.tween(this, animated ? delay : 0, {scaleX: newScale, scaleY: newScale});
         _zoomed = !_zoomed;
-    }
-
-    private function updateGraphics():void {
-        graphics.clear();
-
-        addChild(_image);
-
-        graphics.lineStyle(1/scaleX, 0xFFFFFF);
-        graphics.drawRoundRect(0,0,_image.width,_image.height,1/scaleX);
-        graphics.endFill();
     }
 
     private function onComplete(event: Event):void {
@@ -62,9 +61,9 @@ public class ImageTile extends Shape {
 
         _image.texture = texture;
         _image.readjustSize();
-
-        scaleX = scaleY = scaleAmount;
-        updateGraphics();
+        _image.width = 558;
+        _image.height = 562;
+        addChild(_image);
     }
 }
 }

@@ -19,8 +19,12 @@ import starling.utils.RectangleUtil;
 import starling.utils.ScaleMode;
 import starling.utils.formatString;
 
-[SWF(frameRate="60")]
+[SWF(frameRate="60", width="768", height="1024")]
 public class Guess extends Sprite {
+
+    private static const iPhone: Rectangle = new Rectangle(0,0,320,480);
+    private static const iPad: Rectangle = new Rectangle(0,0,768,1024);
+    public static var size: Rectangle;
 
     [Embed(source="assets/preloader.png")]
     private static var Background:Class;
@@ -52,6 +56,7 @@ public class Guess extends Sprite {
     }
 
     private function handleAddedToStage(event:flash.events.Event = null):void {
+        removeEventListener(flash.events.Event.ADDED_TO_STAGE, init);
         init();
     }
 
@@ -64,16 +69,16 @@ public class Guess extends Sprite {
 
 //        Fonts.init(_config.data.path+"/fonts/", [fontFileName]);
 
-        viewPort = RectangleUtil.fit(
-                new Rectangle(0, 0, Constants.WIDTH, Constants.HEIGHT),
-                iOS ? new Rectangle(0, 0, stage.fullScreenWidth, stage.fullScreenHeight) : new Rectangle(0, 0, Constants.WIDTH, Constants.HEIGHT),
-                ScaleMode.SHOW_ALL);
+        var deviceSize: Rectangle = iOS ? new Rectangle(0, 0, stage.fullScreenWidth, stage.fullScreenHeight) : new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
+        size = deviceSize.width==768 || deviceSize.width==1536 ? iPad : iPhone;
+        var isPad: int = deviceSize.width==768 || deviceSize.width==1536 ? 2 : 0;
+        viewPort = RectangleUtil.fit(size, deviceSize, ScaleMode.SHOW_ALL);
 
-        // TODO: подготовить графику для retina
-//        _scaleFactor = viewPort.width < 1024 ? 1 : 2;
-        _scaleFactor = 1;
-        _assets = new AssetManager(_scaleFactor);
-        basicAssetsPath = formatString("textures/{0}x", _scaleFactor);
+        _scaleFactor = viewPort.width==320 || viewPort.width==768 ? 1 : 2;
+
+//        _assets = new AssetManager(_scaleFactor);
+        _assets = new AssetManager(3-_scaleFactor);
+        basicAssetsPath = formatString("textures/{0}x", _scaleFactor + isPad);
 
         _assets.verbose = true;
 
@@ -81,7 +86,7 @@ public class Guess extends Sprite {
         _assets.enqueue(
                 dir.resolvePath("sounds"),
                 dir.resolvePath("fonts"),
-                dir.resolvePath("textures")
+                dir.resolvePath(basicAssetsPath)
         );
         initApp ();
     }
@@ -99,8 +104,8 @@ public class Guess extends Sprite {
         addChild(_background);
 
         _starling = new Starling(App, stage, viewPort);
-        _starling.stage.stageWidth  = Constants.WIDTH;
-        _starling.stage.stageHeight = Constants.HEIGHT;
+        _starling.stage.stageWidth = size.width;
+        _starling.stage.stageHeight = size.height;
         _starling.showStats = true;
         _starling.simulateMultitouch = false;
         _starling.enableErrorChecking = Capabilities.isDebugger;

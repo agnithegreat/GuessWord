@@ -9,8 +9,6 @@ package com.orchideus.guessWord.ui {
 import com.orchideus.guessWord.game.Game;
 import com.orchideus.guessWord.ui.tile.ImageTile;
 
-import starling.display.DisplayObject;
-
 import starling.display.Image;
 import starling.display.Sprite;
 import starling.events.Event;
@@ -21,8 +19,8 @@ import starling.utils.AssetManager;
 
 public class GameScreen extends Sprite {
 
-    public static var tile: int = 395;
-    public static var imageTile: int = 395;
+    public static var tile: int = 600;
+    public static var imageTile: int = 600;
 
     private var _assets: AssetManager;
 
@@ -44,24 +42,19 @@ public class GameScreen extends Sprite {
     public function GameScreen(game: Game, assets: AssetManager) {
         _assets = assets;
 
-        _background = new Image(assets.getTexture("back"));
+        _background = new Image(assets.getTexture("main_under"));
         addChild(_background);
-
-        _background.x = (768-_background.width)/2;
-        _background.y = (1024-_background.height)/2;
 
         _game = game;
         _game.addEventListener(Game.INIT, handleInit);
         _game.addEventListener(Game.WIN, handleWin);
 
         _picsContainer = new Sprite();
-        _picsContainer.scaleX = 1.53;
-        _picsContainer.scaleY = 1.53;
-        _picsContainer.x = (768-tile*_picsContainer.scaleX)/2;
+        _picsContainer.x = (Guess.size.width-tile)/2;
         _picsContainer.y = 95;
         addChild(_picsContainer);
 
-        _pic1 = new ImageTile();
+        _pic1 = new ImageTile(_assets);
         _pic1.pivotX = 0;
         _pic1.pivotY = 0;
         _pic1.x = 0;
@@ -69,7 +62,7 @@ public class GameScreen extends Sprite {
         _pic1.addEventListener(TouchEvent.TOUCH, handleTouch);
         _picsContainer.addChild(_pic1);
 
-        _pic2 = new ImageTile();
+        _pic2 = new ImageTile(_assets);
         _pic2.pivotX = imageTile;
         _pic2.pivotY = 0;
         _pic2.x = tile;
@@ -77,7 +70,7 @@ public class GameScreen extends Sprite {
         _pic2.addEventListener(TouchEvent.TOUCH, handleTouch);
         _picsContainer.addChild(_pic2);
 
-        _pic3 = new ImageTile();
+        _pic3 = new ImageTile(_assets);
         _pic3.pivotX = 0;
         _pic3.pivotY = imageTile;
         _pic3.x = 0;
@@ -85,7 +78,7 @@ public class GameScreen extends Sprite {
         _pic3.addEventListener(TouchEvent.TOUCH, handleTouch);
         _picsContainer.addChild(_pic3);
 
-        _pic4 = new ImageTile();
+        _pic4 = new ImageTile(_assets);
         _pic4.pivotX = imageTile;
         _pic4.pivotY = imageTile;
         _pic4.x = tile;
@@ -94,13 +87,13 @@ public class GameScreen extends Sprite {
         _picsContainer.addChild(_pic4);
 
         _wordView = new WordView(_game.word, assets);
-        _wordView.x = 768/2;
-        _wordView.y = 720;
+        _wordView.x = Guess.size.width/2;
+        _wordView.y = 712;
         addChild(_wordView);
 
         _lettersView = new LettersView(_game.stack, assets);
-        _lettersView.x = 768/2;
-        _lettersView.y = 820;
+        _lettersView.x = Guess.size.width/2;
+        _lettersView.y = 787;
         addChild(_lettersView);
     }
 

@@ -10,7 +10,6 @@ import com.orchideus.guessWord.game.LettersStack;
 import com.orchideus.guessWord.ui.tile.LetterTile;
 
 import starling.display.Sprite;
-import starling.events.Event;
 import starling.events.Touch;
 import starling.events.TouchEvent;
 import starling.events.TouchPhase;
@@ -18,7 +17,7 @@ import starling.utils.AssetManager;
 
 public class LettersView extends Sprite {
 
-    public static const TILE: int = 52;
+    public static const TILE: int = 56;
 
     private var _stack: LettersStack;
 
@@ -37,7 +36,7 @@ public class LettersView extends Sprite {
 
         _letters = new <LetterTile>[];
         for (var i:int = 0; i < _stack.letters.length; i++) {
-            _letters[i] = new LetterTile(_stack.letters[i], _assets.getTexture("empty_symbol"), false);
+            _letters[i] = new LetterTile(_stack.letters[i], _assets, false);
             _letters[i].addEventListener(TouchEvent.TOUCH, handleTouch);
             _letters[i].x = (i%10)*TILE;
             _letters[i].y = int(i/10)*TILE;

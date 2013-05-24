@@ -6,6 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 package com.orchideus.guessWord.game {
+import starling.core.Starling;
 import starling.events.EventDispatcher;
 
 public class Word extends EventDispatcher {
@@ -86,8 +87,9 @@ public class Word extends EventDispatcher {
     }
 
     public function error():void {
-        clear();
         dispatchEventWith(ERROR);
+
+        Starling.juggler.delayCall(clear, 2);
     }
 
     private function update():void {
