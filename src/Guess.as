@@ -6,6 +6,8 @@ import flash.display.Sprite;
 import flash.events.Event;
 import flash.filesystem.File;
 import flash.geom.Rectangle;
+import flash.media.AudioPlaybackMode;
+import flash.media.SoundMixer;
 import flash.system.Capabilities;
 
 import starling.core.Starling;
@@ -57,6 +59,8 @@ public class Guess extends Sprite {
         var iOS:Boolean = Capabilities.manufacturer.indexOf("iOS") != -1;
         Starling.multitouchEnabled = true;
         Starling.handleLostContext = !iOS;
+
+        SoundMixer.audioPlaybackMode = AudioPlaybackMode.AMBIENT;
 
 //        Fonts.init(_config.data.path+"/fonts/", [fontFileName]);
 
