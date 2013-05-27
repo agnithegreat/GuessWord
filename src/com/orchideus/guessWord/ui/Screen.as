@@ -6,18 +6,36 @@
  * To change this template use File | Settings | File Templates.
  */
 package com.orchideus.guessWord.ui {
-import com.orchideus.guessWord.game.Game;
+import com.orchideus.guessWord.ui.game.GameScreen;
+import com.orchideus.guessWord.ui.preloader.Preloader;
+
+import feathers.controls.ScreenNavigator;
+import feathers.controls.ScreenNavigatorItem;
 
 import starling.display.Sprite;
 import starling.utils.AssetManager;
 
 public class Screen extends Sprite {
 
-    private var _gameScreen: GameScreen;
+    public static const PRELOADER: String = "preloader";
+    public static const GAME_SCREEN: String = "game_screen";
 
-    public function Screen(game: Game, assets: AssetManager) {
-        _gameScreen = new GameScreen(game, assets);
-        addChild(_gameScreen);
+    private var _navigator: ScreenNavigator;
+
+    public function Screen(app: App, assets: AssetManager) {
+        _navigator = new ScreenNavigator();
+        addChild(_navigator);
+
+        _navigator.addScreen(PRELOADER, new ScreenNavigatorItem(Preloader, null, {"assets": assets, "app": app}));
+        _navigator.addScreen(GAME_SCREEN, new ScreenNavigatorItem(GameScreen, null, {"assets": assets, "app": app}));
+    }
+
+    public function showPreloader():void {
+        _navigator.showScreen(PRELOADER);
+    }
+
+    public function showGame():void {
+        _navigator.showScreen(GAME_SCREEN);
     }
 }
 }

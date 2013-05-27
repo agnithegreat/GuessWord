@@ -51,7 +51,7 @@ public class LetterTile extends Sprite {
         addChild(_back);
 
         _tf = new TextField(_back.width, _back.height, "", "Arial", 32, 0x857d59, true);
-        _tf.nativeFilters = [new DropShadowFilter(1, 90, 0, 1, 1, 1, 1, 3, true), new GlowFilter(0xFFFFFF, 1, 2, 2, 2, 3)];
+        _tf.nativeFilters = [new GlowFilter(0xFFFFFF, 1, 1, 1, 3, 3), new DropShadowFilter(2, 90, 0, 0.75, 2, 2, 3, 3, true), new DropShadowFilter(2, 90, 0xFFFFFF, 1, 1, 1, 3, 3)];
         addChild(_tf);
 
         addEventListener(TouchEvent.TOUCH, handleTouch);

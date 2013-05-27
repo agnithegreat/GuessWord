@@ -1,7 +1,5 @@
 package {
-
 import flash.desktop.NativeApplication;
-import flash.display.Bitmap;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.filesystem.File;
@@ -26,9 +24,6 @@ public class Guess extends Sprite {
     private static const iPad: Rectangle = new Rectangle(0,0,768,1024);
     public static var size: Rectangle;
 
-    [Embed(source="assets/preloader.png")]
-    private static var Background:Class;
-
 //    // Startup image for HD screens
 //    [Embed(source="../assets/textures/loaderHD.png")]
 //    private static var BackgroundHD:Class;
@@ -37,7 +32,6 @@ public class Guess extends Sprite {
 //    private static const Polar:Class;
 
     private var _assets: AssetManager;
-    private var _background: Bitmap;
 
     private var viewPort:Rectangle;
     private static var fontFileName:String = "PoplarStd.swf";
@@ -67,6 +61,8 @@ public class Guess extends Sprite {
 
         SoundMixer.audioPlaybackMode = AudioPlaybackMode.AMBIENT;
 
+        GUI.init();
+
 //        Fonts.init(_config.data.path+"/fonts/", [fontFileName]);
 
         var deviceSize: Rectangle = iOS ? new Rectangle(0, 0, stage.fullScreenWidth, stage.fullScreenHeight) : new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
@@ -76,33 +72,20 @@ public class Guess extends Sprite {
 
         _scaleFactor = viewPort.width==320 || viewPort.width==768 ? 1 : 2;
 
-//        _assets = new AssetManager(_scaleFactor);
-        _assets = new AssetManager(3-_scaleFactor);
-        basicAssetsPath = formatString("textures/{0}x", _scaleFactor + isPad);
+        _scaleFactor = 2;
+        isPad = 2;
 
-        _assets.verbose = true;
+        _assets = new AssetManager(_scaleFactor);
+        basicAssetsPath = formatString("textures/{0}x", _scaleFactor + isPad);
 
         var dir: File = File.applicationDirectory;
         _assets.enqueue(
-                dir.resolvePath("sounds"),
-                dir.resolvePath("fonts"),
-                dir.resolvePath(basicAssetsPath)
+                dir.resolvePath(formatString("preloader/{0}x", _scaleFactor + isPad))
         );
         initApp ();
     }
 
     private function initApp ():void {
-        _background = new Background();
-//        _background = _scaleFactor == 1 ? new Background() : new BackgroundHD();
-//        Background = BackgroundHD = null;
-
-        _background.x = viewPort.x;
-        _background.y = viewPort.y;
-//        _background.width  = viewPort.width;
-//        _background.height = viewPort.height;
-        _background.smoothing = true;
-        addChild(_background);
-
         _starling = new Starling(App, stage, viewPort);
         _starling.stage.stageWidth = size.width;
         _starling.stage.stageHeight = size.height;
@@ -121,11 +104,7 @@ public class Guess extends Sprite {
 
     private function handleRootCreated(event: Object,  app: App):void {
         _starling.removeEventListener(starling.events.Event.ROOT_CREATED, handleRootCreated);
-        removeChild(_background);
-
-        var bgTexture: Texture = Texture.fromBitmap(_background, false, false, _scaleFactor);
-
-        app.start(_assets, bgTexture);
+        app.start(_assets, basicAssetsPath);
         _starling.start();
     }
 }

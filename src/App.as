@@ -12,60 +12,78 @@ import com.orchideus.guessWord.data.Player;
 import com.orchideus.guessWord.data.Variables;
 import com.orchideus.guessWord.game.Game;
 import com.orchideus.guessWord.server.Server;
-import com.orchideus.guessWord.ui.Preloader;
 import com.orchideus.guessWord.ui.Screen;
+
+import flash.filesystem.File;
 
 import flash.net.SharedObject;
 
 import starling.core.Starling;
-import starling.display.Image;
-
 import starling.display.Sprite;
 import starling.events.Event;
-import starling.textures.Texture;
 import starling.utils.AssetManager;
 
 public class App extends Sprite {
 
-    private var _assets:AssetManager;
+    public static const PROGRESS: String = "progress_App";
+    public static const INIT: String = "init_App";
 
-    private var _bg: Image;
+    private var _assets:AssetManager;
+    private var _assetsPath: String;
+    private var _onLoad: Function;
+
+    private var _screen: Screen;
 
     private var _user: SharedObject;
 
     private var _server: Server;
 
     private var _game: Game;
-
-    private var _screen: Screen;
+    public function get game():Game {
+        return _game;
+    }
 
     public function App() {
     }
 
-    public function start(assets: AssetManager, bgTexture: Texture):void {
-        _bg = new Image(bgTexture);
-        addChild(_bg);
-
+    public function start(assets: AssetManager, assetsPath: String):void {
         _assets = assets;
+        _onLoad = initPreloader;
         _assets.loadQueue(handleProgress);
+
+        _assetsPath = assetsPath;
     }
 
     private function handleProgress(ratio: Number):void {
+        dispatchEventWith(PROGRESS, false, ratio);
         if (ratio == 1) {
-            removeChild(_bg);
-
-            Starling.juggler.delayCall(initStart, 0.15);
+            Starling.juggler.delayCall(_onLoad, 0.15);
         }
+    }
+
+    private function initPreloader():void {
+        _screen = new Screen(this, _assets);
+        addChild(_screen);
+
+        _screen.showPreloader();
+
+        var dir: File = File.applicationDirectory;
+        _assets.enqueue(
+            dir.resolvePath("sounds"),
+            dir.resolvePath("fonts"),
+            dir.resolvePath(_assetsPath)
+        );
+        _onLoad = initStart;
+        _assets.loadQueue(handleProgress);
     }
 
     private function initStart():void {
         _game = new Game();
         _game.addEventListener(Game.SEND_WORD, handleSendWord);
 
-        _screen = new Screen(_game, _assets);
-        addChild(_screen);
+        _screen.showGame();
 
-//        addChild(new Preloader(_assets));
+        dispatchEventWith(INIT);
 
         _server = new Server();
 
@@ -75,7 +93,7 @@ public class App extends Sprite {
         }
 
 //        _server.init("1", _user.data.uuid);
-        _server.init("1", "3602865");
+        _server.init("1", "3602866");
 
         _server.addEventListener(Server.DATA, handleData);
         _server.getParameters();
@@ -90,7 +108,6 @@ public class App extends Sprite {
         switch (data.method) {
             case Server.GET_PARAMETERS:
                 if (data.result == "success") {
-                    Player.parse(data.player.params);
                     Bank.parse(data.bank);
                     Variables.parse(data.variables);
                     _game.init(data.player.params);
@@ -101,7 +118,6 @@ public class App extends Sprite {
                 if (data.result == "success") {
                     _game.win();
 
-                    Player.parse(data.player.params);
                     // TODO: сделать обработчик, начислить бабло
                     _game.word.clear();
                     _game.init(data.player.params);

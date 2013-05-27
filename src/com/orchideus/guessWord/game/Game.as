@@ -6,12 +6,15 @@
  * To change this template use File | Settings | File Templates.
  */
 package com.orchideus.guessWord.game {
+import com.orchideus.guessWord.data.Player;
+
 import starling.events.Event;
 import starling.events.EventDispatcher;
 
 public class Game extends EventDispatcher {
 
     public static const INIT: String = "init_Game";
+    public static const UPDATE: String = "update_Game";
     public static const SEND_WORD: String = "send_word_Game";
     public static const WIN: String = "win_Game";
 
@@ -62,6 +65,9 @@ public class Game extends EventDispatcher {
 
     public function init(data: Object):void {
         _stack.init(data.current_symbols);
+
+        Player.parse(data);
+        update();
     }
 
     public function initWord(data: Object):void {
@@ -85,6 +91,10 @@ public class Game extends EventDispatcher {
 
     public function wordError():void {
         _word.error();
+    }
+
+    private function update():void {
+        dispatchEventWith(UPDATE);
     }
 
     private function handleWordFull(event: Event):void {
