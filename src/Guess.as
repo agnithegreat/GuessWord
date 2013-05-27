@@ -24,17 +24,9 @@ public class Guess extends Sprite {
     private static const iPad: Rectangle = new Rectangle(0,0,768,1024);
     public static var size: Rectangle;
 
-//    // Startup image for HD screens
-//    [Embed(source="../assets/textures/loaderHD.png")]
-//    private static var BackgroundHD:Class;
-
-//    [Embed(source="../fonts/poplarstd.ttf", embedAsCFF="false", fontFamily="Polar Std")]
-//    private static const Polar:Class;
-
     private var _assets: AssetManager;
 
     private var viewPort:Rectangle;
-    private static var fontFileName:String = "PoplarStd.swf";
 
     private var basicAssetsPath:String;
     private var _scaleFactor: Number;
@@ -58,12 +50,6 @@ public class Guess extends Sprite {
         var iOS:Boolean = Capabilities.manufacturer.indexOf("iOS") != -1;
         Starling.multitouchEnabled = true;
         Starling.handleLostContext = !iOS;
-
-        SoundMixer.audioPlaybackMode = AudioPlaybackMode.AMBIENT;
-
-        GUI.init();
-
-//        Fonts.init(_config.data.path+"/fonts/", [fontFileName]);
 
         var deviceSize: Rectangle = iOS ? new Rectangle(0, 0, stage.fullScreenWidth, stage.fullScreenHeight) : new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
         size = deviceSize.width==768 || deviceSize.width==1536 ? iPad : iPhone;

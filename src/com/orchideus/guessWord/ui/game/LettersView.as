@@ -36,7 +36,7 @@ public class LettersView extends Sprite {
 
         _letters = new <LetterTile>[];
         for (var i:int = 0; i < _stack.letters.length; i++) {
-            _letters[i] = new LetterTile(_stack.letters[i], _assets, false);
+            _letters[i] = new LetterTile(_stack.letters[i], _assets);
             _letters[i].addEventListener(TouchEvent.TOUCH, handleTouch);
             _letters[i].x = (i%10)*TILE;
             _letters[i].y = int(i/10)*TILE;
@@ -52,8 +52,6 @@ public class LettersView extends Sprite {
         if (touch) {
             var index: int = _letters.indexOf(letter);
             _stack.selectLetter(index);
-
-            _assets.playSound("click");
         }
     }
 }

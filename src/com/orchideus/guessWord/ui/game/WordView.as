@@ -6,10 +6,10 @@
  * To change this template use File | Settings | File Templates.
  */
 package com.orchideus.guessWord.ui.game {
+import com.orchideus.guessWord.data.Sound;
 import com.orchideus.guessWord.game.Word;
 import com.orchideus.guessWord.ui.tile.LetterTile;
 
-import starling.display.Image;
 import starling.display.Sprite;
 import starling.events.Event;
 import starling.events.Touch;
@@ -25,10 +25,9 @@ public class WordView extends Sprite {
 
     private var _assets: AssetManager;
 
+    private var _slots: Vector.<SlotTile>;
     private var _letters: Vector.<LetterTile>;
     private var _container: Sprite;
-
-//    private var _error: Image;
 
     public function WordView(word: Word, assets: AssetManager) {
         _word = word;
@@ -40,14 +39,13 @@ public class WordView extends Sprite {
         _container = new Sprite();
         addChild(_container);
 
-//        _error = new Image(assets.getTexture("error"));
+        _slots = new <SlotTile>[];
+        for (var i:int = 0; i < _word.letters.length; i++) {
+            _slots[i] = new SlotTile(_assets);
+            _slots[i].x = i*TILE;
+        }
 
         _letters = new <LetterTile>[];
-        for (var i:int = 0; i < _word.letters.length; i++) {
-            _letters[i] = new LetterTile(_word.letters[i], _assets);
-            _letters[i].addEventListener(TouchEvent.TOUCH, handleTouch);
-            _letters[i].x = i*TILE;
-        }
     }
 
     private function handleTouch(event: TouchEvent):void {
@@ -56,21 +54,15 @@ public class WordView extends Sprite {
         if (touch && letter.letter.letter) {
             var index: int = _letters.indexOf(letter);
             _word.deleteLetter(index);
-
-            _assets.playSound("click");
         }
     }
 
     private function handleUpdate(event:Event):void {
         _container.removeChildren();
 
-//        if (_error.parent) {
-//            removeChild(_error);
-//        }
-
-        for (var i:int = 0; i < _letters.length; i++) {
+        for (var i:int = 0; i < _slots.length; i++) {
             if (i < _word.length) {
-                _container.addChild(_letters[i]);
+                _container.addChild(_slots[i]);
             }
         }
 
@@ -79,9 +71,8 @@ public class WordView extends Sprite {
 
     private function handleError(event:Event):void {
         _container.removeChildren();
-//        addChild(_error);
 
-        _assets.playSound("Lose");
+        Sound.play(Sound.LOSE);
 
         pivotX = width/2;
     }

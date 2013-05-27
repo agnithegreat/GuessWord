@@ -8,13 +8,15 @@
 package {
 import com.laiyonghao.Uuid;
 import com.orchideus.guessWord.data.Bank;
-import com.orchideus.guessWord.data.Player;
+import com.orchideus.guessWord.data.Sound;
 import com.orchideus.guessWord.data.Variables;
 import com.orchideus.guessWord.game.Game;
 import com.orchideus.guessWord.server.Server;
 import com.orchideus.guessWord.ui.Screen;
 
 import flash.filesystem.File;
+import flash.media.AudioPlaybackMode;
+import flash.media.SoundMixer;
 
 import flash.net.SharedObject;
 
@@ -34,7 +36,7 @@ public class App extends Sprite {
 
     private var _screen: Screen;
 
-    private var _user: SharedObject;
+    private var _data: SharedObject;
 
     private var _server: Server;
 
@@ -43,15 +45,20 @@ public class App extends Sprite {
         return _game;
     }
 
-    public function App() {
-    }
-
     public function start(assets: AssetManager, assetsPath: String):void {
         _assets = assets;
         _onLoad = initPreloader;
         _assets.loadQueue(handleProgress);
 
         _assetsPath = assetsPath;
+
+        _data = SharedObject.getLocal("data");
+        if (!_data.data.created) {
+            _data.data.uid = (new Uuid()).toString();
+            _data.data.sound = true;
+            _data.data.created = true;
+        }
+        _data.data.uid = "3602860";
     }
 
     private function handleProgress(ratio: Number):void {
@@ -62,6 +69,10 @@ public class App extends Sprite {
     }
 
     private function initPreloader():void {
+        Fonts.init();
+        Sound.init(_assets);
+        SoundMixer.audioPlaybackMode = AudioPlaybackMode.AMBIENT;
+
         _screen = new Screen(this, _assets);
         addChild(_screen);
 
@@ -86,14 +97,7 @@ public class App extends Sprite {
         dispatchEventWith(INIT);
 
         _server = new Server();
-
-        _user = SharedObject.getLocal("user");
-        if (!_user.data) {
-            _user.data.uuid = (new Uuid()).toString();
-        }
-
-//        _server.init("1", _user.data.uuid);
-        _server.init("1", "3602866");
+        _server.init("1", _data.data.uid);
 
         _server.addEventListener(Server.DATA, handleData);
         _server.getParameters();
