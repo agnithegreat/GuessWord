@@ -8,6 +8,8 @@
 package com.orchideus.guessWord.game {
 import com.orchideus.guessWord.data.Player;
 
+import starling.core.Starling;
+
 import starling.events.Event;
 import starling.events.EventDispatcher;
 
@@ -57,10 +59,8 @@ public class Game extends EventDispatcher {
     public function Game() {
         _word = new Word();
         _word.addEventListener(Word.FULL, handleWordFull);
-        _word.addEventListener(Word.DELETE_LETTER, handleDeleteLetter);
 
         _stack = new LettersStack();
-        _stack.addEventListener(LettersStack.SELECT_LETTER, handleSelectLetter);
     }
 
     public function init(data: Object):void {
@@ -85,12 +85,34 @@ public class Game extends EventDispatcher {
         dispatchEventWith(INIT);
     }
 
+    public function selectLetter(id: int):void {
+        if (!_word.isComplete) {
+            _word.setLetter(_stack.letters[id].letter);
+            _stack.removeLetter(id);
+        }
+    }
+
+    public function removeLetter(id: int):void {
+        var letter: String = _word.letters[id].letter;
+        _word.removeLetter(id);
+        if (letter) {
+            _stack.addLetter(letter);
+        }
+    }
+
     public function win():void {
         dispatchEventWith(WIN);
     }
 
     public function wordError():void {
         _word.error();
+        Starling.juggler.delayCall(reset, 2);
+    }
+
+    private function reset():void {
+        for (var i:int = 0; i < _word.letters.length; i++) {
+            removeLetter(i);
+        }
     }
 
     private function update():void {
@@ -99,14 +121,6 @@ public class Game extends EventDispatcher {
 
     private function handleWordFull(event: Event):void {
         dispatchEventWith(SEND_WORD);
-    }
-
-    private function handleDeleteLetter(event: Event):void {
-        _stack.addLetter(event.data as String);
-    }
-
-    private function handleSelectLetter(event: Event):void {
-        _word.setLetter(event.data as String);
     }
 }
 }

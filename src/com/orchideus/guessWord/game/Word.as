@@ -38,6 +38,9 @@ public class Word extends EventDispatcher {
     }
 
     private var _filled: int;
+    public function get isComplete():Boolean {
+        return _filled >= _length;
+    }
 
     private var _length: int;
     public function get length():int {
@@ -66,30 +69,25 @@ public class Word extends EventDispatcher {
             _filled++;
         }
 
-        if (_filled >= _length) {
+        if (isComplete) {
             dispatchEventWith(FULL);
         }
     }
 
-    public function deleteLetter(id: int):void {
-        if (_letters[id].letter) {
-            dispatchEventWith(DELETE_LETTER, false, _letters[id].letter);
-            _letters[id].letter = null;
-            _filled = Math.min(_filled, id);
-        }
+    public function removeLetter(id: int):void {
+        _letters[id].letter = null;
+        _filled = Math.min(_filled, id);
         update();
     }
 
     public function clear():void {
         for (var i:int = 0; i < _letters.length; i++) {
-            deleteLetter(i);
+            removeLetter(i);
         }
     }
 
     public function error():void {
         dispatchEventWith(ERROR);
-
-        Starling.juggler.delayCall(clear, 2);
     }
 
     private function update():void {

@@ -10,8 +10,6 @@ import starling.events.EventDispatcher;
 
 public class LettersStack extends EventDispatcher {
 
-    public static const SELECT_LETTER: String = "select_letter_LettersStack";
-
     private var _letters: Vector.<Letter>;
     public function get letters():Vector.<Letter> {
         return _letters;
@@ -30,8 +28,7 @@ public class LettersStack extends EventDispatcher {
         }
     }
 
-    public function selectLetter(id: int):void {
-        dispatchEventWith(SELECT_LETTER, false, _letters[id].letter);
+    public function removeLetter(id: int):void {
         _letters[id].letter = null;
     }
 

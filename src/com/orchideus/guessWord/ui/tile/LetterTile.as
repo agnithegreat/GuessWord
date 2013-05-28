@@ -37,10 +37,22 @@ public class LetterTile extends Button {
         addChild(_tf);
 
         addEventListener(Event.TRIGGERED, handleClick);
+
+        update();
+    }
+
+    public function update():void {
+        _tf.text = _letter.letter ? _letter.letter.toUpperCase() : "";
+        visible = _tf.text;
     }
 
     private function handleUpdate(event: Event):void {
-        _tf.text = _letter.letter ? _letter.letter.toUpperCase() : "";
+        update();
+//        if (_letter.letter) {
+//            dispatchEventWith(MOVE_TO, true, update);
+//        } else {
+//            dispatchEventWith(MOVE_FROM, true, update);
+//        }
     }
 
     private function handleClick(event: Event):void {
