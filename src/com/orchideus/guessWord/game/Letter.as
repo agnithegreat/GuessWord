@@ -11,6 +11,7 @@ import starling.events.EventDispatcher;
 public class Letter extends EventDispatcher {
 
     public static const UPDATE: String = "update_Letter";
+    public static const MISTAKE: String = "mistake_Letter";
 
     private var _letter: String;
     public function get letter():String {
@@ -26,6 +27,10 @@ public class Letter extends EventDispatcher {
 
     private function update():void {
         dispatchEventWith(UPDATE);
+    }
+
+    public function mistake():void {
+        dispatchEventWith(MISTAKE);
     }
 }
 }

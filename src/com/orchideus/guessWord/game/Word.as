@@ -70,7 +70,7 @@ public class Word extends EventDispatcher {
         }
 
         if (isComplete) {
-            dispatchEventWith(FULL);
+            Starling.juggler.delayCall(full, 0.3);
         }
     }
 
@@ -84,6 +84,10 @@ public class Word extends EventDispatcher {
         for (var i:int = 0; i < _letters.length; i++) {
             removeLetter(i);
         }
+    }
+
+    private function full():void {
+        dispatchEventWith(FULL);
     }
 
     public function error():void {

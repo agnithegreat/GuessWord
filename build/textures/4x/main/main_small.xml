@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TextureAtlas imagePath="main_small.png">
+    <!-- Created with TexturePacker -->
+    <!-- http://texturepacker.com -->
+    <!--  -->
+    <SubTexture name="A_ico" x="875" y="2" width="83" height="85"/>
+    <SubTexture name="А_ico" x="875" y="2" width="83" height="85"/>
+    <SubTexture name="ask_btn_down" x="400" y="2" width="173" height="68"/>
+    <SubTexture name="ask_btn_up" x="225" y="2" width="173" height="68"/>
+    <SubTexture name="blank_letter_under" x="1645" y="2" width="107" height="101"/>
+    <SubTexture name="bonus_coin" x="2" y="2" width="80" height="33"/>
+    <SubTexture name="bonus_termometer" x="1919" y="693" width="124" height="1056"/>
+    <SubTexture name="bonus_timer_under" x="1850" y="2" width="157" height="102"/>
+    <SubTexture name="buy_btn_down" x="343" y="106" width="213" height="107"/>
+    <SubTexture name="change_pic_ico" x="711" y="2" width="80" height="81"/>
+    <SubTexture name="cheat_btn_down" x="320" y="693" width="157" height="273"/>
+    <SubTexture name="cheat_btn_up" x="161" y="693" width="157" height="273"/>
+    <SubTexture name="close_btn" x="84" y="2" width="46" height="47"/>
+    <SubTexture name="coin_ico" x="1754" y="2" width="94" height="101"/>
+    <SubTexture name="coin_ico_small" x="132" y="2" width="46" height="51"/>
+    <SubTexture name="delete_btn_down" x="1018" y="106" width="177" height="128"/>
+    <SubTexture name="delete_btn_up" x="1197" y="106" width="177" height="128"/>
+    <SubTexture name="enemy_under" x="2" y="258" width="407" height="150"/>
+    <SubTexture name="enemy_under_off" x="1376" y="106" width="407" height="150"/>
+    <SubTexture name="fb_btn_down" x="1049" y="258" width="485" height="167"/>
+    <SubTexture name="fb_btn_up" x="562" y="258" width="485" height="167"/>
+    <SubTexture name="fb_login_under" x="2" y="458" width="1536" height="229"/>
+    <SubTexture name="friend_under" x="1536" y="258" width="149" height="198"/>
+    <SubTexture name="help_btn_off" x="1699" y="458" width="157" height="233"/>
+    <SubTexture name="help_ico" x="113" y="106" width="113" height="103"/>
+    <SubTexture name="invite_btn_off" x="1858" y="458" width="157" height="233"/>
+    <SubTexture name="invite_friend_ico" x="228" y="106" width="113" height="103"/>
+    <SubTexture name="invitefriend_btn_down" x="1059" y="2" width="173" height="93"/>
+    <SubTexture name="invitefriend_btn_up" x="1234" y="2" width="173" height="93"/>
+    <SubTexture name="invitefriend_under" x="411" y="258" width="149" height="151"/>
+    <SubTexture name="letter_under_down" x="2" y="106" width="109" height="103"/>
+    <SubTexture name="letter_under_up" x="675" y="106" width="115" height="109"/>
+    <SubTexture name="mistake_letter_under" x="558" y="106" width="115" height="109"/>
+    <SubTexture name="open_letter_ico" x="629" y="2" width="80" height="81"/>
+    <SubTexture name="page_scroll_btn" x="575" y="2" width="52" height="73"/>
+    <SubTexture name="pic_ico" x="960" y="2" width="97" height="91"/>
+    <SubTexture name="picture_under" x="1326" y="693" width="591" height="593"/>
+    <SubTexture name="plus_btn_down" x="905" y="106" width="111" height="111"/>
+    <SubTexture name="plus_btn_up" x="792" y="106" width="111" height="111"/>
+    <SubTexture name="remove_letters_ico" x="793" y="2" width="80" height="81"/>
+    <SubTexture name="right_btn_down" x="1540" y="458" width="157" height="233"/>
+    <SubTexture name="right_btn_up" x="2" y="693" width="157" height="233"/>
+    <SubTexture name="scroll_btn" x="180" y="2" width="43" height="66"/>
+    <SubTexture name="sound_btn_down" x="1527" y="2" width="116" height="100"/>
+    <SubTexture name="sound_btn_up" x="1409" y="2" width="116" height="100"/>
+    <SubTexture name="wrong_pic" x="678" y="693" width="646" height="446"/>
+    <SubTexture name="wrpng_pic_alert" x="479" y="693" width="197" height="308"/>
+</TextureAtlas>

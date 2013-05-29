@@ -18,8 +18,8 @@ import starling.utils.AssetManager;
 
 public class MiddlePanel extends Sprite {
 
-    public static var tile: int = 600;
-    public static var imageTile: int = 600;
+    public static var tile: int = 595;
+    public static var imageTile: int = 595;
 
     private var _assets: AssetManager;
 
@@ -37,7 +37,7 @@ public class MiddlePanel extends Sprite {
 
     public function init():void {
         _picsContainer = new Sprite();
-        _picsContainer.x = (Guess.size.width-tile)/2;
+        _picsContainer.x = (stage.stageWidth-tile)/2;
         _picsContainer.y = 95;
         addChild(_picsContainer);
 

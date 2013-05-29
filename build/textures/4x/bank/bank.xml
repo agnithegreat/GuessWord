@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TextureAtlas imagePath="bank.png">
+    <!-- Created with TexturePacker -->
+    <!-- http://texturepacker.com -->
+    <!--  -->
+    <SubTexture name="bank_under" x="2" y="2" width="1127" height="842"/>
+    <SubTexture name="best_buy_btn_down" x="1131" y="2" width="213" height="107"/>
+    <SubTexture name="best_buy_btn_up" x="1346" y="2" width="213" height="107"/>
+    <SubTexture name="best_buy_under" x="2" y="846" width="977" height="110"/>
+    <SubTexture name="buy_under" x="981" y="846" width="977" height="110"/>
+</TextureAtlas>

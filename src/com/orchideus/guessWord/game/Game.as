@@ -17,6 +17,7 @@ public class Game extends EventDispatcher {
 
     public static const INIT: String = "init_Game";
     public static const UPDATE: String = "update_Game";
+    public static const RESET: String = "reset_Game";
     public static const SEND_WORD: String = "send_word_Game";
     public static const WIN: String = "win_Game";
 
@@ -87,16 +88,19 @@ public class Game extends EventDispatcher {
 
     public function selectLetter(id: int):void {
         if (!_word.isComplete) {
-            _word.setLetter(_stack.letters[id].letter);
+            var letter: String = _stack.letters[id].letter;
             _stack.removeLetter(id);
+            _word.setLetter(letter);
         }
     }
 
-    public function removeLetter(id: int):void {
-        var letter: String = _word.letters[id].letter;
-        _word.removeLetter(id);
-        if (letter) {
-            _stack.addLetter(letter);
+    public function removeLetter(id: int, force: Boolean = false):void {
+        if (!_word.isComplete || force) {
+            var letter: String = _word.letters[id].letter;
+            _word.removeLetter(id);
+            if (letter) {
+                _stack.addLetter(letter);
+            }
         }
     }
 
@@ -106,13 +110,14 @@ public class Game extends EventDispatcher {
 
     public function wordError():void {
         _word.error();
-        Starling.juggler.delayCall(reset, 2);
+        Starling.juggler.delayCall(reset, 1.5);
     }
 
-    private function reset():void {
+    public function reset():void {
         for (var i:int = 0; i < _word.letters.length; i++) {
-            removeLetter(i);
+            removeLetter(i, true);
         }
+        dispatchEventWith(RESET);
     }
 
     private function update():void {

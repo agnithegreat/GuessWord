@@ -19,7 +19,7 @@ import starling.utils.AssetManager;
 
 public class ImageTile extends Sprite {
 
-    public static const scaleAmount: Number = 0.5;
+    public static const scaleAmount: Number = 0.492;
     public static const delay: Number = 0.2;
 
     private var _zoomed: Boolean;
@@ -31,14 +31,12 @@ public class ImageTile extends Sprite {
     private var _image: Image;
 
     public function ImageTile(assets: AssetManager) {
-        _border = new Image(assets.getTexture("picture_under"));
-        _border.scaleX = 2;
-        _border.scaleY = 2;
+        _border = new Image(assets.getTexture("pic_under_big"));
         addChild(_border);
 
         _image = new Image(Texture.empty());
-        _image.x = 17;
-        _image.y = 17;
+        _image.x = 8;
+        _image.y = 8;
 
         scaleX = scaleY = scaleAmount;
     }
@@ -61,8 +59,8 @@ public class ImageTile extends Sprite {
 
         _image.texture = texture;
         _image.readjustSize();
-        _image.width = 558;
-        _image.height = 562;
+        _image.width = 580;
+        _image.height = 583;
         addChild(_image);
     }
 }
