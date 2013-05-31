@@ -6,6 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 package com.orchideus.guessWord.game {
+import com.orchideus.guessWord.data.Pic;
 import com.orchideus.guessWord.data.Player;
 
 import starling.core.Starling;
@@ -37,22 +38,10 @@ public class Game extends EventDispatcher {
     private var _current_wrong_pic_url: String;
     private var _current_wrong_pic_id: int;
 
-    private var _pic1: String;
-    public function get pic1(): String {
-        return _pic1;
-    }
-    private var _pic2: String;
-    public function get pic2(): String {
-        return _pic2;
-    }
-    private var _pic3: String;
-    public function get pic3(): String {
-        return _pic3;
-    }
-    private var _pic4: String;
-    public function get pic4(): String {
-        return _pic4;
-    }
+    public var pic1: Pic;
+    public var pic2: Pic;
+    public var pic3: Pic;
+    public var pic4: Pic;
 
     private var _letters: Array;
     private var _availableLetters: Array;
@@ -61,7 +50,16 @@ public class Game extends EventDispatcher {
         _word = new Word();
         _word.addEventListener(Word.FULL, handleWordFull);
 
+        pic1 = new Pic();
+        pic2 = new Pic();
+        pic3 = new Pic();
+        pic4 = new Pic();
+
         _stack = new LettersStack();
+    }
+
+    public function nextRound():void {
+
     }
 
     public function init(data: Object):void {
@@ -78,12 +76,24 @@ public class Game extends EventDispatcher {
         _current_wrong_pic_url = data.current_wrong_pic_url;
         _current_wrong_pic_id = data.current_wrong_pic_id;
 
-        _pic1 = data.pic1;
-        _pic2 = data.pic2;
-        _pic3 = data.pic3;
-        _pic4 = data.pic4;
+        pic1.url = data.pic1;
+        pic2.url = data.pic2;
+        pic3.url = data.pic3;
+        pic4.url = data.pic4;
+
+        pic1.description = data.pic1_descr;
+        pic2.description = data.pic2_descr;
+        pic3.description = data.pic3_descr;
+        pic4.description = data.pic4_descr;
 
         dispatchEventWith(INIT);
+    }
+
+    public function updateDescription(data: Object):void {
+        pic1.description = data.pic1_descr;
+        pic2.description = data.pic2_descr;
+        pic3.description = data.pic3_descr;
+        pic4.description = data.pic4_descr;
     }
 
     public function selectLetter(id: int):void {

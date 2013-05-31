@@ -26,5 +26,15 @@ public class SlotTile extends Sprite {
         _letter = new LetterTile(letter, assets);
         addChild(_letter);
     }
+
+    public function destroy():void {
+        _back.dispose();
+        removeChild(_back);
+        _back = null;
+
+        _letter.destroy();
+        removeChild(_letter);
+        _letter = null;
+    }
 }
 }

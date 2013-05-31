@@ -14,7 +14,7 @@ public class Word extends EventDispatcher {
     public static const UPDATE: String = "update_Word";
     public static const FULL: String = "full_Word";
     public static const ERROR: String = "error_Word";
-    public static const DELETE_LETTER: String = "delete_letter_Word";
+    public static const CLEAR: String = "clear_Word";
 
     public static const MAX_LETTERS: int = 15;
 
@@ -84,6 +84,7 @@ public class Word extends EventDispatcher {
         for (var i:int = 0; i < _letters.length; i++) {
             removeLetter(i);
         }
+        dispatchEventWith(CLEAR);
     }
 
     private function full():void {

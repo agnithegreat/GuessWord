@@ -75,10 +75,17 @@ public class MiddlePanel extends Sprite {
     }
 
     public function update(game: Game):void {
-        _pic1.init(game.pic1);
-        _pic2.init(game.pic2);
-        _pic3.init(game.pic3);
-        _pic4.init(game.pic4);
+        _pic1.init(game.pic1.url);
+        _pic2.init(game.pic2.url);
+        _pic3.init(game.pic3.url);
+        _pic4.init(game.pic4.url);
+    }
+
+    public function updateDescription(game: Game):void {
+        _pic1.showDescription(game.pic1.description);
+        _pic2.showDescription(game.pic2.description);
+        _pic3.showDescription(game.pic3.description);
+        _pic4.showDescription(game.pic4.description);
     }
 
     private function handleTouch(event: TouchEvent):void {

@@ -13,9 +13,13 @@ import flash.net.URLRequest;
 
 import starling.core.Starling;
 import starling.display.Image;
+import starling.display.Quad;
 import starling.display.Sprite;
+import starling.text.TextField;
 import starling.textures.Texture;
 import starling.utils.AssetManager;
+import starling.utils.HAlign;
+import starling.utils.VAlign;
 
 public class ImageTile extends Sprite {
 
@@ -30,6 +34,9 @@ public class ImageTile extends Sprite {
     private var _border: Image;
     private var _image: Image;
 
+    private var _hide: Quad;
+    private var _description: TextField;
+
     public function ImageTile(assets: AssetManager) {
         _border = new Image(assets.getTexture("pic_under_big"));
         addChild(_border);
@@ -39,12 +46,35 @@ public class ImageTile extends Sprite {
         _image.y = 8;
 
         scaleX = scaleY = scaleAmount;
+
+        _hide = new Quad(580, 583, 0);
+        _hide.x = 8;
+        _hide.y = 8;
+        _hide.alpha = 0.5;
+
+        _description = new TextField(564, 567, "", "Arial", 42, 0xFFFFFF, true);
+        _description.x = 16;
+        _description.y = 16;
+        _description.hAlign = HAlign.LEFT;
+        _description.vAlign = VAlign.CENTER;
     }
 
     public function init(url: String):void {
         var loader:Loader = new Loader();
         loader.load(new URLRequest(url));
         loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onComplete);
+
+        if (_hide.parent) {
+            removeChild(_hide);
+            removeChild(_description);
+        }
+    }
+
+    public function showDescription(title: String):void {
+        _description.text = title;
+
+        addChild(_hide);
+        addChild(_description);
     }
 
     public function scale(animated: Boolean = true):void {

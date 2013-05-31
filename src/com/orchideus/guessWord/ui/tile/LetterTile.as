@@ -86,5 +86,19 @@ public class LetterTile extends Sprite {
     private function handleMistake(event: Event):void {
         _back.texture = _mistake;
     }
+
+    public function destroy():void {
+        removeEventListeners();
+
+        _up.dispose();
+        _down.dispose();
+        _mistake.dispose();
+
+        removeChild(_back, true);
+        removeChild(_tf, true);
+
+        _letter.removeEventListeners();
+        _letter = null;
+    }
 }
 }

@@ -45,6 +45,8 @@ public class App extends Sprite {
         return _game;
     }
 
+    private var _tempData: Object;
+
     public function start(assets: AssetManager, assetsPath: String):void {
         _assets = assets;
         _onLoad = initPreloader;
@@ -58,7 +60,7 @@ public class App extends Sprite {
             _data.data.sound = true;
             _data.data.created = true;
         }
-        _data.data.uid = "3602860";
+        _data.data.uid = "3602867";
     }
 
     private function handleProgress(ratio: Number):void {
@@ -107,6 +109,12 @@ public class App extends Sprite {
         _server.checkWord(_game.word.word_id, _game.word.word);
     }
 
+    public function nextRound():void {
+        _game.word.clear();
+        _game.initWord(_tempData.new_word);
+        _tempData = null;
+    }
+
     private function handleData(event: Event):void {
         var data: Object = event.data;
         switch (data.method) {
@@ -120,12 +128,10 @@ public class App extends Sprite {
                 break;
             case Server.CHECK_WORD:
                 if (data.result == "success") {
-                    _game.win();
-
-                    // TODO: сделать обработчик, начислить бабло
-                    _game.word.clear();
+                    _tempData = data;
                     _game.init(data.player.params);
-                    _game.initWord(data.new_word);
+                    _game.updateDescription(data.word);
+                    _game.win();
                 } else {
                     _game.wordError();
                 }
