@@ -155,6 +155,7 @@ public class BottomPanel extends Sprite {
     private var _to: LetterTile;
     private function handleMoveFrom(event: Event):void {
         _from = event.target as LetterTile;
+        _from.visible = false;
     }
 
     private function handleMoveTo(event:Event):void {
@@ -177,8 +178,6 @@ public class BottomPanel extends Sprite {
         phantom.x = fromPos.x;
         phantom.y = fromPos.y
         addChild(phantom);
-
-        from.visible = false;
 
         Starling.juggler.tween(phantom, 0.1, {x: toPos.x, y: toPos.y, onComplete: handleAnimate, onCompleteArgs: [phantom, to]});
     }

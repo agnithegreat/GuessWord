@@ -75,7 +75,6 @@ public class LetterTile extends Sprite {
     }
 
     private function handleUpdate(event: Event):void {
-//        update();
         if (_letter.letter) {
             dispatchEventWith(MOVE_TO, true);
         } else {

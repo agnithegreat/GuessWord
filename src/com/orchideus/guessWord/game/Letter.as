@@ -22,6 +22,14 @@ public class Letter extends EventDispatcher {
         update();
     }
 
+    private var _locked: Boolean;
+    public function get locked():Boolean {
+        return _locked;
+    }
+    public function set locked(value: Boolean):void {
+        _locked = value;
+    }
+
     public function Letter() {
     }
 

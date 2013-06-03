@@ -31,9 +31,9 @@ public class Server extends EventDispatcher {
     public static const REMOVE_WRONG_PICTURE: String = "remove_wrong_picture";
 
     private static var auth_key: String;
-    private static var sn_id: String;
+    private static var uid: String;
 
-    private var _url: String = "http://37.200.65.66/controller.php";
+    private var _url: String = "http://46.72.211.10:82/controller.php";
     private var _loader: URLLoader;
 
     private var _stack: Vector.<URLRequest>;
@@ -52,7 +52,7 @@ public class Server extends EventDispatcher {
 
     public function init(key: String, id: String):void {
         auth_key = key;
-        sn_id = id;
+        uid = id;
     }
 
     public function getParameters():void {
@@ -87,12 +87,16 @@ public class Server extends EventDispatcher {
         if (!data) {
             data = {};
         }
-        data.vk_id = sn_id;
+        data.ios_id = uid;
+        data.network = "0";
+        data.game_type = "1";
         requestVars.data = JSON.stringify(data);
 
         var request:URLRequest = new URLRequest(_url);
         request.method = URLRequestMethod.GET;
         request.data = requestVars;
+
+        trace(request.url+"?"+request.data);
 
         processRequest(request);
     }

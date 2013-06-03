@@ -6,6 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 package com.orchideus.guessWord.game {
+import com.orchideus.guessWord.data.Bonus;
 import com.orchideus.guessWord.data.Pic;
 import com.orchideus.guessWord.data.Player;
 
@@ -20,6 +21,7 @@ public class Game extends EventDispatcher {
     public static const UPDATE: String = "update_Game";
     public static const RESET: String = "reset_Game";
     public static const SEND_WORD: String = "send_word_Game";
+    public static const USE_BONUS: String = "use_bonus_Game";
     public static const WIN: String = "win_Game";
 
     private var _word: Word;
@@ -33,8 +35,6 @@ public class Game extends EventDispatcher {
     }
 
     private var _changed_pic: int;
-    private var _removed_symboles: int;
-    private var _current_word_start: int;
     private var _current_wrong_pic_url: String;
     private var _current_wrong_pic_id: int;
 
@@ -58,21 +58,11 @@ public class Game extends EventDispatcher {
         _stack = new LettersStack();
     }
 
-    public function nextRound():void {
-
-    }
-
-    public function init(data: Object):void {
-        _stack.init(data.current_symbols);
-
-        Player.parse(data);
-        update();
-    }
-
     public function initWord(data: Object):void {
         _word.init(data.id, data.word_length);
 
-        _current_word_start = data.current_word_start;
+        updateWord(data);
+
         _current_wrong_pic_url = data.current_wrong_pic_url;
         _current_wrong_pic_id = data.current_wrong_pic_id;
 
@@ -89,6 +79,26 @@ public class Game extends EventDispatcher {
         dispatchEventWith(INIT);
     }
 
+    public function updateStack(data: Object):void {
+        if (data.current_symbols) {
+            _stack.init(data.current_symbols);
+        }
+    }
+
+    public function updatePlayer(data: Object):void {
+        Player.parse(data);
+        update();
+    }
+
+    public function updateWord(data: Object):void {
+
+        var symLen: int = data.symbols ? data.symbols.length : 0;
+        for (var i:int = 0; i < symLen; i++) {
+            var symbol: Object = data.symbols[i];
+            _word.openSymbol(symbol.position, symbol.symbol);
+        }
+    }
+
     public function updateDescription(data: Object):void {
         pic1.description = data.pic1_descr;
         pic2.description = data.pic2_descr;
@@ -97,6 +107,7 @@ public class Game extends EventDispatcher {
     }
 
     public function selectLetter(id: int):void {
+        trace(_word.isComplete);
         if (!_word.isComplete) {
             var letter: String = _stack.letters[id].letter;
             _stack.removeLetter(id);
@@ -107,10 +118,15 @@ public class Game extends EventDispatcher {
     public function removeLetter(id: int, force: Boolean = false):void {
         if (!_word.isComplete || force) {
             var letter: String = _word.letters[id].letter;
-            _word.removeLetter(id);
-            if (letter) {
+            if (_word.removeLetter(id, false)) {
                 _stack.addLetter(letter);
             }
+        }
+    }
+
+    public function useBonus(bonus: Bonus):void {
+        if (Player.money >= bonus.price) {
+            dispatchEventWith(USE_BONUS, false, bonus.id);
         }
     }
 
@@ -124,7 +140,7 @@ public class Game extends EventDispatcher {
     }
 
     public function reset():void {
-        for (var i:int = 0; i < _word.letters.length; i++) {
+        for (var i:int = 0; i < _word.length; i++) {
             removeLetter(i, true);
         }
         dispatchEventWith(RESET);

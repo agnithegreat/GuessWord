@@ -10,8 +10,13 @@ import feathers.controls.Screen;
 
 import flash.filters.GlowFilter;
 
+import starling.display.DisplayObject;
+
 import starling.display.Image;
+import starling.display.Sprite;
 import starling.events.Event;
+import starling.events.TouchEvent;
+import starling.events.TouchPhase;
 import starling.extensions.Gauge;
 import starling.text.TextField;
 import starling.utils.AssetManager;
@@ -38,8 +43,12 @@ public class Preloader extends Screen {
     }
 
     private var _background: Image;
+
     private var _progress: Gauge;
     private var _progressTF: TextField;
+
+    private var _logo: Image;
+    private var _langs: Sprite;
 
     override protected function initialize():void {
         _background = new Image(_assets.getTexture("preloader_under"));
@@ -61,6 +70,46 @@ public class Preloader extends Screen {
         _progressTF.vAlign = VAlign.TOP;
         _progressTF.text = "";
         addChild(_progressTF);
+    }
+
+    private var _localeCallback: Function;
+    public function showLanguages(callback: Function):void {
+        _localeCallback = callback;
+
+        _logo = new Image(_assets.getTexture("DUCK_ico"));
+        _logo.x = 30;
+        _logo.y = 30;
+        addChild(_logo);
+
+        _langs = new Sprite();
+        _langs.x = 25;
+        _langs.y = 780;
+        addChild(_langs);
+
+        var langs: Array = [
+                            {lang: "Русский", icon: "rus_ico"},
+                            {lang: "Deutsch", icon: "deutch_ico"},
+                            {lang: "English", icon: "eng_ico"},
+                            {lang: "Français", icon: "franc_ico"},
+                            {lang: "Español", icon: "esp_ico"},
+                            {lang: "Italiano", icon: "ital_ico"},
+                            {lang: "Português", icon: "port_ico"}
+                           ];
+
+        for (var i:int = 0; i < langs.length; i++) {
+            var lang: Object = langs[i];
+            var tile: LanguageTile = new LanguageTile(lang.lang, lang.icon, _assets);
+            tile.addEventListener(TouchEvent.TOUCH, handleSelectLanguage);
+            tile.x = i<6 ? (i%3) * 255 : 255;
+            tile.y = int(i/3) * 85;
+            _langs.addChild(tile);
+        }
+    }
+
+    private function handleSelectLanguage(event: TouchEvent):void {
+        if (event.getTouch(event.currentTarget as DisplayObject, TouchPhase.ENDED)) {
+            _localeCallback((event.currentTarget as LanguageTile).locale);
+        }
     }
 
     private function handleProgress(event: Event):void {

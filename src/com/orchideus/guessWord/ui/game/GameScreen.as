@@ -6,8 +6,10 @@
  * To change this template use File | Settings | File Templates.
  */
 package com.orchideus.guessWord.ui.game {
+import com.orchideus.guessWord.data.Bonus;
 import com.orchideus.guessWord.data.Sound;
 import com.orchideus.guessWord.game.Game;
+import com.orchideus.guessWord.ui.tile.BonusTile;
 
 import feathers.controls.Screen;
 
@@ -57,6 +59,7 @@ public class GameScreen extends Screen {
         addChild(_topPanel);
 
         _leftPanel = new LeftPanel(_assets);
+        _leftPanel.addEventListener(BonusTile.USE, handleUseBonus);
         addChild(_leftPanel);
 
         _middlePanel = new MiddlePanel(_assets);
@@ -84,6 +87,7 @@ public class GameScreen extends Screen {
         _game.addEventListener(Game.UPDATE, handleUpdate);
 
         _topPanel.init();
+        _leftPanel.init();
         _middlePanel.init();
         _bottomPanel.init(_game);
         _winPanel.init();
@@ -95,6 +99,10 @@ public class GameScreen extends Screen {
 
     private function handleUpdate(event: Event):void {
         _topPanel.update();
+    }
+
+    private function handleUseBonus(event: Event):void {
+        _game.useBonus(event.data as Bonus);
     }
 
     private function handleWin(event: Event):void {

@@ -61,6 +61,15 @@ public class Word extends EventDispatcher {
         update();
     }
 
+    public function openSymbol(id: int, letter: String):void {
+        _letters[id].letter = letter;
+        _letters[id].locked = true;
+
+        while (_letters[_filled].letter) {
+            _filled++;
+        }
+    }
+
     public function setLetter(value: String):void {
         _letters[_filled].letter = value;
         update();
@@ -74,17 +83,29 @@ public class Word extends EventDispatcher {
         }
     }
 
-    public function removeLetter(id: int):void {
+    public function removeLetter(id: int, force: Boolean):Boolean {
+        if (force) {
+            _letters[id].locked = false;
+        }
+
+        if (_letters[id].locked) {
+            return false;
+        }
+
         _letters[id].letter = null;
         _filled = Math.min(_filled, id);
         update();
+
+        return true;
     }
 
-    public function clear():void {
+    public function clear(force: Boolean):void {
         for (var i:int = 0; i < _letters.length; i++) {
-            removeLetter(i);
+            removeLetter(i, force);
         }
-        dispatchEventWith(CLEAR);
+        if (force) {
+            dispatchEventWith(CLEAR);
+        }
     }
 
     private function full():void {

@@ -23,8 +23,8 @@ public class LettersStack extends EventDispatcher {
     }
 
     public function init(letters: Array):void {
-        for (var i:int = 0; i < letters.length; i++) {
-            _letters[i].letter = letters[i];
+        for (var i:int = 0; i < _letters.length; i++) {
+            _letters[i].letter = letters.length>i ? letters[i] : null;
         }
     }
 
@@ -34,7 +34,7 @@ public class LettersStack extends EventDispatcher {
 
     public function addLetter(letter: String):void {
         var i: int = 0;
-        while (true) {
+        while (i<_letters.length) {
             if (!_letters[i].letter) {
                 _letters[i].letter = letter;
                 break;

@@ -37,8 +37,12 @@ public class Screen extends Sprite {
         _bankPopup = new BankPopup();
     }
 
-    public function showPreloader():void {
+    public function showPreloader(selectLanguage: Function):void {
         _navigator.showScreen(PRELOADER);
+
+        if (selectLanguage is Function) {
+            (_navigator.activeScreen as Preloader).showLanguages(selectLanguage);
+        }
     }
 
     public function showGame():void {
