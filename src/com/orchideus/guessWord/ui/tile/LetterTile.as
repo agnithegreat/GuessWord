@@ -70,7 +70,7 @@ public class LetterTile extends Sprite {
 
     private function handleTouch(event: TouchEvent):void {
         if (event.getTouch(this, TouchPhase.BEGAN)) {
-            Sound.play(Sound.CLICK);
+            dispatchEventWith(Sound.SOUND, true, Sound.CLICK);
         }
     }
 

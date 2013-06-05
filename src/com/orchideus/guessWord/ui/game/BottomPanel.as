@@ -106,7 +106,7 @@ public class BottomPanel extends Sprite {
     }
 
     private function handleWin(event: Event):void {
-        Sound.play(Sound.WIN);
+        dispatchEventWith(Sound.SOUND, true, Sound.WIN);
     }
 
     private function handleError(event:Event):void {
@@ -114,7 +114,7 @@ public class BottomPanel extends Sprite {
         _slotsContainer.visible = false;
         _deleteBtn.visible = false;
 
-        Sound.play(Sound.LOSE);
+        dispatchEventWith(Sound.SOUND, true, Sound.LOSE);
     }
 
     private function handleClear(event: Event):void {
@@ -188,7 +188,7 @@ public class BottomPanel extends Sprite {
     }
 
     private function handleDelete(event: Event):void {
-        Sound.play(Sound.BACKSPACE);
+        dispatchEventWith(Sound.SOUND, true, Sound.BACKSPACE);
 
         _game.reset();
     }

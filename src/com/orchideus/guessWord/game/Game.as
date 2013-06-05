@@ -21,7 +21,6 @@ public class Game extends EventDispatcher {
     public static const UPDATE: String = "update_Game";
     public static const RESET: String = "reset_Game";
     public static const SEND_WORD: String = "send_word_Game";
-    public static const USE_BONUS: String = "use_bonus_Game";
     public static const WIN: String = "win_Game";
 
     private var _word: Word;
@@ -85,11 +84,6 @@ public class Game extends EventDispatcher {
         }
     }
 
-    public function updatePlayer(data: Object):void {
-        Player.parse(data);
-        update();
-    }
-
     public function updateWord(data: Object):void {
 
         var symLen: int = data.symbols ? data.symbols.length : 0;
@@ -121,12 +115,6 @@ public class Game extends EventDispatcher {
             if (_word.removeLetter(id, false)) {
                 _stack.addLetter(letter);
             }
-        }
-    }
-
-    public function useBonus(bonus: Bonus):void {
-        if (Player.money >= bonus.price) {
-            dispatchEventWith(USE_BONUS, false, bonus.id);
         }
     }
 

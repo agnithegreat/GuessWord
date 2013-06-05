@@ -96,13 +96,13 @@ public class MiddlePanel extends Sprite {
                 image.scale();
                 _zoomedImage = null;
 
-                Sound.play(Sound.SMALL_PIC);
+                dispatchEventWith(Sound.SOUND, true, Sound.SMALL_PIC);
             } else if (!_zoomedImage) {
                 _picsContainer.addChild(image);
                 _zoomedImage = image;
                 image.scale();
 
-                Sound.play(Sound.BIG_PIC);
+                dispatchEventWith(Sound.SOUND, true, Sound.BIG_PIC);
             }
         }
     }

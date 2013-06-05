@@ -6,41 +6,18 @@
  * To change this template use File | Settings | File Templates.
  */
 package com.orchideus.guessWord.ui.game {
-import com.orchideus.guessWord.data.Bonus;
+import com.orchideus.guessWord.GameController;
+import com.orchideus.guessWord.data.DeviceType;
 import com.orchideus.guessWord.data.Sound;
-import com.orchideus.guessWord.game.Game;
-import com.orchideus.guessWord.ui.tile.BonusTile;
-
-import feathers.controls.Screen;
+import com.orchideus.guessWord.ui.abstract.Screen;
 
 import starling.display.Button;
-
-import starling.display.Image;
 import starling.events.Event;
 import starling.utils.AssetManager;
 
 public class GameScreen extends Screen {
 
-    private var _assets: AssetManager;
-    public function get assets():AssetManager {
-        return _assets;
-    }
-    public function set assets(value: AssetManager):void {
-        _assets = value;
-    }
-
-    private var _app: App;
-    public function get app():App {
-        return _app;
-    }
-    public function set app(value: App):void {
-        _app = value;
-        _app.addEventListener(App.INIT, handleInit);
-    }
-
-    private var _game: Game;
-
-    private var _background: Image;
+    private var _controller: GameController;
 
     private var _topPanel: TopPanel;
     private var _leftPanel: LeftPanel;
@@ -51,62 +28,56 @@ public class GameScreen extends Screen {
 
     private var _soundBtn: Button;
 
-    override protected function initialize():void {
-        _background = new Image(assets.getTexture("main_under"));
-        addChild(_background);
+    public function GameScreen(assets:AssetManager, deviceType: DeviceType, controller: GameController) {
+        _controller = controller;
+//        _game.addEventListener(Game.INIT, handleInitGame);
+//        _game.addEventListener(Game.WIN, handleWin);
 
-        _topPanel = new TopPanel(_assets);
-        addChild(_topPanel);
-
-        _leftPanel = new LeftPanel(_assets);
-        _leftPanel.addEventListener(BonusTile.USE, handleUseBonus);
-        addChild(_leftPanel);
-
-        _middlePanel = new MiddlePanel(_assets);
-        addChild(_middlePanel);
-
-        _bottomPanel = new BottomPanel(_assets);
-        addChild(_bottomPanel);
-
-        _winPanel = new WinPanel(_assets);
-        _winPanel.addEventListener(WinPanel.CONTINUE, handleContinue);
-        addChild(_winPanel);
-        _winPanel.visible = false;
-
-        _soundBtn = new Button(_assets.getTexture("sound_btn_down"), "", _assets.getTexture("sound_btn_up"));
-        _soundBtn.addEventListener(Event.TRIGGERED, handleSound);
-        _soundBtn.x = 700;
-        _soundBtn.y = 810;
-        addChild(_soundBtn);
+        super(assets, deviceType);
     }
 
-    private function handleInit(event: Event):void {
-        _game = _app.game;
-        _game.addEventListener(Game.INIT, handleInitGame);
-        _game.addEventListener(Game.WIN, handleWin);
-        _game.addEventListener(Game.UPDATE, handleUpdate);
-
-        _topPanel.init();
-        _leftPanel.init();
-        _middlePanel.init();
-        _bottomPanel.init(_game);
-        _winPanel.init();
+    override protected function initialize():void {
+        _topPanel = new TopPanel(_assets);
+        _topPanel.init(_controller.player);
+        addChild(_topPanel);
+//
+//        _leftPanel = new LeftPanel(_assets);
+//        _leftPanel.addEventListener(BonusTile.USE, handleUseBonus);
+//        addChild(_leftPanel);
+//
+//        _middlePanel = new MiddlePanel(_assets);
+//        addChild(_middlePanel);
+//
+//        _bottomPanel = new BottomPanel(_assets);
+//        addChild(_bottomPanel);
+//
+//        _winPanel = new WinPanel(_assets);
+//        _winPanel.addEventListener(WinPanel.CONTINUE, handleContinue);
+//        addChild(_winPanel);
+//        _winPanel.visible = false;
+//
+//        _soundBtn = new Button(_assets.getTexture("sound_btn_down"), "", _assets.getTexture("sound_btn_up"));
+//        _soundBtn.addEventListener(Event.TRIGGERED, handleSound);
+//        _soundBtn.x = 700;
+//        _soundBtn.y = 810;
+//        addChild(_soundBtn);
     }
 
     private function handleInitGame(event: Event):void {
-        _middlePanel.update(_game);
-    }
+        _leftPanel.init();
+        _middlePanel.init();
+//        _bottomPanel.init(_game);
+        _winPanel.init();
 
-    private function handleUpdate(event: Event):void {
-        _topPanel.update();
+//        _middlePanel.update(_game);
     }
 
     private function handleUseBonus(event: Event):void {
-        _game.useBonus(event.data as Bonus);
+//        _game.useBonus(event.data as Bonus);
     }
 
     private function handleWin(event: Event):void {
-        _middlePanel.updateDescription(_game);
+//        _middlePanel.updateDescription(_game);
 
         _bottomPanel.visible = false;
         _winPanel.visible = true;
@@ -116,11 +87,11 @@ public class GameScreen extends Screen {
         _bottomPanel.visible = true;
         _winPanel.visible = false;
 
-        _app.nextRound();
+//        _app.nextRound();
     }
 
     private function handleSound(event: Event):void {
-        Sound.play(Sound.CLICK);
+        dispatchEventWith(Sound.SOUND, true, Sound.CLICK);
 
         Sound.enabled = !Sound.enabled;
 

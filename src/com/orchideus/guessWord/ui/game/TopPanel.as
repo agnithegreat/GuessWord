@@ -6,9 +6,9 @@
  * To change this template use File | Settings | File Templates.
  */
 package com.orchideus.guessWord.ui.game {
+import com.orchideus.guessWord.data.Bank;
 import com.orchideus.guessWord.data.Player;
 import com.orchideus.guessWord.data.Sound;
-import com.orchideus.guessWord.ui.Screen;
 
 import flash.filters.GlowFilter;
 
@@ -19,6 +19,8 @@ import starling.text.TextField;
 import starling.utils.AssetManager;
 
 public class TopPanel extends Sprite {
+
+    private var _player: Player;
 
     private var _assets: AssetManager;
 
@@ -31,7 +33,10 @@ public class TopPanel extends Sprite {
         _assets = assets;
     }
 
-    public function init():void {
+    public function init(player: Player):void {
+        _player = player;
+        _player.addEventListener(Player.UPDATE, handleUpdate);
+
         _levelTF = new TextField(70, 40, "", "Arial", 36, 0xFFFFFF, true);
         _levelTF.nativeFilters = [new GlowFilter(0x333333, 1, 3, 3, 3, 3)];
         _levelTF.x = 64;
@@ -49,16 +54,22 @@ public class TopPanel extends Sprite {
         _bankBtn.x = 712;
         _bankBtn.y = 24;
         addChild(_bankBtn);
+
+        update();
     }
 
-    public function update():void {
-        _levelTF.text = String(Player.level);
-        _moneyTF.text = String(Player.money);
+    private function update():void {
+        _levelTF.text = String(_player.level);
+        _moneyTF.text = String(_player.money);
+    }
+
+    private function handleUpdate(event: Event):void {
+        update();
     }
 
     private function handleBank(event:Event):void {
-        Sound.play(Sound.CLICK);
-        dispatchEventWith(Screen.BANK, true);
+        dispatchEventWith(Sound.SOUND, true, Sound.CLICK);
+        dispatchEventWith(Bank.OPEN, true);
     }
 }
 }
