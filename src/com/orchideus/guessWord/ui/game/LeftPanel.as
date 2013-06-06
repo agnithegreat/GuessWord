@@ -18,7 +18,6 @@ public class LeftPanel extends AbstractView {
     private var _openLetter: BonusTile;
     private var _removeLetters: BonusTile;
     private var _changePic: BonusTile;
-    private var _removePic: BonusTile;
 
     public function LeftPanel(assets: AssetManager, deviceType: DeviceType) {
         super(assets, deviceType)
@@ -33,10 +32,6 @@ public class LeftPanel extends AbstractView {
 
         _changePic = new BonusTile(_assets, _deviceType, Bonus.BONUSES[Bonus.CHANGE_PICTURE]);
         addChild(_changePic);
-
-        // TODO: отображать только если есть лишняя
-        _removePic = new BonusTile(_assets, _deviceType, Bonus.BONUSES[Bonus.REMOVE_WRONG_PICTURE]);
-        addChild(_removePic);
     }
 
     override protected function align():void {
@@ -45,14 +40,12 @@ public class LeftPanel extends AbstractView {
                 place(_openLetter, 4, 105);
                 place(_removeLetters, 4, 256);
                 place(_changePic, 4, 409);
-                place(_removePic, 4, 562);
                 break;
             case DeviceType.iPhone5:
             case DeviceType.iPhone4:
-                place(_openLetter, 1, 88);
-                place(_removeLetters, 1, 158);
-                place(_changePic, 1, 228);
-                place(_removePic, 1, 298);
+                place(_openLetter, 1, 90);
+                place(_removeLetters, 1, 165);
+                place(_changePic, 1, 240);
                 break;
         }
     }

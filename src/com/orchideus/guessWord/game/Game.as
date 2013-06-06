@@ -39,7 +39,6 @@ public class Game extends EventDispatcher {
     public var pic4: Pic;
 
     public var pic5: Pic;
-    public var wrongPic: Pic;
 
     private var _letters: Array;
     private var _availableLetters: Array;

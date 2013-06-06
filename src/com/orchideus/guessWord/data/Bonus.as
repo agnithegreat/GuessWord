@@ -14,7 +14,6 @@ public class Bonus {
     public static const OPEN_LETTER: String = "open_letter";
     public static const REMOVE_LETTERS: String = "remove_letters";
     public static const CHANGE_PICTURE: String = "change_picture";
-    public static const REMOVE_WRONG_PICTURE: String = "remove_wrong_picture";
 
     public static var BONUSES: Object = {};
 
@@ -22,7 +21,6 @@ public class Bonus {
         BONUSES[OPEN_LETTER] = new Bonus(OPEN_LETTER, "main_openletter_ico", ["ОТКРЫТЬ","БУКВУ"], data.opensymbol_price);
         BONUSES[REMOVE_LETTERS] = new Bonus(REMOVE_LETTERS, "main_removeletters_ico", ["УБРАТЬ","БУКВЫ"], data.removesymbols_price);
         BONUSES[CHANGE_PICTURE] = new Bonus(CHANGE_PICTURE, "main_onemorepic_ico", ["ЕЩЕ","КАРТИНКА"], data.changepic_price);
-        BONUSES[REMOVE_WRONG_PICTURE] = new Bonus(REMOVE_WRONG_PICTURE, "main_removewrongpic_ico", ["УБРАТЬ","ЛИШНЮЮ"], data.changewrongpic_price);
     }
 
     public var id: String;

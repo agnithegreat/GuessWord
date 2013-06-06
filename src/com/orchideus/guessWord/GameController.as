@@ -53,6 +53,8 @@ public class GameController extends EventDispatcher {
         _view = new MainScreen(assets, deviceType, this);
         container.addChild(_view);
         addViewEventListeners();
+
+        // TODO: проверить SharedObject для IOS
     }
 
     public function preloaderProgress(value: Number):void {
@@ -138,12 +140,6 @@ public class GameController extends EventDispatcher {
                     _game.changePic(data.player.params.changed_pic);
                 }
                 break;
-            case Server.REMOVE_WRONG_PICTURE:
-                if (data.result == "success") {
-                    _player.parse(data.player.params);
-                    _game.changePic(data.player.params.changed_pic);
-                }
-                break;
         }
     }
 
@@ -185,9 +181,6 @@ public class GameController extends EventDispatcher {
                 if (_currentPic) {
                     _server.changePicture(_currentPic.id);
                 }
-                break;
-            case Bonus.REMOVE_WRONG_PICTURE:
-                _server.removeWrongPicture();
                 break;
         }
         _currentBonus = null;
