@@ -30,6 +30,9 @@ public class ImageTile extends AbstractView {
     public static const delay: Number = 0.2;
 
     private var _pic: Pic;
+    public function get pic():Pic {
+        return _pic;
+    }
 
     private var _zoomed: Boolean;
     public function get zoomed():Boolean {

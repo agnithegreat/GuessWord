@@ -7,12 +7,14 @@
  */
 package com.orchideus.guessWord.ui.game {
 import com.orchideus.guessWord.data.DeviceType;
+import com.orchideus.guessWord.data.Pic;
 import com.orchideus.guessWord.data.Sound;
 import com.orchideus.guessWord.game.Game;
 import com.orchideus.guessWord.ui.abstract.AbstractView;
 import com.orchideus.guessWord.ui.tile.ImageTile;
 
 import starling.display.Sprite;
+import starling.events.Event;
 import starling.events.Touch;
 import starling.events.TouchEvent;
 import starling.events.TouchPhase;
@@ -28,6 +30,8 @@ public class MiddlePanel extends AbstractView {
     private var _game: Game;
 
     private var _picsContainer: Sprite;
+
+    private var _clickedImage: ImageTile;
     private var _zoomedImage: ImageTile;
 
     private var _pic1: ImageTile;
@@ -37,6 +41,8 @@ public class MiddlePanel extends AbstractView {
 
     public function MiddlePanel(assets: AssetManager, deviceType: DeviceType, game: Game) {
         _game = game;
+        _game.addEventListener(Game.ZOOM, handleZoom);
+
         super(assets, deviceType)
     }
 
@@ -99,7 +105,7 @@ public class MiddlePanel extends AbstractView {
         _pic4.load();
     }
 
-    public function updateDescription(game: Game):void {
+    public function updateDescription():void {
         _pic1.showDescription();
         _pic2.showDescription();
         _pic3.showDescription();
@@ -107,23 +113,29 @@ public class MiddlePanel extends AbstractView {
     }
 
     private function handleTouch(event: TouchEvent):void {
-        var image: ImageTile = event.currentTarget as ImageTile;
-        var touch: Touch = event.getTouch(image, TouchPhase.ENDED);
+        _clickedImage = event.currentTarget as ImageTile;
+        var touch: Touch = event.getTouch(_clickedImage, TouchPhase.ENDED);
         if (touch) {
-//            dispatchEventWith(IMAGE_SELECTED, true, );
+            dispatchEventWith(Pic.SELECT, true, _clickedImage.pic);
+        }
+    }
 
-            if (image.zoomed) {
-                image.scale();
+    private function handleZoom(event: Event):void {
+        if (_clickedImage) {
+            if (_clickedImage.zoomed) {
+                _clickedImage.scale();
                 _zoomedImage = null;
 
                 dispatchEventWith(Sound.SOUND, true, Sound.SMALL_PIC);
             } else if (!_zoomedImage) {
-                _picsContainer.addChild(image);
-                _zoomedImage = image;
-                image.scale();
+                _picsContainer.addChild(_clickedImage);
+                _zoomedImage = _clickedImage;
+                _clickedImage.scale();
 
                 dispatchEventWith(Sound.SOUND, true, Sound.BIG_PIC);
             }
+
+            _clickedImage = null;
         }
     }
 }

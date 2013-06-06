@@ -32,7 +32,7 @@ public class GameScreen extends Screen {
     public function GameScreen(assets:AssetManager, deviceType: DeviceType, controller: GameController) {
         _controller = controller;
         _controller.game.addEventListener(Game.INIT, handleInitGame);
-//        _game.addEventListener(Game.WIN, handleWin);
+        _controller.game.addEventListener(Game.WIN, handleWin);
 
         super(assets, deviceType, "main_under");
     }
@@ -41,26 +41,24 @@ public class GameScreen extends Screen {
         _topPanel = new TopPanel(_assets, _deviceType, _controller.player);
         addChild(_topPanel);
 
-//        _leftPanel = new LeftPanel(_assets);
-//        _leftPanel.addEventListener(BonusTile.USE, handleUseBonus);
-//        addChild(_leftPanel);
+        _leftPanel = new LeftPanel(_assets, _deviceType);
 
         _middlePanel = new MiddlePanel(_assets, _deviceType, _controller.game);
         addChild(_middlePanel);
 
-//        _bottomPanel = new BottomPanel(_assets);
-//        addChild(_bottomPanel);
+        _bottomPanel = new BottomPanel(_assets, _deviceType, _controller.game);
+        addChild(_bottomPanel);
 
-//        _winPanel = new WinPanel(_assets);
-//        _winPanel.addEventListener(WinPanel.CONTINUE, handleContinue);
-//        addChild(_winPanel);
-//        _winPanel.visible = false;
+        _winPanel = new WinPanel(_assets, _deviceType);
+        _winPanel.addEventListener(WinPanel.CONTINUE, handleContinue);
+        addChild(_winPanel);
+        _winPanel.visible = false;
 
-//        _soundBtn = new Button(_assets.getTexture("sound_btn_down"), "", _assets.getTexture("sound_btn_up"));
-//        _soundBtn.addEventListener(Event.TRIGGERED, handleSound);
-//        _soundBtn.x = 700;
-//        _soundBtn.y = 810;
-//        addChild(_soundBtn);
+        _soundBtn = new Button(_assets.getTexture("main_sound_up"), "", _assets.getTexture("main_sound_down"));
+        _soundBtn.addEventListener(Event.TRIGGERED, handleSound);
+        addChild(_soundBtn);
+
+        updateSoundState();
     }
 
     override protected function align():void {
@@ -68,49 +66,48 @@ public class GameScreen extends Screen {
 
         switch (_deviceType) {
             case DeviceType.iPad:
+                place(_soundBtn, 700, 810);
                 break;
             case DeviceType.iPhone5:
+                place(_soundBtn, 50, 328);
                 break;
             case DeviceType.iPhone4:
                 place(this, 0, -44);
+                place(_soundBtn, 50, 328);
                 break;
         }
     }
 
     private function handleInitGame(event: Event):void {
-//        _leftPanel.init();
-//        _bottomPanel.init(_game);
-//        _winPanel.init();
+        addChild(_leftPanel);
+
+        _bottomPanel.visible = true;
+        _winPanel.visible = false;
 
         _middlePanel.update();
     }
 
-    private function handleUseBonus(event: Event):void {
-//        _game.useBonus(event.data as Bonus);
-    }
-
     private function handleWin(event: Event):void {
-//        _middlePanel.updateDescription(_game);
+        _middlePanel.updateDescription();
 
         _bottomPanel.visible = false;
         _winPanel.visible = true;
     }
 
     private function handleContinue(event: Event):void {
-        _bottomPanel.visible = true;
-        _winPanel.visible = false;
-
-//        _app.nextRound();
+        _controller.nextRound();
     }
 
     private function handleSound(event: Event):void {
         dispatchEventWith(Sound.SOUND, true, Sound.CLICK);
 
         Sound.enabled = !Sound.enabled;
+        updateSoundState();
+    }
 
-        // TODO: добавить стейты
-        _soundBtn.downState = _assets.getTexture("sound_btn_down");
-        _soundBtn.upState = _assets.getTexture("sound_btn_up");
+    private function updateSoundState():void {
+        _soundBtn.upState = Sound.enabled ? _assets.getTexture("main_sound_up") : _assets.getTexture("main_no_sound_up");
+        _soundBtn.downState = Sound.enabled ? _assets.getTexture("main_sound_down") : _assets.getTexture("main_no_sound_down");
     }
 }
 }

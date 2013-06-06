@@ -6,15 +6,15 @@
  * To change this template use File | Settings | File Templates.
  */
 package com.orchideus.guessWord.ui.tile {
+import com.orchideus.guessWord.data.DeviceType;
 import com.orchideus.guessWord.data.Sound;
 import com.orchideus.guessWord.game.Letter;
+import com.orchideus.guessWord.ui.abstract.AbstractView;
 
 import flash.filters.DropShadowFilter;
 import flash.filters.GlowFilter;
 
-import starling.display.Button;
 import starling.display.Image;
-import starling.display.Sprite;
 import starling.events.Event;
 import starling.events.TouchEvent;
 import starling.events.TouchPhase;
@@ -22,7 +22,7 @@ import starling.text.TextField;
 import starling.textures.Texture;
 import starling.utils.AssetManager;
 
-public class LetterTile extends Sprite {
+public class LetterTile extends AbstractView {
 
     public static const MOVE_FROM:String = "move_from";
     public static const MOVE_TO:String = "move_to";
@@ -40,14 +40,18 @@ public class LetterTile extends Sprite {
         return _letter;
     }
 
-    public function LetterTile(letter: Letter, assets: AssetManager) {
+    public function LetterTile(assets: AssetManager, deviceType: DeviceType, letter: Letter) {
         _letter = letter;
         _letter.addEventListener(Letter.UPDATE, handleUpdate);
         _letter.addEventListener(Letter.MISTAKE, handleMistake);
 
-        _up = assets.getTexture("letter_under_up");
-        _down = assets.getTexture("letter_under_down");
-        _mistake = assets.getTexture("mistake_letter_under");
+        super(assets, deviceType);
+    }
+
+    override protected function initialize():void {
+        _up = _assets.getTexture("main_letter_under");
+        _down = _assets.getTexture("main_letter_under_down");
+        _mistake = _assets.getTexture("main_mistake_btn_under");
 
         _back = new Image(_up);
         addChild(_back);
@@ -59,6 +63,18 @@ public class LetterTile extends Sprite {
         addEventListener(TouchEvent.TOUCH, handleTouch);
 
         update();
+    }
+
+    override protected function align():void {
+        switch (_deviceType) {
+            case DeviceType.iPad:
+                _tf.fontSize = 32;
+                break;
+            case DeviceType.iPhone5:
+            case DeviceType.iPhone4:
+                _tf.fontSize = 18;
+                break;
+        }
     }
 
     public function update():void {
@@ -86,7 +102,7 @@ public class LetterTile extends Sprite {
         _back.texture = _mistake;
     }
 
-    public function destroy():void {
+    override public function destroy():void {
         removeEventListeners();
 
         _up.dispose();

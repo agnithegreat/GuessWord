@@ -17,6 +17,7 @@ public class Game extends EventDispatcher {
 
     public static const INIT: String = "init_Game";
     public static const UPDATE: String = "update_Game";
+    public static const ZOOM: String = "zoom_Game";
     public static const RESET: String = "reset_Game";
     public static const SEND_WORD: String = "send_word_Game";
     public static const WIN: String = "win_Game";
@@ -43,10 +44,10 @@ public class Game extends EventDispatcher {
         _word = new Word();
         _word.addEventListener(Word.FULL, handleWordFull);
 
-        pic1 = new Pic();
-        pic2 = new Pic();
-        pic3 = new Pic();
-        pic4 = new Pic();
+        pic1 = new Pic(1);
+        pic2 = new Pic(2);
+        pic3 = new Pic(3);
+        pic4 = new Pic(4);
 
         _stack = new LettersStack();
     }
@@ -73,12 +74,15 @@ public class Game extends EventDispatcher {
     }
 
     public function updateWord(data: Object):void {
-
         var symLen: int = data.symbols ? data.symbols.length : 0;
         for (var i:int = 0; i < symLen; i++) {
             var symbol: Object = data.symbols[i];
             _word.openSymbol(symbol.position, symbol.symbol);
         }
+    }
+
+    public function zoom():void {
+        dispatchEventWith(ZOOM);
     }
 
     public function updateDescription(data: Object):void {
@@ -89,7 +93,6 @@ public class Game extends EventDispatcher {
     }
 
     public function selectLetter(id: int):void {
-        trace(_word.isComplete);
         if (!_word.isComplete) {
             var letter: String = _stack.letters[id].letter;
             _stack.removeLetter(id);

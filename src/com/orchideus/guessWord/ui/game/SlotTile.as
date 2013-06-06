@@ -6,28 +6,45 @@
  * To change this template use File | Settings | File Templates.
  */
 package com.orchideus.guessWord.ui.game {
+import com.orchideus.guessWord.data.DeviceType;
 import com.orchideus.guessWord.game.Letter;
+import com.orchideus.guessWord.ui.abstract.AbstractView;
 import com.orchideus.guessWord.ui.tile.LetterTile;
 
 import starling.display.Image;
-import starling.display.Sprite;
 import starling.utils.AssetManager;
 
-public class SlotTile extends Sprite {
+public class SlotTile extends AbstractView {
 
     private var _back: Image;
 
     private var _letter: LetterTile;
 
-    public function SlotTile(letter: Letter, assets: AssetManager) {
-        _back = new Image(assets.getTexture("blank_letter_under"));
+    public function SlotTile(assets: AssetManager, deviceType: DeviceType, letter: Letter) {
+        _letter = new LetterTile(assets, deviceType, letter);
+
+        super(assets, deviceType);
+    }
+
+    override protected function initialize():void {
+        _back = new Image(_assets.getTexture("main_mistake_shadow"));
         addChild(_back);
 
-        _letter = new LetterTile(letter, assets);
         addChild(_letter);
     }
 
-    public function destroy():void {
+    override protected function align():void {
+        switch (_deviceType) {
+            case DeviceType.iPad:
+                break;
+            case DeviceType.iPhone5:
+            case DeviceType.iPhone4:
+                _back.x = 2;
+                break;
+        }
+    }
+
+    override public function destroy():void {
         _back.dispose();
         removeChild(_back);
         _back = null;

@@ -7,9 +7,12 @@
  */
 package com.orchideus.guessWord {
 import com.orchideus.guessWord.data.Bank;
+import com.orchideus.guessWord.data.Bonus;
 import com.orchideus.guessWord.data.DeviceType;
 import com.orchideus.guessWord.data.Language;
+import com.orchideus.guessWord.data.Pic;
 import com.orchideus.guessWord.data.Player;
+import com.orchideus.guessWord.data.Variables;
 import com.orchideus.guessWord.game.Game;
 import com.orchideus.guessWord.server.Server;
 import com.orchideus.guessWord.ui.MainScreen;
@@ -33,19 +36,23 @@ public class GameController extends EventDispatcher {
         return _game;
     }
 
+    private var _currentBonus: Bonus;
+    private var _currentPic: Pic;
+
     private var _view: MainScreen;
 
     private var _server: Server;
 
     private var _loaded: Boolean;
 
+    private var _tempData: Object;
+
     public function GameController(container: Sprite, assets: AssetManager, deviceType: DeviceType) {
         _player = new Player();
 
         _view = new MainScreen(assets, deviceType, this);
-        _view.addEventListener(Language.LANGUAGE, handleSelectLanguage);
-        _view.addEventListener(Bank.OPEN, handleOpenBank);
         container.addChild(_view);
+        addViewEventListeners();
     }
 
     public function preloaderProgress(value: Number):void {
@@ -59,8 +66,7 @@ public class GameController extends EventDispatcher {
         }
 
         _game = new Game();
-//        _game.addEventListener(Game.SEND_WORD, handleSendWord);
-//        _game.addEventListener(Game.USE_BONUS, handleUseBonus);
+        _game.addEventListener(Game.SEND_WORD, handleSendWord);
 
         _server = new Server();
         _server.init("1", _player.uid);
@@ -71,35 +77,56 @@ public class GameController extends EventDispatcher {
         _view.showGame();
     }
 
+    private function addViewEventListeners():void {
+        _view.addEventListener(Language.LANGUAGE, handleSelectLanguage);
+        _view.addEventListener(Bank.OPEN, handleOpenBank);
+        _view.addEventListener(Pic.SELECT, handleSelectPic);
+        _view.addEventListener(Bonus.USE, handleUseBonus);
+    }
+
     // ************************
     // ** section from model **
     // ************************
-//    private function handleSendWord(event: Event):void {
-//        _server.checkWord(_game.word.word_id, _game.word.word);
-//    }
-//
-//    public function nextRound():void {
-//        _game.word.clear(true);
-//        _game.initWord(_tempData.new_word);
-//        _tempData = null;
-//    }
+    private function handleSendWord(event: Event):void {
+        _server.checkWord(_game.word.word_id, _game.word.word);
+    }
 
-//    private function handleUseBonus(event: Event):void {
-//        switch (event.data) {
-//            case Bonus.OPEN_LETTER:
-//                _server.openLetter();
-//                break;
-//            case Bonus.REMOVE_LETTERS:
-//                _server.removeLetters();
-//                break;
-//            case Bonus.CHANGE_PICTURE:
-////                _server.changePicture();
-//                break;
-//            case Bonus.REMOVE_WRONG_PICTURE:
-//                _server.removeWrongPicture();
-//                break;
-//        }
-//    }
+    public function nextRound():void {
+        _game.word.clear(true);
+        _game.initWord(_tempData.new_word);
+        _tempData = null;
+    }
+
+    private function handleUseBonus(event: Event):void {
+        var bonus: Bonus = event.data as Bonus;
+        if (bonus.price > _player.money) {
+            return;
+        }
+        _currentBonus = bonus;
+        if (_currentBonus.id != Bonus.CHANGE_PICTURE) {
+            applyBonus();
+        }
+    }
+
+    private function applyBonus():void {
+        switch (_currentBonus.id) {
+            case Bonus.OPEN_LETTER:
+                _server.openLetter();
+                break;
+            case Bonus.REMOVE_LETTERS:
+                _server.removeLetters();
+                break;
+            case Bonus.CHANGE_PICTURE:
+                if (_currentPic) {
+                    _server.changePicture(_currentPic.id);
+                }
+                break;
+            case Bonus.REMOVE_WRONG_PICTURE:
+                _server.removeWrongPicture();
+                break;
+        }
+        _currentBonus = null;
+    }
 
     private function handleData(event: Event):void {
         var data: Object = event.data;
@@ -107,41 +134,42 @@ public class GameController extends EventDispatcher {
             case Server.GET_PARAMETERS:
                 if (data.result == "success") {
                     _player.parse(data.player.params);
-//                    Bonus.parse(data.variables);
-//                    Bank.parse(data.bank);
-//                    Variables.parse(data.variables);
-//
-//                    _game.updateStack(data.player.params);
+                    Bonus.parse(data.variables);
+                    Bank.parse(data.bank);
+                    Variables.parse(data.variables);
+
+                    _game.updateStack(data.player.params);
                     _game.initWord(data.word);
                 }
                 break;
-//            case Server.CHECK_WORD:
-//                if (data.result == "success") {
-//                    _tempData = data;
-//                    _game.updateStack(data.player.params);
-//                    _game.updatePlayer(data.player.params);
-//                    _game.updateDescription(data.word);
-//                    _game.win();
-//                } else {
-//                    _game.wordError();
-//                }
-//                break;
-//            case Server.OPEN_LETTER:
-//                _game.word.clear(false);
-//                _game.updatePlayer(data.player.params);
-//                _game.updateWord(data.word);
-//                break;
-//            case Server.REMOVE_LETTERS:
-//                _game.word.clear(false);
-//                _game.updateStack(data.player.params);
-//                _game.updatePlayer(data.player.params);
-//                break;
-//            case Server.CHANGE_PICTURE:
-//                _game.updatePlayer(data.player.params);
-//                break;
-//            case Server.REMOVE_WRONG_PICTURE:
-//                _game.updatePlayer(data.player.params);
-//                break;
+            case Server.CHECK_WORD:
+                if (data.result == "success") {
+                    _player.parse(data.player.params);
+
+                    _tempData = data;
+                    _game.updateStack(data.player.params);
+                    _game.updateDescription(data.word);
+                    _game.win();
+                } else {
+                    _game.wordError();
+                }
+                break;
+            case Server.OPEN_LETTER:
+                _player.parse(data.player.params);
+                _game.word.clear(false);
+                _game.updateWord(data.word);
+                break;
+            case Server.REMOVE_LETTERS:
+                _player.parse(data.player.params);
+                _game.word.clear(false);
+                _game.updateStack(data.player.params);
+                break;
+            case Server.CHANGE_PICTURE:
+                _player.parse(data.player.params);
+                break;
+            case Server.REMOVE_WRONG_PICTURE:
+                _player.parse(data.player.params);
+                break;
         }
     }
 
@@ -160,6 +188,15 @@ public class GameController extends EventDispatcher {
     private function handleOpenBank(event: Event):void {
         // TODO: проверка, можно ли открывать сейчас
         _view.showBank();
+    }
+
+    private function handleSelectPic(event: Event):void {
+        _currentPic = event.data as Pic;
+        if (_currentBonus && _currentBonus.id==Bonus.CHANGE_PICTURE) {
+            applyBonus();
+        } else {
+            _game.zoom();
+        }
     }
 }
 }
