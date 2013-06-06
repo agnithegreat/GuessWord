@@ -30,6 +30,13 @@ public class Player extends EventDispatcher {
         return _data.data.money;
     }
 
+    public function get lang():String {
+        return _data.data.language;
+    }
+    public function set lang(value: String):void {
+        _data.data.language = value;
+    }
+
     public function Player() {
         _data = SharedObject.getLocal("data");
         if (!_data.data.created) {
@@ -42,6 +49,7 @@ public class Player extends EventDispatcher {
         _data.data.sound = true;
         _data.data.created = true;
         _data.data.level = 1;
+        _data.data.language = null;
     }
 
     public function parse(data: Object):void {

@@ -6,16 +6,19 @@
  * To change this template use File | Settings | File Templates.
  */
 package com.orchideus.guessWord.data {
+
 public class Language {
 
+    public static const LANGUAGE: String = "language_Language";
+
     public static var languages: Array = [
-        createLang("Русский", "rus_ico"),
-        createLang("Deutsch", "deutch_ico"),
-        createLang("English", "eng_ico"),
-        createLang("Français", "franc_ico"),
-        createLang("Español", "esp_ico"),
-        createLang("Italiano", "ital_ico"),
-        createLang("Português", "port_ico"),
+        createLang("Русский", "preloader_rus_ico"),
+        createLang("Deutsch", "preloader_deutch_ico"),
+        createLang("English", "preloader_eng_ico"),
+        createLang("Français", "preloader_franc_ico"),
+        createLang("Español", "preloader_esp_ico"),
+        createLang("Italiano", "preloader_ital_ico"),
+        createLang("Português", "preloader_port_ico"),
     ];
 
     private static function createLang(title: String, icon: String):Language {

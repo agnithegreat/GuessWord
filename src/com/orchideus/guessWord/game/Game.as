@@ -6,9 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 package com.orchideus.guessWord.game {
-import com.orchideus.guessWord.data.Bonus;
 import com.orchideus.guessWord.data.Pic;
-import com.orchideus.guessWord.data.Player;
 
 import starling.core.Starling;
 
@@ -32,10 +30,6 @@ public class Game extends EventDispatcher {
     public function get stack():LettersStack {
         return _stack;
     }
-
-    private var _changed_pic: int;
-    private var _current_wrong_pic_url: String;
-    private var _current_wrong_pic_id: int;
 
     public var pic1: Pic;
     public var pic2: Pic;
@@ -62,18 +56,12 @@ public class Game extends EventDispatcher {
 
         updateWord(data);
 
-        _current_wrong_pic_url = data.current_wrong_pic_url;
-        _current_wrong_pic_id = data.current_wrong_pic_id;
-
         pic1.url = data.pic1;
         pic2.url = data.pic2;
         pic3.url = data.pic3;
         pic4.url = data.pic4;
 
-        pic1.description = data.pic1_descr;
-        pic2.description = data.pic2_descr;
-        pic3.description = data.pic3_descr;
-        pic4.description = data.pic4_descr;
+        updateDescription(data);
 
         dispatchEventWith(INIT);
     }

@@ -9,6 +9,7 @@ package com.orchideus.guessWord.ui.game {
 import com.orchideus.guessWord.GameController;
 import com.orchideus.guessWord.data.DeviceType;
 import com.orchideus.guessWord.data.Sound;
+import com.orchideus.guessWord.game.Game;
 import com.orchideus.guessWord.ui.abstract.Screen;
 
 import starling.display.Button;
@@ -30,32 +31,31 @@ public class GameScreen extends Screen {
 
     public function GameScreen(assets:AssetManager, deviceType: DeviceType, controller: GameController) {
         _controller = controller;
-//        _game.addEventListener(Game.INIT, handleInitGame);
+        _controller.game.addEventListener(Game.INIT, handleInitGame);
 //        _game.addEventListener(Game.WIN, handleWin);
 
-        super(assets, deviceType);
+        super(assets, deviceType, "main_under");
     }
 
     override protected function initialize():void {
-        _topPanel = new TopPanel(_assets);
-        _topPanel.init(_controller.player);
+        _topPanel = new TopPanel(_assets, _deviceType, _controller.player);
         addChild(_topPanel);
-//
+
 //        _leftPanel = new LeftPanel(_assets);
 //        _leftPanel.addEventListener(BonusTile.USE, handleUseBonus);
 //        addChild(_leftPanel);
-//
-//        _middlePanel = new MiddlePanel(_assets);
-//        addChild(_middlePanel);
-//
+
+        _middlePanel = new MiddlePanel(_assets, _deviceType, _controller.game);
+        addChild(_middlePanel);
+
 //        _bottomPanel = new BottomPanel(_assets);
 //        addChild(_bottomPanel);
-//
+
 //        _winPanel = new WinPanel(_assets);
 //        _winPanel.addEventListener(WinPanel.CONTINUE, handleContinue);
 //        addChild(_winPanel);
 //        _winPanel.visible = false;
-//
+
 //        _soundBtn = new Button(_assets.getTexture("sound_btn_down"), "", _assets.getTexture("sound_btn_up"));
 //        _soundBtn.addEventListener(Event.TRIGGERED, handleSound);
 //        _soundBtn.x = 700;
@@ -63,13 +63,26 @@ public class GameScreen extends Screen {
 //        addChild(_soundBtn);
     }
 
-    private function handleInitGame(event: Event):void {
-        _leftPanel.init();
-        _middlePanel.init();
-//        _bottomPanel.init(_game);
-        _winPanel.init();
+    override protected function align():void {
+        super.align();
 
-//        _middlePanel.update(_game);
+        switch (_deviceType) {
+            case DeviceType.iPad:
+                break;
+            case DeviceType.iPhone5:
+                break;
+            case DeviceType.iPhone4:
+                place(this, 0, -44);
+                break;
+        }
+    }
+
+    private function handleInitGame(event: Event):void {
+//        _leftPanel.init();
+//        _bottomPanel.init(_game);
+//        _winPanel.init();
+
+        _middlePanel.update();
     }
 
     private function handleUseBonus(event: Event):void {

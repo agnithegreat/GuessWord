@@ -8,6 +8,7 @@
 package com.orchideus.guessWord.ui.abstract {
 import com.orchideus.guessWord.data.DeviceType;
 
+import starling.display.DisplayObject;
 import starling.display.Sprite;
 import starling.events.Event;
 import starling.utils.AssetManager;
@@ -29,8 +30,24 @@ public class AbstractView extends Sprite {
 
     }
 
+    protected function align():void {
+
+    }
+
+    protected function resize(object: DisplayObject, width: int, height: int):void {
+        object.width = width;
+        object.height = height;
+    }
+
+    protected function place(object: DisplayObject, x: int, y: int):void {
+        object.x = x;
+        object.y = y;
+    }
+
     private function handleAdded(event: Event):void {
+        removeEventListener(Event.ADDED_TO_STAGE, handleAdded);
         initialize();
+        align();
     }
 
     public function destroy():void {

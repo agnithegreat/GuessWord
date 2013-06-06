@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TextureAtlas imagePath="preloader.png">
+    <!-- Created with TexturePacker -->
+    <!-- http://texturepacker.com -->
+    <!--  -->
+    <SubTexture name="preloader_btn_down" x="0" y="0" width="184" height="57"/>
+    <SubTexture name="preloader_btn_up" x="186" y="0" width="184" height="57"/>
+    <SubTexture name="preloader_deutch_ico" x="372" y="0" width="68" height="68"/>
+    <SubTexture name="preloader_duck" x="442" y="0" width="140" height="28"/>
+    <SubTexture name="preloader_eng_ico" x="584" y="0" width="68" height="68"/>
+    <SubTexture name="preloader_esp_ico" x="654" y="0" width="68" height="68"/>
+    <SubTexture name="preloader_filler" x="724" y="0" width="236" height="47"/>
+    <SubTexture name="preloader_franc_ico" x="0" y="70" width="68" height="68"/>
+    <SubTexture name="preloader_ital_ico" x="70" y="70" width="68" height="68"/>
+    <SubTexture name="preloader_logo_rus" x="140" y="70" width="552" height="169"/>
+    <SubTexture name="preloader_port_ico" x="694" y="70" width="68" height="68"/>
+    <SubTexture name="preloader_rus_ico" x="764" y="70" width="68" height="68"/>
+</TextureAtlas>

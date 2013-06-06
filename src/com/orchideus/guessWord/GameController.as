@@ -8,6 +8,7 @@
 package com.orchideus.guessWord {
 import com.orchideus.guessWord.data.Bank;
 import com.orchideus.guessWord.data.DeviceType;
+import com.orchideus.guessWord.data.Language;
 import com.orchideus.guessWord.data.Player;
 import com.orchideus.guessWord.game.Game;
 import com.orchideus.guessWord.server.Server;
@@ -20,38 +21,54 @@ import starling.utils.AssetManager;
 
 public class GameController extends EventDispatcher {
 
+    public static const PROGRESS: String = "progress_GameController";
+
     private var _player: Player;
     public function get player():Player {
         return _player;
     }
 
-    private var _model: Game;
-    public function get model():Game {
-        return _model;
+    private var _game: Game;
+    public function get game():Game {
+        return _game;
     }
 
     private var _view: MainScreen;
 
     private var _server: Server;
 
+    private var _loaded: Boolean;
+
     public function GameController(container: Sprite, assets: AssetManager, deviceType: DeviceType) {
         _player = new Player();
 
-        _model = new Game();
-//        _model.addEventListener(Game.SEND_WORD, handleSendWord);
-//        _model.addEventListener(Game.USE_BONUS, handleUseBonus);
-
-        _view = new MainScreen(assets, deviceType);
+        _view = new MainScreen(assets, deviceType, this);
+        _view.addEventListener(Language.LANGUAGE, handleSelectLanguage);
         _view.addEventListener(Bank.OPEN, handleOpenBank);
         container.addChild(_view);
+    }
 
-        _view.showGame(this);
+    public function preloaderProgress(value: Number):void {
+        dispatchEventWith(PROGRESS, false, value);
+    }
+
+    public function init():void {
+        _loaded = true;
+        if (!_player.lang) {
+            return;
+        }
+
+        _game = new Game();
+//        _game.addEventListener(Game.SEND_WORD, handleSendWord);
+//        _game.addEventListener(Game.USE_BONUS, handleUseBonus);
 
         _server = new Server();
         _server.init("1", _player.uid);
         _server.addEventListener(Server.DATA, handleData);
 
         _server.getParameters();
+
+        _view.showGame();
     }
 
     // ************************
@@ -95,8 +112,7 @@ public class GameController extends EventDispatcher {
 //                    Variables.parse(data.variables);
 //
 //                    _game.updateStack(data.player.params);
-//                    _game.updatePlayer(data.player.params);
-//                    _game.initWord(data.word);
+                    _game.initWord(data.word);
                 }
                 break;
 //            case Server.CHECK_WORD:
@@ -132,6 +148,15 @@ public class GameController extends EventDispatcher {
     // ***********************
     // ** section from view **
     // ***********************
+    private function handleSelectLanguage(event: Event):void {
+        // TODO: сделать LocaleManager
+        _player.lang = (event.data as Language).title;
+
+        if (_loaded) {
+            init();
+        }
+    }
+
     private function handleOpenBank(event: Event):void {
         // TODO: проверка, можно ли открывать сейчас
         _view.showBank();
