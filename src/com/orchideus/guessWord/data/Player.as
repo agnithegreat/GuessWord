@@ -53,8 +53,12 @@ public class Player extends EventDispatcher {
     }
 
     public function parse(data: Object):void {
-        _data.data.level = data.level;
-        _data.data.money = data.money;
+        if (data.level) {
+            _data.data.level = data.level;
+        }
+        if (data.money) {
+            _data.data.money = data.money;
+        }
 
         update();
     }

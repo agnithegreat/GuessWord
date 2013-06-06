@@ -15,6 +15,7 @@ public class Pic extends EventDispatcher {
     public var id: int;
     public var url: String;
     public var description: String;
+    public var wrong: Boolean;
 
     public function Pic(id: int) {
         this.id = id;

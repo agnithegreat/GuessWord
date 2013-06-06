@@ -25,7 +25,7 @@ public class ErrorView extends AbstractView {
     override protected function initialize():void {
         for (var i:int = 0; i < _letters.length; i++) {
             var letter: Letter = new Letter();
-            letter.letter = _letters.charAt(i);
+            letter.setLetter(_letters.charAt(i), false);
             var slot: SlotTile = new SlotTile(_assets, _deviceType, letter);
             slot.x = i * BottomPanel.TILE;
             addChild(slot);

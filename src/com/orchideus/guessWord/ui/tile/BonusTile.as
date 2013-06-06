@@ -22,8 +22,6 @@ import starling.utils.VAlign;
 
 public class BonusTile extends AbstractView {
 
-    public static const USE: String = "use_BonusTile";
-
     private var _bonus: Bonus;
 
     private var _back: Button;
@@ -111,7 +109,7 @@ public class BonusTile extends AbstractView {
     }
 
     private function handleTriggered(event: Event):void {
-        dispatchEventWith(BonusTile.USE, true, _bonus);
+        dispatchEventWith(Bonus.USE, true, _bonus);
     }
 }
 }

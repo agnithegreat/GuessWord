@@ -42,6 +42,7 @@ public class MiddlePanel extends AbstractView {
     public function MiddlePanel(assets: AssetManager, deviceType: DeviceType, game: Game) {
         _game = game;
         _game.addEventListener(Game.ZOOM, handleZoom);
+        _game.addEventListener(Game.PIC_CHANGED, handlePicChanged);
 
         super(assets, deviceType)
     }
@@ -137,6 +138,10 @@ public class MiddlePanel extends AbstractView {
 
             _clickedImage = null;
         }
+    }
+
+    private function handlePicChanged(event: Event):void {
+        this["_pic"+event.data].load();
     }
 }
 }

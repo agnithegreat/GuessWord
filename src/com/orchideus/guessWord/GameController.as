@@ -84,6 +84,69 @@ public class GameController extends EventDispatcher {
         _view.addEventListener(Bonus.USE, handleUseBonus);
     }
 
+    // *************************
+    // ** section from server **
+    // *************************
+    private function handleData(event: Event):void {
+        var data: Object = event.data;
+        switch (data.method) {
+            case Server.GET_PARAMETERS:
+                if (data.result == "success") {
+                    _player.parse(data.player.params);
+                    Bonus.parse(data.variables);
+                    Bank.parse(data.bank);
+                    Variables.parse(data.variables);
+
+                    // TODO: enable/disable, show/hide bonuses
+//                    _changed_pic = Boolean(data.player.params.changed_pic);
+
+                    _game.updateStack(data.player.params);
+                    _game.initWord(data.word);
+                    _game.initWrongPic(data.player.params);
+                }
+                break;
+            case Server.CHECK_WORD:
+                if (data.result == "success") {
+                    _player.parse(data.player.params);
+
+                    _tempData = data;
+                    _game.updateStack(data.player.params);
+                    _game.updateDescription(data.word);
+                    _game.win();
+                } else {
+                    _game.wordError();
+                }
+                break;
+            case Server.OPEN_LETTER:
+                if (data.result == "success") {
+                    _player.parse(data.player.params);
+                    _game.word.clear(false);
+                    _game.updateWord(data.word);
+                    _game.updateStack(data.player.params);
+                }
+                break;
+            case Server.REMOVE_LETTERS:
+                if (data.result == "success") {
+                    _player.parse(data.player.params);
+                    _game.word.clear(false);
+                    _game.updateStack(data.player.params);
+                }
+                break;
+            case Server.CHANGE_PICTURE:
+                if (data.result == "success") {
+                    _player.parse(data.player.params);
+                    _game.changePic(data.player.params.changed_pic);
+                }
+                break;
+            case Server.REMOVE_WRONG_PICTURE:
+                if (data.result == "success") {
+                    _player.parse(data.player.params);
+                    _game.changePic(data.player.params.changed_pic);
+                }
+                break;
+        }
+    }
+
     // ************************
     // ** section from model **
     // ************************
@@ -94,6 +157,7 @@ public class GameController extends EventDispatcher {
     public function nextRound():void {
         _game.word.clear(true);
         _game.initWord(_tempData.new_word);
+        _game.initWrongPic(_tempData.player.params);
         _tempData = null;
     }
 
@@ -102,6 +166,7 @@ public class GameController extends EventDispatcher {
         if (bonus.price > _player.money) {
             return;
         }
+
         _currentBonus = bonus;
         if (_currentBonus.id != Bonus.CHANGE_PICTURE) {
             applyBonus();
@@ -126,51 +191,6 @@ public class GameController extends EventDispatcher {
                 break;
         }
         _currentBonus = null;
-    }
-
-    private function handleData(event: Event):void {
-        var data: Object = event.data;
-        switch (data.method) {
-            case Server.GET_PARAMETERS:
-                if (data.result == "success") {
-                    _player.parse(data.player.params);
-                    Bonus.parse(data.variables);
-                    Bank.parse(data.bank);
-                    Variables.parse(data.variables);
-
-                    _game.updateStack(data.player.params);
-                    _game.initWord(data.word);
-                }
-                break;
-            case Server.CHECK_WORD:
-                if (data.result == "success") {
-                    _player.parse(data.player.params);
-
-                    _tempData = data;
-                    _game.updateStack(data.player.params);
-                    _game.updateDescription(data.word);
-                    _game.win();
-                } else {
-                    _game.wordError();
-                }
-                break;
-            case Server.OPEN_LETTER:
-                _player.parse(data.player.params);
-                _game.word.clear(false);
-                _game.updateWord(data.word);
-                break;
-            case Server.REMOVE_LETTERS:
-                _player.parse(data.player.params);
-                _game.word.clear(false);
-                _game.updateStack(data.player.params);
-                break;
-            case Server.CHANGE_PICTURE:
-                _player.parse(data.player.params);
-                break;
-            case Server.REMOVE_WRONG_PICTURE:
-                _player.parse(data.player.params);
-                break;
-        }
     }
 
     // ***********************

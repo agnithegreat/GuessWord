@@ -17,10 +17,6 @@ public class Letter extends EventDispatcher {
     public function get letter():String {
         return _letter;
     }
-    public function set letter(value: String):void {
-        _letter = value;
-        update();
-    }
 
     private var _locked: Boolean;
     public function get locked():Boolean {
@@ -33,8 +29,9 @@ public class Letter extends EventDispatcher {
     public function Letter() {
     }
 
-    private function update():void {
-        dispatchEventWith(UPDATE);
+    public function setLetter(letter: String, animate: Boolean):void {
+        _letter = letter;
+        dispatchEventWith(UPDATE, false, animate);
     }
 
     public function mistake():void {

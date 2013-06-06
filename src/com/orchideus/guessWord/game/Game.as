@@ -18,6 +18,7 @@ public class Game extends EventDispatcher {
     public static const INIT: String = "init_Game";
     public static const UPDATE: String = "update_Game";
     public static const ZOOM: String = "zoom_Game";
+    public static const PIC_CHANGED: String = "pic_changed_Game";
     public static const RESET: String = "reset_Game";
     public static const SEND_WORD: String = "send_word_Game";
     public static const WIN: String = "win_Game";
@@ -37,6 +38,9 @@ public class Game extends EventDispatcher {
     public var pic3: Pic;
     public var pic4: Pic;
 
+    public var pic5: Pic;
+    public var wrongPic: Pic;
+
     private var _letters: Array;
     private var _availableLetters: Array;
 
@@ -48,6 +52,7 @@ public class Game extends EventDispatcher {
         pic2 = new Pic(2);
         pic3 = new Pic(3);
         pic4 = new Pic(4);
+        pic5 = new Pic(5);
 
         _stack = new LettersStack();
     }
@@ -61,10 +66,17 @@ public class Game extends EventDispatcher {
         pic2.url = data.pic2;
         pic3.url = data.pic3;
         pic4.url = data.pic4;
+        pic5.url = data.pic5;
 
         updateDescription(data);
 
         dispatchEventWith(INIT);
+    }
+
+    public function initWrongPic(data: Object):void {
+        if (data.current_wrong_pic_id) {
+            this["pic"+data.current_wrong_pic_id].url = data.current_wrong_pic_url;
+        }
     }
 
     public function updateStack(data: Object):void {
@@ -85,11 +97,18 @@ public class Game extends EventDispatcher {
         dispatchEventWith(ZOOM);
     }
 
+    public function changePic(id: int):void {
+        this["pic"+id].url = pic5.url;
+        this["pic"+id].description = pic5.description;
+        dispatchEventWith(PIC_CHANGED, false, id);
+    }
+
     public function updateDescription(data: Object):void {
         pic1.description = data.pic1_descr;
         pic2.description = data.pic2_descr;
         pic3.description = data.pic3_descr;
         pic4.description = data.pic4_descr;
+        pic5.description = data.pic5_descr;
     }
 
     public function selectLetter(id: int):void {

@@ -91,10 +91,14 @@ public class LetterTile extends AbstractView {
     }
 
     private function handleUpdate(event: Event):void {
-        if (_letter.letter) {
-            dispatchEventWith(MOVE_TO, true);
+        if (event.data) {
+            if (_letter.letter) {
+                dispatchEventWith(MOVE_TO, true);
+            } else {
+                dispatchEventWith(MOVE_FROM, true);
+            }
         } else {
-            dispatchEventWith(MOVE_FROM, true);
+            update();
         }
     }
 
