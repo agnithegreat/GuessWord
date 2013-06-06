@@ -74,7 +74,7 @@ public class Game extends EventDispatcher {
     }
 
     public function initWrongPic(data: Object):void {
-        if (data.current_wrong_pic_id) {
+        if (data.current_wrong_pic_id > 0) {
             this["pic"+data.current_wrong_pic_id].url = data.current_wrong_pic_url;
         }
     }
@@ -98,9 +98,11 @@ public class Game extends EventDispatcher {
     }
 
     public function changePic(id: int):void {
-        this["pic"+id].url = pic5.url;
-        this["pic"+id].description = pic5.description;
-        dispatchEventWith(PIC_CHANGED, false, id);
+        if (id) {
+            this["pic"+id].url = pic5.url;
+            this["pic"+id].description = pic5.description;
+            dispatchEventWith(PIC_CHANGED, false, id);
+        }
     }
 
     public function updateDescription(data: Object):void {
