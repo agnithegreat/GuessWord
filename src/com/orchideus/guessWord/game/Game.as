@@ -72,12 +72,6 @@ public class Game extends EventDispatcher {
         dispatchEventWith(INIT);
     }
 
-    public function initWrongPic(data: Object):void {
-        if (data.current_wrong_pic_id > 0) {
-            this["pic"+data.current_wrong_pic_id].url = data.current_wrong_pic_url;
-        }
-    }
-
     public function updateStack(data: Object):void {
         if (data.current_symbols) {
             _stack.init(data.current_symbols);

@@ -104,7 +104,6 @@ public class GameController extends EventDispatcher {
 
                     _game.updateStack(data.player.params);
                     _game.initWord(data.word);
-                    _game.initWrongPic(data.player.params);
                 }
                 break;
             case Server.CHECK_WORD:
@@ -153,7 +152,6 @@ public class GameController extends EventDispatcher {
     public function nextRound():void {
         _game.word.clear(true);
         _game.initWord(_tempData.new_word);
-        _game.initWrongPic(_tempData.player.params);
         _tempData = null;
     }
 
