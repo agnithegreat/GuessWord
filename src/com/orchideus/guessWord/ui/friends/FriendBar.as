@@ -9,11 +9,12 @@ package com.orchideus.guessWord.ui.friends {
 import com.orchideus.guessWord.data.DeviceType;
 import com.orchideus.guessWord.ui.abstract.AbstractView;
 
+import starling.display.Sprite;
 import starling.utils.AssetManager;
 
 public class FriendBar extends AbstractView {
 
-
+    private var _container: Sprite;
 
     public function FriendBar(assets:AssetManager, deviceType:DeviceType) {
         super(assets, deviceType);

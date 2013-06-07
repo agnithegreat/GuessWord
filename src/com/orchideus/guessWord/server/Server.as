@@ -35,7 +35,7 @@ public class Server extends EventDispatcher {
     private static var auth_key: String;
     private static var uid: String;
 
-    private var _url: String = "http://46.72.211.10:82/controller.php";
+    private var _url: String = "http://46.72.211.10:82/controller_ios.php";
     private var _loader: URLLoader;
 
     private var _stack: Vector.<URLRequest>;
