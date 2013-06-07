@@ -29,6 +29,8 @@ public class Server extends EventDispatcher {
     public static const OPEN_LETTER: String = "open_letter";
     public static const CHANGE_PICTURE: String = "change_picture";
     public static const REMOVE_WRONG_PICTURE: String = "remove_wrong_picture";
+    public static const GET_FRIEND_BAR: String = "get_friend_bar";
+    public static const GET_FRIENDS_WORDS: String = "get_friends_words";
 
     private static var auth_key: String;
     private static var uid: String;
@@ -79,6 +81,14 @@ public class Server extends EventDispatcher {
         sendRequest(REMOVE_WRONG_PICTURE);
     }
 
+    public function getFriendBar(ids: String):void {
+        sendRequest(GET_FRIEND_BAR, {"ids": ids});
+    }
+
+    public function getFriendsWords(ids: Array, word_id: int):void {
+        sendRequest(GET_FRIENDS_WORDS, {"ids": ids.join(","), "word_id": word_id});
+    }
+
     private function sendRequest(method: String, data: Object = null):void {
         var requestVars:URLVariables = new URLVariables();
         requestVars.method = method;
@@ -102,7 +112,7 @@ public class Server extends EventDispatcher {
     }
 
     private function processRequest(request: URLRequest):void {
-        if (_stack.length>0) {
+        if (_currentRequest) {
             _stack.push(request);
         } else {
             _currentRequest = request;

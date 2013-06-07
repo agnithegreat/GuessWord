@@ -9,6 +9,7 @@ package com.orchideus.guessWord {
 import com.orchideus.guessWord.data.Bank;
 import com.orchideus.guessWord.data.Bonus;
 import com.orchideus.guessWord.data.DeviceType;
+import com.orchideus.guessWord.data.Friend;
 import com.orchideus.guessWord.data.Language;
 import com.orchideus.guessWord.data.Pic;
 import com.orchideus.guessWord.data.Player;
@@ -76,6 +77,7 @@ public class GameController extends EventDispatcher {
         _server.addEventListener(Server.DATA, handleData);
 
         _server.getParameters();
+        _server.getFriendBar("");
 
         _view.showGame();
     }
@@ -145,6 +147,16 @@ public class GameController extends EventDispatcher {
                     _game.changePic(data.player.params.changed_pic);
 
                     Sound.play(Sound.CHANGE_PIC);
+                }
+                break;
+            case Server.GET_FRIEND_BAR:
+                if (data.result == "success") {
+                    Friend.parse(data.friends);
+                }
+                break;
+            case Server.GET_FRIENDS_WORDS:
+                if (data.result == "success") {
+//                    Friend.parseLevel(data.friends);
                 }
                 break;
         }
