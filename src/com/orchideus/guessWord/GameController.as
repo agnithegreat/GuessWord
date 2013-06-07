@@ -27,6 +27,7 @@ import starling.utils.AssetManager;
 public class GameController extends EventDispatcher {
 
     public static const PROGRESS: String = "progress_GameController";
+    public static const FRIENDS: String = "friends_GameController";
 
     private var _player: Player;
     public function get player():Player {
@@ -88,6 +89,7 @@ public class GameController extends EventDispatcher {
         _view.addEventListener(Pic.SELECT, handleSelectPic);
         _view.addEventListener(Bonus.USE, handleUseBonus);
         _view.addEventListener(Bank.BUY, handleBuyBank);
+        _view.addEventListener(Friend.INVITE, handleInvite);
     }
 
     // *************************
@@ -152,6 +154,7 @@ public class GameController extends EventDispatcher {
             case Server.GET_FRIEND_BAR:
                 if (data.result == "success") {
                     Friend.parse(data.friends);
+                    dispatchEventWith(FRIENDS);
                 }
                 break;
         }
@@ -227,6 +230,10 @@ public class GameController extends EventDispatcher {
         } else {
             _game.zoom();
         }
+    }
+
+    private function handleInvite(event: Event):void {
+        // TODO: invite friend
     }
 }
 }
