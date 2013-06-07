@@ -102,7 +102,7 @@ public class BottomPanel extends AbstractView {
                 place(_slotsContainer, stage.stageWidth/2, 373);
                 place(_error, stage.stageWidth/2, 373);
                 place(_lettersContainer, stage.stageWidth/2, 410);
-                place(_deleteBtn, 230, 330);
+                place(_deleteBtn, 225, 330);
                 break;
         }
     }

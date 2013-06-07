@@ -12,6 +12,7 @@ import com.orchideus.guessWord.data.DeviceType;
 import com.orchideus.guessWord.data.Language;
 import com.orchideus.guessWord.data.Pic;
 import com.orchideus.guessWord.data.Player;
+import com.orchideus.guessWord.data.Sound;
 import com.orchideus.guessWord.data.Variables;
 import com.orchideus.guessWord.game.Game;
 import com.orchideus.guessWord.server.Server;
@@ -84,6 +85,7 @@ public class GameController extends EventDispatcher {
         _view.addEventListener(Bank.OPEN, handleOpenBank);
         _view.addEventListener(Pic.SELECT, handleSelectPic);
         _view.addEventListener(Bonus.USE, handleUseBonus);
+        _view.addEventListener(Bank.BUY, handleBuyBank);
     }
 
     // *************************
@@ -95,11 +97,11 @@ public class GameController extends EventDispatcher {
             case Server.GET_PARAMETERS:
                 if (data.result == "success") {
                     _player.parse(data.player.params);
-                    Bonus.parse(data.variables);
+                    Bonus.init(data.variables);
                     Bank.parse(data.bank);
                     Variables.parse(data.variables);
 
-                    // TODO: enable/disable, show/hide bonuses
+                    // TODO: enable/disable bonuses
 //                    _changed_pic = Boolean(data.player.params.changed_pic);
 
                     _game.updateStack(data.player.params);
@@ -124,6 +126,8 @@ public class GameController extends EventDispatcher {
                     _game.word.clear(false);
                     _game.updateWord(data.word);
                     _game.updateStack(data.player.params);
+
+                    Sound.play(Sound.OPEN_LETTER);
                 }
                 break;
             case Server.REMOVE_LETTERS:
@@ -131,12 +135,16 @@ public class GameController extends EventDispatcher {
                     _player.parse(data.player.params);
                     _game.word.clear(false);
                     _game.updateStack(data.player.params);
+
+                    Sound.play(Sound.REMOVE_LETTERS);
                 }
                 break;
             case Server.CHANGE_PICTURE:
                 if (data.result == "success") {
                     _player.parse(data.player.params);
                     _game.changePic(data.player.params.changed_pic);
+
+                    Sound.play(Sound.CHANGE_PIC);
                 }
                 break;
         }
@@ -189,7 +197,7 @@ public class GameController extends EventDispatcher {
     // ***********************
     private function handleSelectLanguage(event: Event):void {
         // TODO: сделать LocaleManager
-        _player.lang = (event.data as Language).title;
+        _player.setLanguage((event.data as Language).title);
 
         if (_loaded) {
             init();
@@ -199,6 +207,10 @@ public class GameController extends EventDispatcher {
     private function handleOpenBank(event: Event):void {
         // TODO: проверка, можно ли открывать сейчас
         _view.showBank();
+    }
+
+    private function handleBuyBank(event: Event):void {
+        // TODO: покупка бабла
     }
 
     private function handleSelectPic(event: Event):void {

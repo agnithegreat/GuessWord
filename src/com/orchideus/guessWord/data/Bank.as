@@ -10,6 +10,7 @@ package com.orchideus.guessWord.data {
 public class Bank {
 
     public static const OPEN: String = "open_Bank";
+    public static const BUY: String = "buy_Bank";
 
     public static var VALUES: Vector.<Bank>;
 

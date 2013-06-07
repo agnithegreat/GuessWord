@@ -33,23 +33,9 @@ public class Player extends EventDispatcher {
     public function get lang():String {
         return _data.data.language;
     }
-    public function set lang(value: String):void {
-        _data.data.language = value;
-    }
 
     public function Player() {
-        _data = SharedObject.getLocal("data");
-        if (!_data.data.created) {
-            setDefaultValues();
-        }
-    }
-
-    private function setDefaultValues():void {
-        _data.data.uid = (new Uuid()).toString();
-        _data.data.sound = true;
-        _data.data.created = true;
-        _data.data.level = 1;
-        _data.data.language = null;
+        load();
     }
 
     public function parse(data: Object):void {
@@ -59,8 +45,34 @@ public class Player extends EventDispatcher {
         if (data.money) {
             _data.data.money = data.money;
         }
+        save();
 
         update();
+    }
+
+    public function setLanguage(lang: String):void {
+        _data.data.language = lang;
+        save();
+    }
+
+    private function save():void {
+        _data.flush();
+    }
+
+    private function load():void {
+        _data = SharedObject.getLocal("data");
+        if (!_data.data.created) {
+            setDefaultValues();
+            save();
+        }
+    }
+
+    private function setDefaultValues():void {
+        _data.data.uid = (new Uuid()).toString();
+        _data.data.sound = true;
+        _data.data.created = true;
+        _data.data.level = 1;
+        _data.data.language = null;
     }
 
     private function update():void {

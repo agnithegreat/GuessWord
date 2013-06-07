@@ -48,7 +48,7 @@ public class App extends Sprite {
 
     private function initPreloader():void {
         Sound.init(_assets);
-        Sound.listen(this);
+        Sound.listen(stage);
 
         Fonts.init();
 

@@ -17,7 +17,7 @@ public class Bonus {
 
     public static var BONUSES: Object = {};
 
-    public static function parse(data: Object):void {
+    public static function init(data: Object):void {
         BONUSES[OPEN_LETTER] = new Bonus(OPEN_LETTER, "main_openletter_ico", ["ОТКРЫТЬ","БУКВУ"], data.opensymbol_price);
         BONUSES[REMOVE_LETTERS] = new Bonus(REMOVE_LETTERS, "main_removeletters_ico", ["УБРАТЬ","БУКВЫ"], data.removesymbols_price);
         BONUSES[CHANGE_PICTURE] = new Bonus(CHANGE_PICTURE, "main_onemorepic_ico", ["ЕЩЕ","КАРТИНКА"], data.changepic_price);

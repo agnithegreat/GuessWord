@@ -9,11 +9,14 @@ package com.orchideus.guessWord.ui {
 import com.orchideus.guessWord.GameController;
 import com.orchideus.guessWord.data.DeviceType;
 import com.orchideus.guessWord.ui.abstract.Screen;
+import com.orchideus.guessWord.ui.bank.BankPopup;
 import com.orchideus.guessWord.ui.game.GameScreen;
 import com.orchideus.guessWord.ui.preloader.Preloader;
 
-import starling.events.Touch;
-import starling.events.TouchEvent;
+import feathers.core.PopUpManager;
+
+import starling.display.Quad;
+
 import starling.utils.AssetManager;
 
 public class MainScreen extends Screen {
@@ -22,6 +25,12 @@ public class MainScreen extends Screen {
 
     private var _preloader: Preloader;
     private var _game: GameScreen;
+    private var _bank: BankPopup;
+
+    private var _overlay: Quad;
+    public function getOverlay():Quad {
+        return _overlay;
+    }
 
     public function MainScreen(assets:AssetManager, deviceType: DeviceType, controller: GameController) {
         _controller = controller;
@@ -33,14 +42,8 @@ public class MainScreen extends Screen {
         _preloader = new Preloader(_assets, _deviceType, _controller);
         addChild(_preloader);
 
-//        stage.addEventListener(TouchEvent.TOUCH, handleTouch);
-    }
-
-    private function handleTouch(event: TouchEvent):void {
-        var touch: Touch = event.getTouch(this);
-        if (touch) {
-            trace(touch.globalX, touch.globalY);
-        }
+        _overlay = new Quad(stage.stageWidth, stage.stageHeight, 0);
+        _overlay.alpha = 0.5;
     }
 
     public function showGame():void {
@@ -55,8 +58,11 @@ public class MainScreen extends Screen {
     }
 
     public function showBank():void {
-        // TODO: сделать банк
-        trace("open bank");
+        if (!_bank) {
+            _bank = new BankPopup(_assets, _deviceType);
+        }
+
+        PopUpManager.addPopUp(_bank, true, true, getOverlay);
     }
 
     override public function destroy():void {

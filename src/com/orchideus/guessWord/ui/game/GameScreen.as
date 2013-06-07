@@ -22,6 +22,7 @@ public class GameScreen extends Screen {
 
     private var _topPanel: TopPanel;
     private var _leftPanel: LeftPanel;
+    private var _rightPanel: RightPanel;
     private var _middlePanel: MiddlePanel;
     private var _bottomPanel: BottomPanel;
 
@@ -43,7 +44,8 @@ public class GameScreen extends Screen {
 
         _leftPanel = new LeftPanel(_assets, _deviceType);
 
-        // TODO: right panel
+        _rightPanel = new RightPanel(_assets, _deviceType);
+        addChild(_rightPanel);
 
         _middlePanel = new MiddlePanel(_assets, _deviceType, _controller.game);
         addChild(_middlePanel);
@@ -71,11 +73,11 @@ public class GameScreen extends Screen {
                 place(_soundBtn, 700, 810);
                 break;
             case DeviceType.iPhone5:
-                place(_soundBtn, 50, 328);
+                place(_soundBtn, 55, 328);
                 break;
             case DeviceType.iPhone4:
                 place(this, 0, -44);
-                place(_soundBtn, 50, 328);
+                place(_soundBtn, 55, 328);
                 break;
         }
     }
