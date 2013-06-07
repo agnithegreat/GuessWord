@@ -11,6 +11,7 @@ import com.orchideus.guessWord.data.DeviceType;
 import com.orchideus.guessWord.data.Sound;
 import com.orchideus.guessWord.game.Game;
 import com.orchideus.guessWord.ui.abstract.Screen;
+import com.orchideus.guessWord.ui.friends.FriendBar;
 
 import starling.display.Button;
 import starling.events.Event;
@@ -25,8 +26,9 @@ public class GameScreen extends Screen {
     private var _rightPanel: RightPanel;
     private var _middlePanel: MiddlePanel;
     private var _bottomPanel: BottomPanel;
-
     private var _winPanel: WinPanel;
+
+    private var _friendBar: FriendBar;
 
     private var _soundBtn: Button;
 
@@ -58,6 +60,9 @@ public class GameScreen extends Screen {
         addChild(_winPanel);
         _winPanel.visible = false;
 
+        _friendBar = new FriendBar(_assets, _deviceType, _controller);
+        addChild(_friendBar);
+
         _soundBtn = new Button(_assets.getTexture("main_sound_up"), "", _assets.getTexture("main_sound_down"));
         _soundBtn.addEventListener(Event.TRIGGERED, handleSound);
         addChild(_soundBtn);
@@ -70,13 +75,16 @@ public class GameScreen extends Screen {
 
         switch (_deviceType) {
             case DeviceType.iPad:
+                place(_friendBar, 55, 328);
                 place(_soundBtn, 700, 810);
                 break;
             case DeviceType.iPhone5:
+                place(_friendBar, 0, 475);
                 place(_soundBtn, 55, 328);
                 break;
             case DeviceType.iPhone4:
                 place(this, 0, -44);
+                place(_friendBar, 0, 475);
                 place(_soundBtn, 55, 328);
                 break;
         }

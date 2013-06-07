@@ -154,11 +154,6 @@ public class GameController extends EventDispatcher {
                     Friend.parse(data.friends);
                 }
                 break;
-            case Server.GET_FRIENDS_WORDS:
-                if (data.result == "success") {
-//                    Friend.parseLevel(data.friends);
-                }
-                break;
         }
     }
 

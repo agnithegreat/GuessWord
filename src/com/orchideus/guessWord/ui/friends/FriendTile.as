@@ -55,7 +55,8 @@ public class FriendTile extends AbstractView {
             addChild(_inviteBtn);
 
             _inviteTF = new TextField(_inviteBtn.width, _inviteBtn.height, "СПРОСИТЬ", "Arial", 24, 0xFFFFFF, true);
-            _inviteTF.nativeFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
+            _inviteTF.touchable = false;
+            _inviteTF.nativeFilters = [new GlowFilter(0, 1, 2, 2, 2, 3)];
             addChild(_inviteTF);
         } else {
             _invite = new Image(_assets.getTexture("main_invite_under"));
@@ -68,7 +69,8 @@ public class FriendTile extends AbstractView {
             addChild(_inviteBtn);
 
             _inviteTF = new TextField(_inviteBtn.width, _inviteBtn.height, "ПОЗВАТЬ\nДРУЗЕЙ", "Arial", 24, 0xFFFFFF, true);
-            _inviteTF.nativeFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
+            _inviteTF.touchable = false;
+            _inviteTF.nativeFilters = [new GlowFilter(0, 1, 2, 2, 2, 3)];
             addChild(_inviteTF);
         }
     }
@@ -94,10 +96,10 @@ public class FriendTile extends AbstractView {
                     place(_inviteTF, -4, 50);
                     _inviteTF.fontSize = 10;
                 } else {
-                    place(_avatar, 2, 2);
-                    place(_inviteBtn, -4, 40);
-                    place(_inviteTF, -4, 40);
-                    _inviteTF.fontSize = 10;
+                    place(_avatar, 6, 7);
+                    place(_inviteBtn, -3, 28);
+                    place(_inviteTF, -3, 28);
+                    _inviteTF.fontSize = 5;
                 }
                 break;
         }

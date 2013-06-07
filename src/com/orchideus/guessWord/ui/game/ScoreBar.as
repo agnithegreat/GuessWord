@@ -45,6 +45,7 @@ public class ScoreBar extends AbstractView {
                 break;
             case DeviceType.iPhone5:
             case DeviceType.iPhone4:
+                place(_front, 0, 15);
                 place(_timeBar, -4, 147);
                 place(_timeTF, -4, 147);
                 _timeTF.fontSize = 10;
