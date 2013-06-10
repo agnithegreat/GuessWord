@@ -75,6 +75,12 @@ public class FriendBar extends AbstractView {
     override protected function align():void {
         switch (_deviceType) {
             case DeviceType.iPad:
+                place(_container, 67, 0);
+                place(_leftBtn, 46, 15);
+                place(_startBtn, 46, 55);
+                place(_rightBtn, 596, 15);
+                place(_endBtn, 596, 55);
+                place(_invite, 660, 0);
                 break;
             case DeviceType.iPhone5:
             case DeviceType.iPhone4:

@@ -8,17 +8,18 @@
     <SubTexture name="bank_bestitem_under" x="246" y="0" width="525" height="66"/>
     <SubTexture name="bank_buy_btn_down" x="773" y="0" width="121" height="65"/>
     <SubTexture name="bank_buy_btn_up" x="896" y="0" width="121" height="65"/>
-    <SubTexture name="bank_close_btn_up" x="1019" y="0" width="29" height="28"/>
-    <SubTexture name="bank_coin_ico" x="1050" y="0" width="50" height="53"/>
-    <SubTexture name="bank_item_under" x="1102" y="0" width="525" height="66"/>
+    <SubTexture name="bank_close_btn_down" x="1019" y="0" width="39" height="38"/>
+    <SubTexture name="bank_close_btn_up" x="1060" y="0" width="29" height="28"/>
+    <SubTexture name="bank_coin_ico" x="1091" y="0" width="50" height="53"/>
+    <SubTexture name="bank_item_under" x="1143" y="0" width="525" height="66"/>
     <SubTexture name="bank_under" x="0" y="68" width="597" height="446"/>
     <SubTexture name="main_ask_btn_down" x="659" y="68" width="75" height="32"/>
     <SubTexture name="main_ask_btn_up" x="736" y="68" width="75" height="32"/>
     <SubTexture name="main_askhelp_btn_down" x="813" y="68" width="75" height="110"/>
     <SubTexture name="main_askhelp_btn_off" x="890" y="68" width="75" height="110"/>
-    <SubTexture name="main_askhelp_ico_off" x="967" y="68" width="57" height="53"/>
-    <SubTexture name="main_askhelp_ico_on" x="1026" y="68" width="54" height="49"/>
-    <SubTexture name="main_askhelp_ico_up" x="1082" y="68" width="75" height="110"/>
+    <SubTexture name="main_askhelp_btn_up" x="967" y="68" width="75" height="110"/>
+    <SubTexture name="main_askhelp_ico_off" x="1044" y="68" width="57" height="53"/>
+    <SubTexture name="main_askhelp_ico_on" x="1103" y="68" width="54" height="49"/>
     <SubTexture name="main_ava_under" x="1159" y="68" width="49" height="44"/>
     <SubTexture name="main_big_pic_under" x="1210" y="68" width="484" height="488"/>
     <SubTexture name="main_bonus_coin" x="1696" y="68" width="37" height="15"/>

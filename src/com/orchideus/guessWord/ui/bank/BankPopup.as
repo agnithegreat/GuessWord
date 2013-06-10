@@ -38,7 +38,7 @@ public class BankPopup extends Screen {
         _title.nativeFilters = [new GlowFilter(0, 1, 3, 3, 5, 3)];
         addChild(_title);
 
-        _closeBtn = new Button(_assets.getTexture("bank_close_btn_up"));
+        _closeBtn = new Button(_assets.getTexture("bank_close_btn"), "", _assets.getTexture("bank_close_btn_down"));
         _closeBtn.addEventListener(Event.TRIGGERED, handleClose);
         addChild(_closeBtn);
 
@@ -56,6 +56,9 @@ public class BankPopup extends Screen {
     override protected function align():void {
         switch (_deviceType) {
             case DeviceType.iPad:
+                place(_container, 40, 80);
+                _title.fontSize = 30;
+                place(_closeBtn, 525, 17);
                 break;
             case DeviceType.iPhone5:
             case DeviceType.iPhone4:

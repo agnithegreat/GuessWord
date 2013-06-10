@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TextureAtlas imagePath="main.png">
+    <!-- Created with TexturePacker -->
+    <!-- http://texturepacker.com -->
+    <!--  -->
+    <SubTexture name="main_scroll_btn_down" x="713" y="1415" width="43" height="66"/>
+    <SubTexture name="main_scroll_btn_up" x="758" y="1415" width="43" height="66"/>
+    <SubTexture name="main_small_pic_under" x="803" y="1415" width="607" height="610"/>
+    <SubTexture name="main_sound_down" x="1412" y="1415" width="116" height="100"/>
+    <SubTexture name="main_sound_up" x="1530" y="1415" width="116" height="100"/>
+    <SubTexture name="main_time_under" x="1648" y="1415" width="157" height="102"/>
+    <SubTexture name="main_ask_btn_down" x="126" y="0" width="173" height="68"/>
+    <SubTexture name="main_ask_btn_up" x="301" y="0" width="173" height="68"/>
+    <SubTexture name="main_askhelp_btn_down" x="476" y="0" width="157" height="233"/>
+    <SubTexture name="main_askhelp_btn_off" x="635" y="0" width="157" height="233"/>
+    <SubTexture name="main_askhelp_btn_up" x="794" y="0" width="157" height="233"/>
+    <SubTexture name="main_askhelp_ico_off" x="953" y="0" width="118" height="107"/>
+    <SubTexture name="main_askhelp_ico_on" x="1073" y="0" width="113" height="103"/>
+    <SubTexture name="main_ava_under" x="1188" y="0" width="113" height="103"/>
+    <SubTexture name="main_bonus_coin" x="1303" y="0" width="80" height="33"/>
+    <SubTexture name="main_cheat_btn_down" x="1385" y="0" width="157" height="273"/>
+    <SubTexture name="main_cheat_btn_up" x="1544" y="0" width="157" height="273"/>
+    <SubTexture name="main_coin_ico" x="1703" y="0" width="46" height="51"/>
+    <SubTexture name="main_del_btn_down" x="1751" y="0" width="177" height="128"/>
+    <SubTexture name="main_del_btn_up" x="0" y="1058" width="177" height="128"/>
+    <SubTexture name="main_enemy_ico_off" x="179" y="1058" width="118" height="107"/>
+    <SubTexture name="main_fb_btn_down" x="299" y="1058" width="485" height="167"/>
+    <SubTexture name="main_fb_btn_up" x="786" y="1058" width="485" height="167"/>
+    <SubTexture name="main_friend_under" x="1273" y="1058" width="149" height="196"/>
+    <SubTexture name="main_GRADUSNIK" x="0" y="0" width="124" height="1056"/>
+    <SubTexture name="main_invite_ava" x="1424" y="1058" width="97" height="78"/>
+    <SubTexture name="main_invite_btn_down" x="1523" y="1058" width="173" height="93"/>
+    <SubTexture name="main_invite_btn_up" x="1698" y="1058" width="173" height="93"/>
+    <SubTexture name="main_invite_under" x="1873" y="1058" width="149" height="151"/>
+    <SubTexture name="main_invitefriends_ico_off" x="0" y="1256" width="118" height="106"/>
+    <SubTexture name="main_invitefriends_ico_on" x="120" y="1256" width="113" height="103"/>
+    <SubTexture name="main_letter_under" x="235" y="1256" width="115" height="109"/>
+    <SubTexture name="main_letter_under_down" x="352" y="1256" width="109" height="103"/>
+    <SubTexture name="main_lvl_sm_ico" x="463" y="1256" width="59" height="57"/>
+    <SubTexture name="main_mistake_btn_under" x="524" y="1256" width="115" height="109"/>
+    <SubTexture name="main_mistake_shadow" x="641" y="1256" width="107" height="101"/>
+    <SubTexture name="main_next_btn_down" x="750" y="1256" width="563" height="157"/>
+    <SubTexture name="main_next_btn_up" x="1315" y="1256" width="563" height="157"/>
+    <SubTexture name="main_no_sound_down" x="1880" y="1256" width="106" height="106"/>
+    <SubTexture name="main_no_sound_up" x="0" y="1415" width="106" height="106"/>
+    <SubTexture name="main_onemorepic_ico" x="108" y="1415" width="97" height="167"/>
+    <SubTexture name="main_openletter_ico" x="207" y="1415" width="84" height="166"/>
+    <SubTexture name="main_page_scroll_btn_down" x="293" y="1415" width="52" height="73"/>
+    <SubTexture name="main_page_scroll_btn_up" x="347" y="1415" width="52" height="73"/>
+    <SubTexture name="main_plus_btn_down" x="401" y="1415" width="111" height="111"/>
+    <SubTexture name="main_plus_btn_up" x="514" y="1415" width="111" height="111"/>
+    <SubTexture name="main_removeletters_ico" x="627" y="1415" width="84" height="166"/>
+</TextureAtlas>

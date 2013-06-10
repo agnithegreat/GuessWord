@@ -84,9 +84,19 @@ public class FriendTile extends AbstractView {
         switch (_deviceType) {
             case DeviceType.iPad:
                 if (_friend) {
-
+                    place(_invite, 0, -3);
+                    place(_levelIcon, 2, -4);
+                    place(_levelTF, 12, -3);
+                    _levelTF.fontSize = 12;
+                    place(_avatar, 4, 8);
+                    place(_inviteBtn, -3, 32);
+                    place(_inviteTF, -3, 32);
+                    _inviteTF.fontSize = 12;
                 } else {
-
+                    place(_avatar, 13, 16);
+                    place(_inviteBtn, -6, 62);
+                    place(_inviteTF, -6, 62);
+                    _inviteTF.fontSize = 12;
                 }
                 break;
             case DeviceType.iPhone5:

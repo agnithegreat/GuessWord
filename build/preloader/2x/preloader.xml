@@ -3,6 +3,8 @@
     <!-- Created with TexturePacker -->
     <!-- http://texturepacker.com -->
     <!--  -->
+    <SubTexture name="preloader_btn_down" x="0" y="0" width="184" height="57"/>
+    <SubTexture name="preloader_btn_up" x="186" y="0" width="184" height="57"/>
     <SubTexture name="preloader_deutch_ico" x="372" y="0" width="68" height="68"/>
     <SubTexture name="preloader_duck" x="442" y="0" width="140" height="28"/>
     <SubTexture name="preloader_eng_ico" x="584" y="0" width="68" height="68"/>
@@ -14,6 +16,4 @@
     <SubTexture name="preloader_port_ico" x="694" y="70" width="68" height="68"/>
     <SubTexture name="preloader_rus_ico" x="764" y="70" width="68" height="68"/>
     <SubTexture name="preloader_under" x="0" y="241" width="640" height="1136"/>
-    <SubTexture name="preloader_btn_down" x="0" y="0" width="184" height="57"/>
-    <SubTexture name="preloader_btn_up" x="186" y="0" width="184" height="57"/>
 </TextureAtlas>

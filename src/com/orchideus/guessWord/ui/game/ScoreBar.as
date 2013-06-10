@@ -41,7 +41,8 @@ public class ScoreBar extends AbstractView {
     override protected function align():void {
         switch (_deviceType) {
             case DeviceType.iPad:
-//                place(_timeBar, 700, 810);
+                place(_timeBar, -9, 316);
+                place(_timeTF, -9, 316);
                 break;
             case DeviceType.iPhone5:
             case DeviceType.iPhone4:

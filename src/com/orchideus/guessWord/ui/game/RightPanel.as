@@ -29,7 +29,7 @@ public class RightPanel extends AbstractView {
     override protected function align():void {
         switch (_deviceType) {
             case DeviceType.iPad:
-//                place(_bar, 700, 810);
+                place(_bar, 693, 283);
                 break;
             case DeviceType.iPhone5:
             case DeviceType.iPhone4:

@@ -75,7 +75,7 @@ public class GameScreen extends Screen {
 
         switch (_deviceType) {
             case DeviceType.iPad:
-                place(_friendBar, 55, 328);
+                place(_friendBar, 0, 916);
                 place(_soundBtn, 700, 810);
                 break;
             case DeviceType.iPhone5:
