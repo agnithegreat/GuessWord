@@ -6,6 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 package com.orchideus.guessWord {
+import com.freshplanet.nativeExtensions.InAppPurchase;
 import com.orchideus.guessWord.data.Bank;
 import com.orchideus.guessWord.data.Bonus;
 import com.orchideus.guessWord.data.DeviceType;
@@ -27,6 +28,7 @@ import starling.utils.AssetManager;
 public class GameController extends EventDispatcher {
 
     public static const PROGRESS: String = "progress_GameController";
+    public static const SHOW_LANGUAGES: String = "show_languages_GameController";
     public static const FRIENDS: String = "friends_GameController";
 
     private var _player: Player;
@@ -46,7 +48,7 @@ public class GameController extends EventDispatcher {
 
     private var _server: Server;
 
-    private var _loaded: Boolean;
+    private var _inApp: InAppPurchase;
 
     private var _tempData: Object;
 
@@ -56,8 +58,6 @@ public class GameController extends EventDispatcher {
         _view = new MainScreen(assets, deviceType, this);
         container.addChild(_view);
         addViewEventListeners();
-
-        // TODO: проверить SharedObject для IOS
     }
 
     public function preloaderProgress(value: Number):void {
@@ -65,13 +65,22 @@ public class GameController extends EventDispatcher {
     }
 
     public function init():void {
-        _loaded = true;
-        if (!_player.lang) {
-            return;
+        if (_player.lang) {
+            crateGame();
+        } else {
+            dispatchEventWith(SHOW_LANGUAGES);
         }
+    }
 
+    private function crateGame():void {
         _game = new Game();
         _game.addEventListener(Game.SEND_WORD, handleSendWord);
+
+        _inApp = InAppPurchase.getInstance();
+        if (_inApp.isInAppPurchaseSupported) {
+            _inApp.init();
+//            _inApp.addEventListener(InAppPurchaseEvent.PURCHASE_SUCCESSFULL, handleUpdateData);
+        }
 
         _server = new Server();
         _server.init("1", _player.uid);
@@ -209,18 +218,18 @@ public class GameController extends EventDispatcher {
         // TODO: сделать LocaleManager
         _player.setLanguage((event.data as Language).title);
 
-        if (_loaded) {
-            init();
-        }
+        crateGame();
     }
 
     private function handleOpenBank(event: Event):void {
-        // TODO: проверка, можно ли открывать сейчас
         _view.showBank();
     }
 
     private function handleBuyBank(event: Event):void {
-        // TODO: покупка бабла
+        if (_inApp.isInAppPurchaseSupported) {
+            var bank: Bank = event.data as Bank;
+            _inApp.makePurchase(String(bank.id));
+        }
     }
 
     private function handleSelectPic(event: Event):void {

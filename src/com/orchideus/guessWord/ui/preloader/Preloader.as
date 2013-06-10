@@ -40,6 +40,7 @@ public class Preloader extends Screen {
     public function Preloader(assets: AssetManager, deviceType: DeviceType, controller: GameController) {
         _controller = controller;
         _controller.addEventListener(GameController.PROGRESS, handleProgress);
+        _controller.addEventListener(GameController.SHOW_LANGUAGES, handleShowLanguages);
 
         super(assets, deviceType, "preloader_under");
     }
@@ -64,10 +65,6 @@ public class Preloader extends Screen {
 
         _langs = new Sprite();
         addChild(_langs);
-
-        if (!_controller.player.lang) {
-            showLanguage();
-        }
     }
 
     override protected function align():void {
@@ -95,7 +92,13 @@ public class Preloader extends Screen {
         }
     }
 
-    private function showLanguage():void {
+    private function handleProgress(event: Event):void {
+        var value: Number = event.data as Number;
+        _progress.ratioH = value;
+        _progressTF.text = String(int(value*100))+"%";
+    }
+
+    private function handleShowLanguages(event: Event):void {
         for (var i:int = 0; i < Language.languages.length; i++) {
             var lang: Language = Language.languages[i];
             var tile: LanguageTile = new LanguageTile(i, lang, _assets, _deviceType);
@@ -109,12 +112,6 @@ public class Preloader extends Screen {
         if (event.getTouch(tile, TouchPhase.ENDED)) {
             dispatchEventWith(Language.LANGUAGE, true, tile.lang);
         }
-    }
-
-    private function handleProgress(event: Event):void {
-        var value: Number = event.data as Number;
-        _progress.ratioH = value;
-        _progressTF.text = String(int(value*100))+"%";
     }
 
     override public function destroy():void {
