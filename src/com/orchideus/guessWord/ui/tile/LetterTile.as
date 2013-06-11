@@ -46,6 +46,8 @@ public class LetterTile extends AbstractView {
         _letter.addEventListener(Letter.MISTAKE, handleMistake);
 
         super(assets, deviceType);
+
+        // TODO: подобрать фильтры
     }
 
     override protected function initialize():void {
@@ -56,8 +58,8 @@ public class LetterTile extends AbstractView {
         _back = new Image(_up);
         addChild(_back);
 
-        _tf = new TextField(width, height, "", "Arial", 32, 0x857d59, true);
-        _tf.nativeFilters = [new GlowFilter(0xFFFFFF, 1, 1, 1, 3, 3), new DropShadowFilter(2, 90, 0, 0.75, 2, 2, 3, 3, true), new DropShadowFilter(2, 90, 0xFFFFFF, 1, 1, 1, 3, 3)];
+        super.initialize();
+
         addChild(_tf);
 
         addEventListener(TouchEvent.TOUCH, handleTouch);
@@ -65,16 +67,18 @@ public class LetterTile extends AbstractView {
         update();
     }
 
-    override protected function align():void {
-        switch (_deviceType) {
-            case DeviceType.iPad:
-                _tf.fontSize = 32;
-                break;
-            case DeviceType.iPhone5:
-            case DeviceType.iPhone4:
-                _tf.fontSize = 18;
-                break;
-        }
+    override protected function initializeIPad():void {
+        _tf = createTextField(width, height, 32, "", 0x857d59);
+        _tf.nativeFilters = [new GlowFilter(0xFFFFFF, 1, 1, 1, 3, 3),
+                             new DropShadowFilter(2, 90, 0, 0.75, 2, 2, 3, 3, true),
+                             new DropShadowFilter(2, 90, 0xFFFFFF, 1, 1, 1, 3, 3)];
+    }
+
+    override protected function initializeIPhone():void {
+        _tf = createTextField(width, height, 18, "", 0x857d59);
+        _tf.nativeFilters = [new GlowFilter(0xFFFFFF, 1, 1, 1, 3, 3),
+                             new DropShadowFilter(2, 90, 0, 0.75, 2, 2, 3, 3, true),
+                             new DropShadowFilter(2, 90, 0xFFFFFF, 1, 1, 1, 3, 3)];
     }
 
     public function update():void {

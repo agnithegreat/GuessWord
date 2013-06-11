@@ -38,6 +38,8 @@ public class BonusTile extends AbstractView {
         _bonus = bonus;
 
          super(assets, deviceType);
+
+        // TODO: подобрать фильтры
     }
 
     override protected function initialize():void {
@@ -50,62 +52,73 @@ public class BonusTile extends AbstractView {
         _icon.touchable = false;
         addChild(_icon);
 
-        _text1 = new TextField(_back.width-14, 30, _bonus.text[0], "Arial", 16, 0xFFFFFF, true);
-        _text1.touchable = false;
-        _text1.vAlign = VAlign.TOP;
-        _text1.autoScale = true;
-        _text1.nativeFilters = [new GlowFilter(0x683a00, 1, 2, 2, 3, 3)];
-        addChild(_text1);
-
-        _text2 = new TextField(_back.width-14, 30, _bonus.text[1], "Arial", 16, 0xFFFFFF, true);
-        _text2.touchable = false;
-        _text2.vAlign = VAlign.TOP;
-        _text2.autoScale = true;
-        _text2.nativeFilters = [new GlowFilter(0x683a00, 1, 2, 2, 3, 3)];
-        addChild(_text2);
-
         _moneyIcon = new Image(_assets.getTexture("main_coin_ico"));
         _moneyIcon.touchable = false;
         addChild(_moneyIcon);
 
-        _price = new TextField(30, 30, String(_bonus.price), "Arial", 20, 0xFFFFFF, true);
-        _price.nativeFilters = [new GlowFilter(0x683a00, 1, 2, 2, 3, 3)];
+        super.initialize();
+
+        _text1.touchable = false;
+        _text1.vAlign = VAlign.TOP;
+        addChild(_text1);
+
+        _text2.touchable = false;
+        _text2.vAlign = VAlign.TOP;
+        _text2.autoScale = true;
+        addChild(_text2);
+
         _price.touchable = false;
         _price.vAlign = VAlign.TOP;
         _price.hAlign = HAlign.LEFT;
         addChild(_price);
     }
 
-    override protected function align():void {
-        switch (_deviceType) {
-            case DeviceType.iPad:
-                place(_icon, _back.width/2, -10);
+    override protected function initializeIPad():void {
+        _icon.x = _back.width/2+2;
+        _icon.y = -16;
 
-                place(_text1, 7, 67);
-                resize(_text1, _back.width-14, 30);
-                place(_text2, 7, 67 + _text1.textBounds.height);
-                resize(_text2, _back.width-14, 30)
+        _moneyIcon.x = 12;
+        _moneyIcon.y = 102;
 
-                place(_moneyIcon, 12, 102);
-                place(_price, 40, 101);
-                resize(_price, 30, 30);
-                _price.fontSize = 20;
-                break;
-            case DeviceType.iPhone5:
-            case DeviceType.iPhone4:
-                place(_icon, _back.width/2+1, -7);
+        _text1 = createTextField(_back.width-14, 30, 16, _bonus.text[0]);
+        _text1.nativeFilters = [new GlowFilter(0x683a00, 1, 2, 2, 3, 3)];
+        _text1.autoScale = true;
+        _text1.x = 7;
+        _text1.y = 67;
 
-                place(_text1, 4, 32);
-                resize(_text1, _back.width-8, 12);
-                place(_text2, 4, 32 + _text1.textBounds.height);
-                resize(_text2, _back.width-8, 12);
+        _text2 = createTextField(_back.width-14, 30, 16, _bonus.text[1]);
+        _text2.nativeFilters = [new GlowFilter(0x683a00, 1, 2, 2, 3, 3)];
+        _text2.x = 7;
+        _text2.y = 67 + _text1.textBounds.height;
 
-                place(_moneyIcon, 5, 48);
-                place(_price, 16, 47);
-                resize(_price, 18, 15);
-                _price.fontSize = 10;
-                break;
-        }
+        _price = createTextField(30, 30, 20, String(_bonus.price));
+        _price.nativeFilters = [new GlowFilter(0x683a00, 1, 2, 2, 3, 3)];
+        _price.x = 40;
+        _price.y = 101;
+    }
+
+    override protected function initializeIPhone():void {
+        _icon.x = _back.width/2+1;
+        _icon.y = -7;
+
+        _moneyIcon.x = 5;
+        _moneyIcon.y = 48;
+
+        _text1 = createTextField(_back.width-8, 12, 16, _bonus.text[0]);
+        _text1.nativeFilters = [new GlowFilter(0x683a00, 1, 2, 2, 3, 3)];
+        _text1.autoScale = true;
+        _text1.x = 4;
+        _text1.y = 32;
+
+        _text2 = createTextField(_back.width-8, 12, 16, _bonus.text[1]);
+        _text2.nativeFilters = [new GlowFilter(0x683a00, 1, 2, 2, 3, 3)];
+        _text2.x = 4;
+        _text2.y = 32 + _text1.textBounds.height;
+
+        _price = createTextField(18, 15, 10, String(_bonus.price));
+        _price.nativeFilters = [new GlowFilter(0x683a00, 1, 2, 2, 3, 3)];
+        _price.x = 16;
+        _price.y = 47;
     }
 
     private function handleTriggered(event: Event):void {

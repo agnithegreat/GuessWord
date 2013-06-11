@@ -19,8 +19,6 @@ import starling.utils.AssetManager;
 
 public class LanguageTile extends AbstractView {
 
-    private var _id: int;
-
     private var _lang: Language;
     public function get lang():Language {
         return _lang;
@@ -31,8 +29,7 @@ public class LanguageTile extends AbstractView {
     private var _icon: Image;
 
 
-    public function LanguageTile(id: int, lang: Language, assets: AssetManager, deviceType: DeviceType) {
-        _id = id;
+    public function LanguageTile(assets: AssetManager, deviceType: DeviceType, lang: Language) {
         _lang = lang;
 
         super(assets, deviceType);
@@ -44,30 +41,31 @@ public class LanguageTile extends AbstractView {
         _back = new Button(_assets.getTexture("preloader_btn_up"), "", _assets.getTexture("preloader_btn_down"));
         addChild(_back);
 
-        _text = new TextField(_back.width*0.8, _back.height, _lang.title, "Arial", 26, 0xFFFFFF, true);
-        _text.nativeFilters = [new GlowFilter(0, 1, 2, 2, 2, 3)];
-        addChild(_text);
-
         _icon = new Image(_assets.getTexture(_lang.icon));
         addChild(_icon);
+
+        super.initialize();
+
+        _text.touchable = false;
+        addChild(_text);
     }
 
-    override protected function align():void {
-        switch (_deviceType) {
-            case DeviceType.iPad:
-                place(this, _id<6 ? (_id%3) * 255 : 255, int(_id/3) * 85);
-                place(_text, 40, 0);
-                _text.fontSize = 26;
-                place(_icon, -10, -5);
-                break;
-            case DeviceType.iPhone5:
-            case DeviceType.iPhone4:
-                place(this, _id<6 ? (_id%3) * 105 : 105, int(_id/3) * 35);
-                place(_text, 20, 0);
-                _text.fontSize = 10;
-                place(_icon, -5, -3);
-                break;
-        }
+    override protected function initializeIPad():void {
+        _text = createTextField(_back.width*0.8, _back.height, 26, _lang.title);
+        _text.nativeFilters = [new GlowFilter(0, 1, 2, 2, 2, 3)];
+        _text.x = 40;
+
+        _icon.x = -10;
+        _icon.y = -5;
+    }
+
+    override protected function initializeIPhone():void {
+        _text = createTextField(_back.width*0.8, _back.height, 10, _lang.title);
+        _text.nativeFilters = [new GlowFilter(0, 1, 2, 2, 2, 3)];
+        _text.x = 20;
+
+        _icon.x = -5;
+        _icon.y = -3;
     }
 
     override public function destroy():void {

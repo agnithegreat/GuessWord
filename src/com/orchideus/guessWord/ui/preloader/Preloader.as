@@ -26,6 +26,9 @@ import starling.utils.VAlign;
 
 public class Preloader extends Screen {
 
+    public static var TILE_WIDTH: int;
+    public static var TILE_HEIGHT: int;
+
     private var _controller: GameController;
 
     private var _logo: Image;
@@ -86,6 +89,9 @@ public class Preloader extends Screen {
 
         _langs.x = 25;
         _langs.y = 780;
+
+        TILE_WIDTH = 255;
+        TILE_HEIGHT = 85;
     }
 
     override protected function initializeIPhone():void {
@@ -107,6 +113,9 @@ public class Preloader extends Screen {
 
         _langs.x = 12;
         _langs.y = 395;
+
+        TILE_WIDTH = 105;
+        TILE_HEIGHT = 35;
     }
 
     private function handleProgress(event: Event):void {
@@ -120,8 +129,10 @@ public class Preloader extends Screen {
 
         for (var i:int = 0; i < Language.languages.length; i++) {
             var lang: Language = Language.languages[i];
-            var tile: LanguageTile = new LanguageTile(i, lang, _assets, _deviceType);
+            var tile: LanguageTile = new LanguageTile(_assets, _deviceType, lang);
             tile.addEventListener(TouchEvent.TOUCH, handleSelectLanguage);
+            tile.x = i<6 ? i%3 * TILE_WIDTH : TILE_WIDTH;
+            tile.y = int(i/3) * TILE_HEIGHT;
             _langs.addChild(tile);
         }
     }

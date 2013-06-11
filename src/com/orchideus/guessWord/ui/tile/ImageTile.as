@@ -26,7 +26,7 @@ import starling.utils.VAlign;
 
 public class ImageTile extends AbstractView {
 
-    public static const scaleAmount: Number = 0.496;
+    public static var scaleAmount: Number = 0.496;
     public static const delay: Number = 0.2;
 
     private var _pic: Pic;
@@ -56,33 +56,38 @@ public class ImageTile extends AbstractView {
         addChild(_border);
 
         _image = new Image(Texture.empty());
-        _image.x = _border.width*0.02;
-        _image.y = _border.height*0.02;
 
-        scaleX = scaleY = scaleAmount;
-
-        _hide = new Quad(_border.width*0.96, _border.height*0.96, 0);
-        _hide.x = _border.width*0.02;
-        _hide.y = _border.height*0.02;
+        _hide = new Quad(_border.width, _border.height, 0);
         _hide.alpha = 0.5;
 
-        _description = new TextField(_border.width*0.92, _border.height*0.92, "", "Arial", 42, 0xFFFFFF, true);
-        _description.x = _border.width*0.04;
-        _description.y = _border.height*0.04;
+        super.initialize();
+
         _description.hAlign = HAlign.LEFT;
         _description.vAlign = VAlign.CENTER;
+
+        scaleX = scaleY = scaleAmount;
     }
 
-    override protected function align():void {
-        switch (_deviceType) {
-            case DeviceType.iPad:
-                _description.fontSize = 42;
-                break;
-            case DeviceType.iPhone5:
-            case DeviceType.iPhone4:
-                _description.fontSize = 20;
-                break;
-        }
+    override protected function initializeIPad():void {
+        _image.x = 9;
+        _image.y = 8;
+
+        _description = createTextField(_border.width*0.9, _border.height*0.9, 42);
+        _description.x = 18;
+        _description.y = 16;
+
+        scaleAmount = 0.493;
+    }
+
+    override protected function initializeIPhone():void {
+        _image.x = 5;
+        _image.y = 5;
+
+        _description = createTextField(_border.width*0.9, _border.height*0.9, 20);
+        _description.x = 10;
+        _description.y = 10;
+
+        scaleAmount = 0.496;
     }
 
     public function load():void {
@@ -122,8 +127,8 @@ public class ImageTile extends AbstractView {
 
         _image.texture = texture;
         _image.readjustSize();
-        _image.width = _border.width*0.96;
-        _image.height = _border.height*0.96;
+        _image.width = _border.width-_image.x*2;
+        _image.height = _border.height-_image.y*2;
         addChild(_image);
     }
 }
