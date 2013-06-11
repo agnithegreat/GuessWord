@@ -25,6 +25,7 @@ public class Server extends EventDispatcher {
 
     public static const GET_PARAMETERS: String = "get_parameters";
     public static const CHECK_WORD: String = "check_word";
+    public static const START_TIMER: String = "start_timer";
     public static const REMOVE_LETTERS: String = "remove_letters";
     public static const OPEN_LETTER: String = "open_letter";
     public static const CHANGE_PICTURE: String = "change_picture";
@@ -63,6 +64,10 @@ public class Server extends EventDispatcher {
 
     public function checkWord(word_id: int, word: String):void {
         sendRequest(CHECK_WORD, {"word_id": String(word_id), "word": word});
+    }
+
+    public function startTimer():void {
+        sendRequest(START_TIMER);
     }
 
     public function removeLetters():void {

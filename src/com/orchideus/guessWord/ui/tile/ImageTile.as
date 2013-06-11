@@ -17,7 +17,6 @@ import flash.net.URLRequest;
 
 import starling.core.Starling;
 import starling.display.Image;
-import starling.display.Quad;
 import starling.text.TextField;
 import starling.textures.Texture;
 import starling.utils.AssetManager;
@@ -42,7 +41,6 @@ public class ImageTile extends AbstractView {
     private var _border: Image;
     private var _image: Image;
 
-    private var _hide: Quad;
     private var _description: TextField;
 
     public function ImageTile(assets: AssetManager, deviceType: DeviceType, pic: Pic) {
@@ -56,9 +54,6 @@ public class ImageTile extends AbstractView {
         addChild(_border);
 
         _image = new Image(Texture.empty());
-
-        _hide = new Quad(_border.width, _border.height, 0);
-        _hide.alpha = 0.5;
 
         super.initialize();
 
@@ -110,15 +105,14 @@ public class ImageTile extends AbstractView {
     public function showDescription():void {
         _description.text = _pic.description;
 
-        addChild(_hide);
+        _image.color = 0x666666;
+
         addChild(_description);
     }
 
     public function hideDescription():void {
-        if (_hide.parent) {
-            removeChild(_hide);
-            removeChild(_description);
-        }
+        _image.color = 0xFFFFFF;
+        removeChild(_description);
     }
 
     private function onComplete(event: Event):void {

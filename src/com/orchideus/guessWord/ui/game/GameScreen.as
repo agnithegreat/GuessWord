@@ -46,7 +46,7 @@ public class GameScreen extends Screen {
 
         _leftPanel = new LeftPanel(_assets, _deviceType);
 
-        _rightPanel = new RightPanel(_assets, _deviceType);
+        _rightPanel = new RightPanel(_assets, _deviceType, _controller);
         addChild(_rightPanel);
 
         _middlePanel = new MiddlePanel(_assets, _deviceType, _controller.game);

@@ -57,10 +57,10 @@ public class TopPanel extends AbstractView {
         _levelTF.x = 64;
         _levelTF.y = 31;
 
-        _moneyTF = createTextField(88, 25, 20);
+        _moneyTF = createTextField(88, 30, 24);
         _moneyTF.nativeFilters = [new GlowFilter(0x333333, 1, 3, 3, 3, 3)];
-        _moneyTF.x = 626;
-        _moneyTF.y = 41;
+        _moneyTF.x = 622;
+        _moneyTF.y = 37;
 
         _bankBtn.x = 712;
         _bankBtn.y = 24;

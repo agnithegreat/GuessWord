@@ -3,37 +3,6 @@
     <!-- Created with TexturePacker -->
     <!-- http://texturepacker.com -->
     <!--  -->
-    <SubTexture name="bank_bestbuy_btn_down" x="0" y="0" width="121" height="65"/>
-    <SubTexture name="bank_bestbuy_btn_up" x="123" y="0" width="121" height="65"/>
-    <SubTexture name="bank_bestitem_under" x="246" y="0" width="525" height="66"/>
-    <SubTexture name="bank_buy_btn_down" x="773" y="0" width="121" height="65"/>
-    <SubTexture name="bank_buy_btn_up" x="896" y="0" width="121" height="65"/>
-    <SubTexture name="bank_close_btn_down" x="1019" y="0" width="39" height="38"/>
-    <SubTexture name="bank_close_btn_up" x="1060" y="0" width="29" height="28"/>
-    <SubTexture name="bank_coin_ico" x="1091" y="0" width="50" height="53"/>
-    <SubTexture name="bank_item_under" x="1143" y="0" width="525" height="66"/>
-    <SubTexture name="bank_under" x="0" y="68" width="597" height="446"/>
-    <SubTexture name="main_ask_btn_down" x="659" y="68" width="75" height="32"/>
-    <SubTexture name="main_ask_btn_up" x="736" y="68" width="75" height="32"/>
-    <SubTexture name="main_askhelp_btn_down" x="813" y="68" width="75" height="110"/>
-    <SubTexture name="main_askhelp_btn_off" x="890" y="68" width="75" height="110"/>
-    <SubTexture name="main_askhelp_btn_up" x="967" y="68" width="75" height="110"/>
-    <SubTexture name="main_askhelp_ico_off" x="1044" y="68" width="57" height="53"/>
-    <SubTexture name="main_askhelp_ico_on" x="1103" y="68" width="54" height="49"/>
-    <SubTexture name="main_ava_under" x="1159" y="68" width="49" height="44"/>
-    <SubTexture name="main_big_pic_under" x="1210" y="68" width="484" height="488"/>
-    <SubTexture name="main_bonus_coin" x="1696" y="68" width="37" height="15"/>
-    <SubTexture name="main_cheat_btn_down" x="1735" y="68" width="75" height="129"/>
-    <SubTexture name="main_cheat_btn_up" x="1812" y="68" width="75" height="129"/>
-    <SubTexture name="main_coin_ico" x="1889" y="68" width="21" height="24"/>
-    <SubTexture name="main_del_btn_down" x="1912" y="68" width="91" height="67"/>
-    <SubTexture name="main_del_btn_up" x="0" y="558" width="91" height="67"/>
-    <SubTexture name="main_enemy_ico_off" x="93" y="558" width="57" height="53"/>
-    <SubTexture name="main_fb_btn_down" x="152" y="558" width="269" height="164"/>
-    <SubTexture name="main_fb_btn_up" x="423" y="558" width="269" height="164"/>
-    <SubTexture name="main_friend_under" x="694" y="558" width="65" height="84"/>
-    <SubTexture name="main_GRADUSNIK" x="599" y="68" width="58" height="342"/>
-    <SubTexture name="main_invite_ava" x="761" y="558" width="41" height="34"/>
     <SubTexture name="main_invite_btn_down" x="804" y="558" width="75" height="43"/>
     <SubTexture name="main_invite_btn_up" x="881" y="558" width="75" height="43"/>
     <SubTexture name="main_invite_under" x="958" y="558" width="65" height="65"/>
@@ -57,9 +26,39 @@
     <SubTexture name="main_removeletters_ico" x="759" y="724" width="40" height="79"/>
     <SubTexture name="main_scroll_btn_down" x="801" y="724" width="28" height="36"/>
     <SubTexture name="main_scroll_btn_up" x="831" y="724" width="28" height="36"/>
-    <SubTexture name="main_small_pic_under" x="861" y="724" width="237" height="238"/>
-    <SubTexture name="main_sound_down" x="1100" y="724" width="82" height="71"/>
-    <SubTexture name="main_sound_up" x="1184" y="724" width="82" height="71"/>
-    <SubTexture name="main_time_under" x="1268" y="724" width="75" height="49"/>
-    <SubTexture name="main_under" x="1345" y="724" width="640" height="1136"/>
+    <SubTexture name="main_sound_down" x="861" y="724" width="82" height="71"/>
+    <SubTexture name="main_sound_up" x="945" y="724" width="82" height="71"/>
+    <SubTexture name="main_time_under" x="1029" y="724" width="75" height="49"/>
+    <SubTexture name="main_under" x="1106" y="724" width="640" height="1136"/>
+    <SubTexture name="main_ask_btn_down" x="659" y="68" width="75" height="32"/>
+    <SubTexture name="main_ask_btn_up" x="736" y="68" width="75" height="32"/>
+    <SubTexture name="main_askhelp_btn_down" x="813" y="68" width="75" height="110"/>
+    <SubTexture name="main_askhelp_btn_off" x="890" y="68" width="75" height="110"/>
+    <SubTexture name="main_askhelp_btn_up" x="967" y="68" width="75" height="110"/>
+    <SubTexture name="main_askhelp_ico_off" x="1044" y="68" width="57" height="53"/>
+    <SubTexture name="main_askhelp_ico_on" x="1103" y="68" width="54" height="49"/>
+    <SubTexture name="main_ava_under" x="1159" y="68" width="49" height="44"/>
+    <SubTexture name="main_big_pic_under" x="1210" y="68" width="484" height="488"/>
+    <SubTexture name="main_bonus_coin" x="1696" y="68" width="37" height="15"/>
+    <SubTexture name="main_cheat_btn_down" x="1735" y="68" width="75" height="129"/>
+    <SubTexture name="main_cheat_btn_up" x="1812" y="68" width="75" height="129"/>
+    <SubTexture name="main_coin_ico" x="1889" y="68" width="21" height="24"/>
+    <SubTexture name="main_del_btn_down" x="1912" y="68" width="91" height="67"/>
+    <SubTexture name="main_del_btn_up" x="0" y="558" width="91" height="67"/>
+    <SubTexture name="main_enemy_ico_off" x="93" y="558" width="57" height="53"/>
+    <SubTexture name="main_fb_btn_down" x="152" y="558" width="269" height="164"/>
+    <SubTexture name="main_fb_btn_up" x="423" y="558" width="269" height="164"/>
+    <SubTexture name="main_friend_under" x="694" y="558" width="65" height="84"/>
+    <SubTexture name="main_GRADUSNIK" x="599" y="68" width="58" height="335"/>
+    <SubTexture name="main_invite_ava" x="761" y="558" width="41" height="34"/>
+    <SubTexture name="bank_bestbuy_btn_up" x="123" y="0" width="121" height="65"/>
+    <SubTexture name="bank_bestitem_under" x="246" y="0" width="525" height="66"/>
+    <SubTexture name="bank_buy_btn_down" x="773" y="0" width="121" height="65"/>
+    <SubTexture name="bank_buy_btn_up" x="896" y="0" width="121" height="65"/>
+    <SubTexture name="bank_close_btn" x="1019" y="0" width="29" height="28"/>
+    <SubTexture name="bank_close_btn_down" x="1050" y="0" width="39" height="38"/>
+    <SubTexture name="bank_coin_ico" x="1091" y="0" width="50" height="53"/>
+    <SubTexture name="bank_item_under" x="1143" y="0" width="525" height="66"/>
+    <SubTexture name="bank_under" x="0" y="68" width="597" height="446"/>
+    <SubTexture name="bank_bestbuy_btn_down" x="0" y="0" width="121" height="65"/>
 </TextureAtlas>

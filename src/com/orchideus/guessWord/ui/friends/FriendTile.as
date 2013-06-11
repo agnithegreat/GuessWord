@@ -82,29 +82,27 @@ public class FriendTile extends AbstractView {
     }
 
     override protected function initializeIPad():void {
-        // TODO: проверить
-
         if (_friend) {
-            _invite.y = -3;
+            _invite.y = -10;
 
-            _levelIcon.x = 2;
-            _levelIcon.y = -4;
+            _levelIcon.x = 4;
+            _levelIcon.y = -12;
 
-            _levelTF = createTextField(44, 17, 12, String(_friend.level));
+            _levelTF = createTextField(44, 18, 14, String(_friend.level));
             _levelTF.nativeFilters = [new GlowFilter(0, 1, 2, 2, 2, 3)];
-            _levelTF.x = 12;
+            _levelTF.x = 26;
             _levelTF.y = -3;
 
-            _avatar.x = 4;
-            _avatar.y = 8;
+            _avatar.x = 9;
+            _avatar.y = 18;
 
-            _inviteBtn.x = -3;
-            _inviteBtn.y = 32;
+            _inviteBtn.x = -6;
+            _inviteBtn.y = 74;
 
             _inviteTF = createTextField(_inviteBtn.width, _inviteBtn.height, 12, "СПРОСИТЬ");
             _inviteTF.nativeFilters = [new GlowFilter(0, 1, 2, 2, 2, 3)];
-            _inviteTF.x = -3;
-            _inviteTF.y = 32;
+            _inviteTF.x = -6;
+            _inviteTF.y = 74;
         } else {
             _avatar.x = 13;
             _avatar.y = 16;
@@ -126,10 +124,10 @@ public class FriendTile extends AbstractView {
             _levelIcon.x = 2;
             _levelIcon.y = -4;
 
-            _levelTF = createTextField(_inviteBtn.width, _inviteBtn.height, 5, String(_friend.level));
+            _levelTF = createTextField(20, 10, 6, String(_friend.level));
             _levelTF.nativeFilters = [new GlowFilter(0, 1, 2, 2, 2, 3)];
-            _levelTF.x = 10;
-            _levelTF.y = -3;
+            _levelTF.x = 11;
+            _levelTF.y = -1;
 
             _avatar.x = 4;
             _avatar.y = 8;

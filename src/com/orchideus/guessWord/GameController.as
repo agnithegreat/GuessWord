@@ -16,9 +16,14 @@ import com.orchideus.guessWord.data.Player;
 import com.orchideus.guessWord.data.Sound;
 import com.orchideus.guessWord.data.Variables;
 import com.orchideus.guessWord.game.Game;
+import com.orchideus.guessWord.game.Score;
 import com.orchideus.guessWord.server.Server;
 import com.orchideus.guessWord.ui.MainScreen;
 import com.sticksports.nativeExtensions.inAppPurchase.InAppPurchase;
+
+import flash.events.TimerEvent;
+
+import flash.utils.Timer;
 
 import starling.display.Sprite;
 import starling.events.Event;
@@ -41,6 +46,11 @@ public class GameController extends EventDispatcher {
         return _game;
     }
 
+    private var _score: Score;
+    public function get score():Score {
+        return _score;
+    }
+
     private var _currentBonus: Bonus;
     private var _currentPic: Pic;
 
@@ -48,10 +58,27 @@ public class GameController extends EventDispatcher {
 
     private var _server: Server;
 
+    private var _bonusTime: uint;
+
+    private var _date: Date;
+    private var _serverTime: uint;
+    public function get current_server_time():uint {
+        var now: Date = new Date();
+        return _serverTime + (now.time-_date.time)/1000;
+    }
+
+    private var _timer: Timer;
+
     private var _tempData: Object;
+    public function get levelFinished():Boolean {
+        return _tempData;
+    }
 
     public function GameController(container: Sprite, assets: AssetManager, deviceType: DeviceType) {
         _player = new Player();
+
+        _timer = new Timer(1000);
+        _timer.addEventListener(TimerEvent.TIMER, handleTimer);
 
         _view = new MainScreen(assets, deviceType, this);
         container.addChild(_view);
@@ -74,6 +101,8 @@ public class GameController extends EventDispatcher {
         _game = new Game();
         _game.addEventListener(Game.SEND_WORD, handleSendWord);
 
+        _score = new Score();
+
         _server = new Server();
         _server.init("1", _player.uid);
         _server.addEventListener(Server.DATA, handleData);
@@ -82,6 +111,11 @@ public class GameController extends EventDispatcher {
         _server.getFriendBar("");
 
         _view.showGame();
+    }
+
+    private function startLevel():void {
+        _game.init();
+        _score.init(Variables.bonus_time, Variables.bonus_max, Variables.bonus_dec);
     }
 
     private function addViewEventListeners():void {
@@ -93,6 +127,12 @@ public class GameController extends EventDispatcher {
         _view.addEventListener(Friend.INVITE, handleInvite);
     }
 
+    private function handleTimer(event: TimerEvent):void {
+        if (!levelFinished) {
+            _score.time = current_server_time-_bonusTime;
+        }
+    }
+
     // *************************
     // ** section from server **
     // *************************
@@ -101,15 +141,21 @@ public class GameController extends EventDispatcher {
         switch (data.method) {
             case Server.GET_PARAMETERS:
                 if (data.result == "success") {
+                    _serverTime = data.server_time;
+                    _date = new Date();
+                    _timer.start();
+
                     _player.parse(data.player.params);
                     Bonus.init(data.variables);
                     Bank.parse(data.bank);
                     Variables.parse(data.variables);
 
+                    _bonusTime = data.player.params.current_word_start;
+
                     _game.updateStack(data.player.params);
                     _game.initWord(data.word);
                     _game.changePic(data.player.params.changed_pic);
-                    _game.init();
+                    startLevel();
                 }
                 break;
             case Server.CHECK_WORD:
@@ -123,6 +169,9 @@ public class GameController extends EventDispatcher {
                 } else {
                     _game.wordError();
                 }
+                break;
+            case Server.START_TIMER:
+                _bonusTime = data.new_word.current_word_start;
                 break;
             case Server.OPEN_LETTER:
                 if (data.result == "success") {
@@ -164,17 +213,26 @@ public class GameController extends EventDispatcher {
     // ** section from model **
     // ************************
     private function handleSendWord(event: Event):void {
-        _server.checkWord(_game.word.word_id, _game.word.word);
+        if (!levelFinished) {
+            _server.checkWord(_game.word.word_id, _game.word.word);
+        }
     }
 
     public function nextRound():void {
-        _game.word.clear(true);
-        _game.initWord(_tempData.new_word);
-        _game.init();
-        _tempData = null;
+        if (levelFinished) {
+            _game.word.clear(true);
+            _game.initWord(_tempData.new_word);
+            startLevel();
+            _server.startTimer();
+            _tempData = null;
+        }
     }
 
     private function handleUseBonus(event: Event):void {
+        if (levelFinished) {
+            return;
+        }
+
         var bonus: Bonus = event.data as Bonus;
         if (bonus.price > _player.money) {
             _view.showBank();

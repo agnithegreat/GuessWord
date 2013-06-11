@@ -76,7 +76,6 @@ public class FriendBar extends AbstractView {
     }
 
     override protected function initializeIPad():void {
-        // TODO: проверить
         _container.x = 67;
 
         _leftBtn.x = 46;
@@ -93,7 +92,7 @@ public class FriendBar extends AbstractView {
 
         _invite.x = 660;
 
-        TILE = 80;
+        TILE = 87;
     }
 
     override protected function initializeIPhone():void {
