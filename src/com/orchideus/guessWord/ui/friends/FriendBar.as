@@ -20,6 +20,7 @@ import starling.utils.AssetManager;
 public class FriendBar extends AbstractView {
 
     public static var tiles: int = 6;
+    public static var TILE: int;
 
     private var _controller: GameController;
 
@@ -47,8 +48,6 @@ public class FriendBar extends AbstractView {
         _container = new Sprite();
         addChild(_container);
 
-        addFriends();
-
         _leftBtn = new Button(_assets.getTexture("main_scroll_btn_up"), "", _assets.getTexture("main_scroll_btn_down"));
         _leftBtn.addEventListener(Event.TRIGGERED, handleClick);
         _leftBtn.scaleX = -1;
@@ -70,28 +69,50 @@ public class FriendBar extends AbstractView {
         _invite = new FriendTile(_assets, _deviceType);
         _invite.addEventListener(Event.TRIGGERED, handleClick);
         addChild(_invite);
+
+        super.initialize();
+
+        addFriends();
     }
 
-    override protected function align():void {
-        switch (_deviceType) {
-            case DeviceType.iPad:
-                place(_container, 67, 0);
-                place(_leftBtn, 46, 15);
-                place(_startBtn, 46, 55);
-                place(_rightBtn, 596, 15);
-                place(_endBtn, 596, 55);
-                place(_invite, 660, 0);
-                break;
-            case DeviceType.iPhone5:
-            case DeviceType.iPhone4:
-                place(_container, 30, 0);
-                place(_leftBtn, 25, 6);
-                place(_startBtn, 25, 24);
-                place(_rightBtn, 255, 6);
-                place(_endBtn, 255, 24);
-                place(_invite, 280, 0);
-                break;
-        }
+    override protected function initializeIPad():void {
+        _container.x = 67;
+
+        _leftBtn.x = 46;
+        _leftBtn.y = 15;
+
+        _startBtn.x = 46;
+        _startBtn.y = 55;
+
+        _rightBtn.x = 596;
+        _rightBtn.y = 15;
+
+        _endBtn.x = 596;
+        _endBtn.y = 55;
+
+        _invite.x = 660;
+
+        TILE = 80;
+    }
+
+    override protected function initializeIPhone():void {
+        _container.x = 30;
+
+        _leftBtn.x = 25;
+        _leftBtn.y = 6;
+
+        _startBtn.x = 25;
+        _startBtn.y = 24;
+
+        _rightBtn.x = 255;
+        _rightBtn.y = 6;
+
+        _endBtn.x = 255;
+        _endBtn.y = 24;
+
+        _invite.x = 280;
+
+        TILE = 38;
     }
 
     private function addFriends():void {
@@ -119,7 +140,7 @@ public class FriendBar extends AbstractView {
         for (var i:int = 0; i < tiles; i++) {
             var tile: FriendTile = _tiles[i+_offset];
             _container.addChild(tile);
-            tile.x = i * tile.width;
+            tile.x = i * TILE;
         }
     }
 

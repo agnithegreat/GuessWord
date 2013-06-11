@@ -6,7 +6,6 @@
  * To change this template use File | Settings | File Templates.
  */
 package com.orchideus.guessWord {
-import com.freshplanet.nativeExtensions.InAppPurchase;
 import com.orchideus.guessWord.data.Bank;
 import com.orchideus.guessWord.data.Bonus;
 import com.orchideus.guessWord.data.DeviceType;
@@ -19,6 +18,7 @@ import com.orchideus.guessWord.data.Variables;
 import com.orchideus.guessWord.game.Game;
 import com.orchideus.guessWord.server.Server;
 import com.orchideus.guessWord.ui.MainScreen;
+import com.sticksports.nativeExtensions.inAppPurchase.InAppPurchase;
 
 import starling.display.Sprite;
 import starling.events.Event;
@@ -48,8 +48,6 @@ public class GameController extends EventDispatcher {
 
     private var _server: Server;
 
-    private var _inApp: InAppPurchase;
-
     private var _tempData: Object;
 
     public function GameController(container: Sprite, assets: AssetManager, deviceType: DeviceType) {
@@ -75,12 +73,6 @@ public class GameController extends EventDispatcher {
     private function crateGame():void {
         _game = new Game();
         _game.addEventListener(Game.SEND_WORD, handleSendWord);
-
-        _inApp = InAppPurchase.getInstance();
-        if (_inApp.isInAppPurchaseSupported) {
-            _inApp.init();
-//            _inApp.addEventListener(InAppPurchaseEvent.PURCHASE_SUCCESSFULL, handleUpdateData);
-        }
 
         _server = new Server();
         _server.init("1", _player.uid);
@@ -114,11 +106,10 @@ public class GameController extends EventDispatcher {
                     Bank.parse(data.bank);
                     Variables.parse(data.variables);
 
-                    // TODO: enable/disable bonuses
-//                    _changed_pic = Boolean(data.player.params.changed_pic);
-
                     _game.updateStack(data.player.params);
                     _game.initWord(data.word);
+                    _game.changePic(data.player.params.changed_pic);
+                    _game.init();
                 }
                 break;
             case Server.CHECK_WORD:
@@ -179,12 +170,14 @@ public class GameController extends EventDispatcher {
     public function nextRound():void {
         _game.word.clear(true);
         _game.initWord(_tempData.new_word);
+        _game.init();
         _tempData = null;
     }
 
     private function handleUseBonus(event: Event):void {
         var bonus: Bonus = event.data as Bonus;
         if (bonus.price > _player.money) {
+            _view.showBank();
             return;
         }
 
@@ -226,9 +219,10 @@ public class GameController extends EventDispatcher {
     }
 
     private function handleBuyBank(event: Event):void {
-        if (_inApp.isInAppPurchaseSupported) {
+        if (InAppPurchase.isSupported && InAppPurchase.canMakePayments) {
             var bank: Bank = event.data as Bank;
-            _inApp.makePurchase(String(bank.id));
+            InAppPurchase.purchaseProduct(String(bank.id));
+            // TODO: wait for signal, then finishTransaction(id);
         }
     }
 

@@ -6,6 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 package com.orchideus.guessWord.ui.game {
+import com.orchideus.guessWord.GameController;
 import com.orchideus.guessWord.data.DeviceType;
 import com.orchideus.guessWord.data.Sound;
 import com.orchideus.guessWord.game.Game;
@@ -30,7 +31,7 @@ public class BottomPanel extends AbstractView {
 
     public static var TILE: int = 56;
 
-    private var _game: Game;
+    private var _controller: GameController;
 
     private var _slots: Vector.<SlotTile>;
     private var _slotsContainer: Sprite;
@@ -42,14 +43,14 @@ public class BottomPanel extends AbstractView {
 
     private var _deleteBtn: Button;
 
-    public function BottomPanel(assets: AssetManager, deviceType: DeviceType, game: Game) {
-        _game = game;
-        _game.addEventListener(Game.INIT, handleInit);
-        _game.addEventListener(Game.RESET, handleReset);
-        _game.addEventListener(Game.WIN, handleWin);
+    public function BottomPanel(assets: AssetManager, deviceType: DeviceType, controller: GameController) {
+        _controller = controller;
+        _controller.game.addEventListener(Game.INIT, handleInit);
+        _controller.game.addEventListener(Game.RESET, handleReset);
+        _controller.game.addEventListener(Game.WIN, handleWin);
 
-        _game.word.addEventListener(Word.ERROR, handleError);
-        _game.word.addEventListener(Word.CLEAR, handleClear);
+        _controller.game.word.addEventListener(Word.ERROR, handleError);
+        _controller.game.word.addEventListener(Word.CLEAR, handleClear);
 
         super(assets, deviceType)
     }
@@ -70,8 +71,8 @@ public class BottomPanel extends AbstractView {
         addChild(_lettersContainer);
 
         _letters = new <LetterTile>[];
-        for (var i: int = 0; i < _game.stack.letters.length; i++) {
-            var letter: LetterTile = new LetterTile(_assets, _deviceType, _game.stack.letters[i]);
+        for (var i: int = 0; i < _controller.game.stack.letters.length; i++) {
+            var letter: LetterTile = new LetterTile(_assets, _deviceType, _controller.game.stack.letters[i]);
             letter.addEventListener(TouchEvent.TOUCH, handleSelectLetter);
             letter.x = (i%10)*TILE;
             letter.y = int(i/10)*TILE;
@@ -109,8 +110,8 @@ public class BottomPanel extends AbstractView {
 
     private function handleInit(event: Event):void {
         _slots = new <SlotTile>[];
-        for (var i: int = 0; i < _game.word.length; i++) {
-            var letter: Letter = _game.word.letters[i];
+        for (var i: int = 0; i < _controller.game.word.length; i++) {
+            var letter: Letter = _controller.game.word.letters[i];
             _slots[i] = new SlotTile(_assets, _deviceType, letter);
             _slots[i].addEventListener(TouchEvent.TOUCH, handleRemoveLetter);
             _slots[i].x = i*TILE;
@@ -153,7 +154,7 @@ public class BottomPanel extends AbstractView {
         var touch: Touch = event.getTouch(letter, TouchPhase.BEGAN);
         if (touch) {
             var index: int = _letters.indexOf(letter);
-            _game.selectLetter(index);
+            _controller.game.selectLetter(index);
         }
     }
 
@@ -162,7 +163,7 @@ public class BottomPanel extends AbstractView {
         var touch: Touch = event.getTouch(slot, TouchPhase.BEGAN);
         if (touch) {
             var index: int = _slots.indexOf(slot);
-            _game.removeLetter(index);
+            _controller.game.removeLetter(index);
         }
     }
 
@@ -205,7 +206,7 @@ public class BottomPanel extends AbstractView {
     private function handleDelete(event: Event):void {
         dispatchEventWith(Sound.SOUND, true, Sound.BACKSPACE);
 
-        _game.reset();
+        _controller.game.reset();
     }
 }
 }

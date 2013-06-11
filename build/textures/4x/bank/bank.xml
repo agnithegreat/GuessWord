@@ -3,9 +3,9 @@
     <!-- Created with TexturePacker -->
     <!-- http://texturepacker.com -->
     <!--  -->
-    <SubTexture name="bank_best_buy_btn_down" x="0" y="0" width="213" height="107"/>
-    <SubTexture name="bank_best_buy_btn_up" x="215" y="0" width="213" height="107"/>
-    <SubTexture name="bank_best_buy_under" x="430" y="0" width="977" height="110"/>
+    <SubTexture name="bank_bestbuy_btn_down" x="0" y="0" width="213" height="107"/>
+    <SubTexture name="bank_bestbuy_btn_up" x="215" y="0" width="213" height="107"/>
+    <SubTexture name="bank_bestitem_under" x="430" y="0" width="977" height="110"/>
     <SubTexture name="bank_buy_btn_down" x="1409" y="0" width="213" height="107"/>
     <SubTexture name="bank_buy_btn_up" x="1624" y="0" width="213" height="107"/>
     <SubTexture name="bank_close_btn" x="1839" y="0" width="46" height="47"/>

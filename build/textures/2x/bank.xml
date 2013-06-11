@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TextureAtlas imagePath="bank.png">
+    <!-- Created with TexturePacker -->
+    <!-- http://texturepacker.com -->
+    <!--  -->
+    <SubTexture name="bank_bestbuy_btn_up" x="123" y="0" width="121" height="65"/>
+    <SubTexture name="bank_bestitem_under" x="246" y="0" width="525" height="66"/>
+    <SubTexture name="bank_buy_btn_down" x="773" y="0" width="121" height="65"/>
+    <SubTexture name="bank_buy_btn_up" x="896" y="0" width="121" height="65"/>
+    <SubTexture name="bank_close_btn" x="0" y="68" width="29" height="28"/>
+    <SubTexture name="bank_close_btn_down" x="31" y="68" width="39" height="38"/>
+    <SubTexture name="bank_coin_ico" x="72" y="68" width="50" height="53"/>
+    <SubTexture name="bank_item_under" x="124" y="68" width="525" height="66"/>
+    <SubTexture name="bank_under" x="0" y="136" width="597" height="446"/>
+    <SubTexture name="bank_bestbuy_btn_down" x="0" y="0" width="121" height="65"/>
+</TextureAtlas>

@@ -36,6 +36,9 @@ public class FriendTile extends AbstractView {
         _friend = friend;
 
         super(assets, deviceType);
+
+        // TODO: localization
+        // TODO: подобрать фильтры
     }
 
     override protected function initialize():void {
@@ -46,10 +49,6 @@ public class FriendTile extends AbstractView {
             _levelIcon = new Image(_assets.getTexture("main_lvl_sm_ico"));
             addChild(_levelIcon);
 
-            _levelTF = new TextField(_invite.width*0.6, _invite.height*0.3, String(_friend.level), "Arial", 24, 0xFFFFFF, true);
-            _levelTF.nativeFilters = [new GlowFilter(0, 1, 2, 2, 2, 3)];
-            addChild(_levelTF);
-
             _avatar = new Image(_assets.getTexture("main_ava_under"));
             // TODO: подгрузка фотки
             addChild(_avatar);
@@ -58,9 +57,11 @@ public class FriendTile extends AbstractView {
             _inviteBtn.addEventListener(Event.TRIGGERED, handleClick);
             addChild(_inviteBtn);
 
-            _inviteTF = new TextField(_inviteBtn.width, _inviteBtn.height, "СПРОСИТЬ", "Arial", 24, 0xFFFFFF, true);
+            super.initialize();
+
+            addChild(_levelTF);
+
             _inviteTF.touchable = false;
-            _inviteTF.nativeFilters = [new GlowFilter(0, 1, 2, 2, 2, 3)];
             addChild(_inviteTF);
         } else {
             _invite = new Image(_assets.getTexture("main_invite_under"));
@@ -73,50 +74,82 @@ public class FriendTile extends AbstractView {
             _inviteBtn.addEventListener(Event.TRIGGERED, handleClick);
             addChild(_inviteBtn);
 
-            _inviteTF = new TextField(_inviteBtn.width, _inviteBtn.height, "ПОЗВАТЬ\nДРУЗЕЙ", "Arial", 24, 0xFFFFFF, true);
+            super.initialize();
+
             _inviteTF.touchable = false;
-            _inviteTF.nativeFilters = [new GlowFilter(0, 1, 2, 2, 2, 3)];
             addChild(_inviteTF);
         }
     }
 
-    override protected function align():void {
-        switch (_deviceType) {
-            case DeviceType.iPad:
-                if (_friend) {
-                    place(_invite, 0, -3);
-                    place(_levelIcon, 2, -4);
-                    place(_levelTF, 12, -3);
-                    _levelTF.fontSize = 12;
-                    place(_avatar, 4, 8);
-                    place(_inviteBtn, -3, 32);
-                    place(_inviteTF, -3, 32);
-                    _inviteTF.fontSize = 12;
-                } else {
-                    place(_avatar, 13, 16);
-                    place(_inviteBtn, -6, 62);
-                    place(_inviteTF, -6, 62);
-                    _inviteTF.fontSize = 12;
-                }
-                break;
-            case DeviceType.iPhone5:
-            case DeviceType.iPhone4:
-                if (_friend) {
-                    place(_invite, 0, -3);
-                    place(_levelIcon, 2, -4);
-                    place(_levelTF, 12, -3);
-                    _levelTF.fontSize = 5;
-                    place(_avatar, 4, 8);
-                    place(_inviteBtn, -3, 32);
-                    place(_inviteTF, -3, 32);
-                    _inviteTF.fontSize = 5;
-                } else {
-                    place(_avatar, 6, 7);
-                    place(_inviteBtn, -3, 28);
-                    place(_inviteTF, -3, 28);
-                    _inviteTF.fontSize = 5;
-                }
-                break;
+    override protected function initializeIPad():void {
+        if (_friend) {
+            _invite.y = -3;
+
+            _levelIcon.x = 2;
+            _levelIcon.y = -4;
+
+            _levelTF = createTextField(44, 17, 12, String(_friend.level));
+            _levelTF.nativeFilters = [new GlowFilter(0, 1, 2, 2, 2, 3)];
+            _levelTF.x = 12;
+            _levelTF.y = -3;
+
+            _avatar.x = 4;
+            _avatar.y = 8;
+
+            _inviteBtn.x = -3;
+            _inviteBtn.y = 32;
+
+            _inviteTF = createTextField(74, 98, 12, "СПРОСИТЬ");
+            _inviteTF.nativeFilters = [new GlowFilter(0, 1, 2, 2, 2, 3)];
+            _inviteTF.x = -3;
+            _inviteTF.y = 32;
+        } else {
+            _avatar.x = 13;
+            _avatar.y = 16;
+
+            _inviteBtn.x = -6;
+            _inviteBtn.y = 62;
+
+            _inviteTF = createTextField(86, 46, 12, "ПОЗВАТЬ\nДРУЗЕЙ");
+            _inviteTF.nativeFilters = [new GlowFilter(0, 1, 2, 2, 2, 3)];
+            _inviteTF.x = -6;
+            _inviteTF.y = 62;
+        }
+    }
+
+    override protected function initializeIPhone():void {
+        if (_friend) {
+            _invite.y = -3;
+
+            _levelIcon.x = 2;
+            _levelIcon.y = -4;
+
+            _levelTF = createTextField(22, 12, 5, String(_friend.level));
+            _levelTF.nativeFilters = [new GlowFilter(0, 1, 2, 2, 2, 3)];
+            _levelTF.x = 10;
+            _levelTF.y = -3;
+
+            _avatar.x = 4;
+            _avatar.y = 8;
+
+            _inviteBtn.x = -3;
+            _inviteBtn.y = 32;
+
+            _inviteTF = createTextField(37, 16, 5, "СПРОСИТЬ");
+            _inviteTF.nativeFilters = [new GlowFilter(0, 1, 2, 2, 2, 3)];
+            _inviteTF.x = -3;
+            _inviteTF.y = 32;
+        } else {
+            _avatar.x = 6;
+            _avatar.y = 7;
+
+            _inviteBtn.x = -3;
+            _inviteBtn.y = 28;
+
+            _inviteTF = createTextField(37, 21, 5, "ПОЗВАТЬ\nДРУЗЕЙ");
+            _inviteTF.nativeFilters = [new GlowFilter(0, 1, 2, 2, 2, 3)];
+            _inviteTF.x = -3;
+            _inviteTF.y = 28;
         }
     }
 

@@ -40,6 +40,9 @@ public class BankTile extends AbstractView {
         _bank = bank;
 
         super(assets, deviceType);
+
+        // TODO: localization
+        // TODO: подобрать фильтры
     }
 
     override protected function initialize():void {
@@ -49,55 +52,78 @@ public class BankTile extends AbstractView {
         _coin = new Image(_assets.getTexture("bank_coin_ico"));
         addChild(_coin);
 
-        _value = new TextField(_back.width*0.25, _back.height, String(_bank.value), "Arial", 24, 0xFFFFFF, true);
-        _value.hAlign = HAlign.LEFT;
-        _value.nativeFilters = [new GlowFilter(0, 1, 3, 3, 5, 3)];
-        addChild(_value);
-
-        if (_bank.best_value) {
-            _bestValue = new TextField(_back.width*0.25, _back.height, "ПОПУЛЯРНЫЙ\nПЛАТЕЖ!", "Arial", 24, 0x006097, true);
-            _bestValue.nativeFilters = [new GlowFilter(0xFFFFFF, 1, 3, 3, 5, 3)];
-            addChild(_bestValue);
-        }
-
-        _price = new TextField(_back.width*0.4, _back.height, String(_bank.price)+" руб", "Arial", 24, 0xFFFFFF, true);
-        _price.hAlign = HAlign.RIGHT;
-        _price.nativeFilters = [new GlowFilter(0, 1, 3, 3, 5, 3)];
-        addChild(_price);
-
         _buyBtn = new Button(_assets.getTexture(_bank.best_value ? "bank_bestbuy_btn_up" : "bank_buy_btn_up"), "", _assets.getTexture(_bank.best_value ? "bank_bestbuy_btn_down" : "bank_buy_btn_down"));
         _buyBtn.addEventListener(Event.TRIGGERED, handleClick);
         addChild(_buyBtn);
 
-        _buyTF = new TextField(_buyBtn.width, _buyBtn.height, "КУПИТЬ", "Arial", 24, 0xFFFFFF, true);
+        super.initialize();
+
+        _value.hAlign = HAlign.LEFT;
+        addChild(_value);
+
+        _price.hAlign = HAlign.RIGHT;
+        addChild(_price);
+
         _buyTF.touchable = false;
-        _buyTF.nativeFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
         addChild(_buyTF);
     }
 
-    override protected function align():void {
-        switch (_deviceType) {
-            case DeviceType.iPad:
-                place(_coin, 700, 810);
-                break;
-            case DeviceType.iPhone5:
-            case DeviceType.iPhone4:
-                place(_coin, -5, 4);
-                place(_value, 25, 0);
-                _value.fontSize = 16;
+    override protected function initializeIPad():void {
+        _coin.x = -10;
+        _coin.y = 4;
 
-                if (_bestValue) {
-                    place(_bestValue, 70, 1);
-                    _bestValue.fontSize = 8;
-                }
+        _value = createTextField(115, 55, 24, String(_bank.value));
+        _value.nativeFilters = [new GlowFilter(0, 1, 3, 3, 5, 3)];
+        _value.x = 44;
 
-                place(_price, 100, 0);
-                _price.fontSize = 16;
-                place(_buyBtn, 210, 2);
-                place(_buyTF, 210, 2);
-                _buyTF.fontSize = 8;
-                break;
+        if (_bank.best_value) {
+            _bestValue = createTextField(115, 55, 14, "ПОПУЛЯРНЫЙ\nПЛАТЕЖ!", 0x006097);
+            _bestValue.nativeFilters = [new GlowFilter(0xFFFFFF, 1, 3, 3, 5, 3)];
+            _bestValue.x = 122;
+            _bestValue.y = 2;
+            addChild(_bestValue);
         }
+
+        _price = createTextField(195, 55, 24, String(_bank.price)+" руб");
+        _price.nativeFilters = [new GlowFilter(0, 1, 3, 3, 5, 3)];
+        _price.x = 177;
+
+        _buyBtn.x = 382;
+        _buyBtn.y = 2;
+
+        _buyTF = createTextField(106, 53, 16, "КУПИТЬ");
+        _buyTF.nativeFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
+        _buyTF.x = 382;
+        _buyTF.y = 2;
+    }
+
+    override protected function initializeIPhone():void {
+        _coin.x = -5;
+        _coin.y = 4;
+
+        _value = createTextField(65, 33, 16, String(_bank.value));
+        _value.nativeFilters = [new GlowFilter(0, 1, 3, 3, 5, 3)];
+        _value.x = 25;
+
+        if (_bank.best_value) {
+            _bestValue = createTextField(65, 33, 8, "ПОПУЛЯРНЫЙ\nПЛАТЕЖ!", 0x006097);
+            _bestValue.nativeFilters = [new GlowFilter(0xFFFFFF, 1, 3, 3, 5, 3)];
+            _bestValue.x = 70;
+            _bestValue.y = 1;
+            addChild(_bestValue);
+        }
+
+        _price = createTextField(105, 33, 16, String(_bank.price)+" руб");
+        _price.nativeFilters = [new GlowFilter(0, 1, 3, 3, 5, 3)];
+        _price.x = 100;
+
+        _buyBtn.x = 210;
+        _buyBtn.y = 2;
+
+        _buyTF = createTextField(60, 32, 8, "КУПИТЬ");
+        _buyTF.nativeFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
+        _buyTF.x = 210;
+        _buyTF.y = 2;
     }
 
     private function handleClick(event:Event):void {

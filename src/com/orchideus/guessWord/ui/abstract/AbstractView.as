@@ -9,11 +9,17 @@ package com.orchideus.guessWord.ui.abstract {
 import com.orchideus.guessWord.data.DeviceType;
 
 import starling.display.DisplayObject;
+
 import starling.display.Sprite;
 import starling.events.Event;
+import starling.text.TextField;
 import starling.utils.AssetManager;
 
 public class AbstractView extends Sprite {
+
+    public static function createTextField(width: int, height: int, size: int, text: String = "", color: int = 0xFFFFFF):TextField {
+        return new TextField(width, height, text, "Arial", size, color, true);
+    }
 
     protected var _assets: AssetManager;
 
@@ -27,7 +33,11 @@ public class AbstractView extends Sprite {
     }
 
     protected function initialize():void {
-
+        if (_deviceType == DeviceType.iPad) {
+            initializeIPad();
+        } else {
+            initializeIPhone();
+        }
     }
 
     protected function align():void {
@@ -44,8 +54,17 @@ public class AbstractView extends Sprite {
         object.y = y;
     }
 
+    protected function initializeIPad():void {
+
+    }
+
+    protected function initializeIPhone():void {
+
+    }
+
     private function handleAdded(event: Event):void {
         removeEventListener(Event.ADDED_TO_STAGE, handleAdded);
+
         initialize();
         align();
     }

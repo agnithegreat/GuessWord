@@ -15,7 +15,6 @@ import starling.utils.RectangleUtil;
 import starling.utils.ScaleMode;
 import starling.utils.formatString;
 
-[SWF(frameRate="60", width="320", height="480")]
 public class Guess extends Sprite {
 
     private var _assets: AssetManager;

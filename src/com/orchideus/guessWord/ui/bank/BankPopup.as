@@ -23,6 +23,8 @@ import starling.utils.AssetManager;
 
 public class BankPopup extends Screen {
 
+    public static var TILE: int;
+
     private var _title: TextField;
 
     private var _closeBtn: Button;
@@ -31,13 +33,12 @@ public class BankPopup extends Screen {
 
     public function BankPopup(assets: AssetManager, deviceType: DeviceType) {
         super(assets, deviceType, "bank_under");
+
+        // TODO: localization
+        // TODO: подобрать фильтры
     }
 
     override protected function initialize():void {
-        _title = new TextField(_background.width, _background.height*0.14, "КУПИТЬ МОНЕТЫ", "Arial", 24, 0xFFFFFF, true);
-        _title.nativeFilters = [new GlowFilter(0, 1, 3, 3, 5, 3)];
-        addChild(_title);
-
         _closeBtn = new Button(_assets.getTexture("bank_close_btn"), "", _assets.getTexture("bank_close_btn_down"));
         _closeBtn.addEventListener(Event.TRIGGERED, handleClose);
         addChild(_closeBtn);
@@ -45,28 +46,43 @@ public class BankPopup extends Screen {
         _container = new Sprite();
         addChild(_container);
 
+        super.initialize();
+
+        _title.touchable = false;
+        addChild(_title);
+
         for (var i:int = 0; i < Bank.VALUES.length; i++) {
             var bank: Bank = Bank.VALUES[i];
             var bankTile: BankTile = new BankTile(_assets, _deviceType, bank);
             _container.addChild(bankTile);
-            bankTile.y = i * bankTile.height*0.87;
+            bankTile.y = i * TILE;
         }
     }
 
-    override protected function align():void {
-        switch (_deviceType) {
-            case DeviceType.iPad:
-                place(_container, 40, 80);
-                _title.fontSize = 30;
-                place(_closeBtn, 525, 17);
-                break;
-            case DeviceType.iPhone5:
-            case DeviceType.iPhone4:
-                place(_container, 18, 35);
-                _title.fontSize = 14;
-                place(_closeBtn, 271, 10);
-                break;
-        }
+    override protected function initializeIPad():void {
+        _title = createTextField(_background.width, 60, 30, "КУПИТЬ МОНЕТЫ");
+        _title.nativeFilters = [new GlowFilter(0, 1, 3, 3, 5, 3)];
+
+        _closeBtn.x = 522;
+        _closeBtn.y = 17;
+
+        _container.x = 42;
+        _container.y = 76;
+
+        TILE = 54;
+    }
+
+    override protected function initializeIPhone():void {
+        _title = createTextField(_background.width, 32, 16, "КУПИТЬ МОНЕТЫ");
+        _title.nativeFilters = [new GlowFilter(0, 1, 3, 3, 5, 3)];
+
+        _closeBtn.x = 271;
+        _closeBtn.y = 9;
+
+        _container.x = 18;
+        _container.y = 35;
+
+        TILE = 30;
     }
 
     private function handleClose(event: Event):void {

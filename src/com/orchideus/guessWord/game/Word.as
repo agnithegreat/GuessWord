@@ -68,6 +68,10 @@ public class Word extends EventDispatcher {
         while (_letters[_filled].letter) {
             _filled++;
         }
+
+        if (isComplete) {
+            Starling.juggler.delayCall(full, 0.3);
+        }
     }
 
     public function setLetter(value: String):void {

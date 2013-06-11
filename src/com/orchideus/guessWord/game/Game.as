@@ -40,8 +40,7 @@ public class Game extends EventDispatcher {
 
     public var pic5: Pic;
 
-    private var _letters: Array;
-    private var _availableLetters: Array;
+    private var _changedPic: int;
 
     public function Game() {
         _word = new Word();
@@ -56,6 +55,10 @@ public class Game extends EventDispatcher {
         _stack = new LettersStack();
     }
 
+    public function init():void {
+        dispatchEventWith(INIT);
+    }
+
     public function initWord(data: Object):void {
         _word.init(data.id, data.word_length);
 
@@ -68,8 +71,6 @@ public class Game extends EventDispatcher {
         pic5.url = data.pic5;
 
         updateDescription(data);
-
-        dispatchEventWith(INIT);
     }
 
     public function updateStack(data: Object):void {
@@ -92,8 +93,8 @@ public class Game extends EventDispatcher {
 
     public function changePic(id: int):void {
         if (id) {
+            _changedPic = id;
             this["pic"+id].url = pic5.url;
-            this["pic"+id].description = pic5.description;
             dispatchEventWith(PIC_CHANGED, false, id);
         }
     }
@@ -103,7 +104,10 @@ public class Game extends EventDispatcher {
         pic2.description = data.pic2_descr;
         pic3.description = data.pic3_descr;
         pic4.description = data.pic4_descr;
-        pic5.description = data.pic5_descr;
+
+        if (_changedPic) {
+            this["pic"+_changedPic].description = data.pic5_descr;
+        }
     }
 
     public function selectLetter(id: int):void {
@@ -123,10 +127,6 @@ public class Game extends EventDispatcher {
         }
     }
 
-    public function win():void {
-        dispatchEventWith(WIN);
-    }
-
     public function wordError():void {
         _word.error();
         Starling.juggler.delayCall(reset, 1.5);
@@ -137,6 +137,10 @@ public class Game extends EventDispatcher {
             removeLetter(i, true);
         }
         dispatchEventWith(RESET);
+    }
+
+    public function win():void {
+        dispatchEventWith(WIN);
     }
 
     private function update():void {
