@@ -11,6 +11,7 @@ import com.orchideus.guessWord.data.DeviceType;
 import com.orchideus.guessWord.data.Player;
 import com.orchideus.guessWord.data.Sound;
 import com.orchideus.guessWord.ui.abstract.AbstractView;
+import com.orchideus.guessWord.ui.tile.WordStatsTile;
 
 import flash.filters.GlowFilter;
 
@@ -24,6 +25,8 @@ public class TopPanel extends AbstractView {
     private var _player: Player;
 
     private var _levelTF: TextField;
+
+    private var _wordStats: WordStatsTile;
 
     private var _moneyTF: TextField;
     private var _bankBtn: Button;
@@ -42,6 +45,9 @@ public class TopPanel extends AbstractView {
         _bankBtn.addEventListener(Event.TRIGGERED, handleBank);
         addChild(_bankBtn);
 
+        _wordStats = new WordStatsTile(_assets, _deviceType);
+        addChild(_wordStats);
+
         super.initialize();
 
         addChild(_levelTF);
@@ -57,6 +63,9 @@ public class TopPanel extends AbstractView {
         _levelTF.x = 64;
         _levelTF.y = 31;
 
+        _wordStats.x = 282;
+        _wordStats.y = 13;
+
         _moneyTF = createTextField(88, 30, 24);
         _moneyTF.nativeFilters = [new GlowFilter(0x333333, 1, 3, 3, 3, 3)];
         _moneyTF.x = 622;
@@ -71,6 +80,9 @@ public class TopPanel extends AbstractView {
         _levelTF.nativeFilters = [new GlowFilter(0x333333, 1, 3, 3, 3, 3)];
         _levelTF.x = 30;
         _levelTF.y = 53;
+
+        _wordStats.x = 112;
+        _wordStats.y = 46;
 
         _moneyTF = createTextField(44, 12, 12);
         _moneyTF.nativeFilters = [new GlowFilter(0x333333, 1, 3, 3, 3, 3)];
