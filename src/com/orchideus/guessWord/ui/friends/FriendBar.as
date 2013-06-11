@@ -76,6 +76,7 @@ public class FriendBar extends AbstractView {
     }
 
     override protected function initializeIPad():void {
+        // TODO: проверить
         _container.x = 67;
 
         _leftBtn.x = 46;

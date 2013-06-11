@@ -82,6 +82,8 @@ public class FriendTile extends AbstractView {
     }
 
     override protected function initializeIPad():void {
+        // TODO: проверить
+
         if (_friend) {
             _invite.y = -3;
 
@@ -99,7 +101,7 @@ public class FriendTile extends AbstractView {
             _inviteBtn.x = -3;
             _inviteBtn.y = 32;
 
-            _inviteTF = createTextField(74, 98, 12, "СПРОСИТЬ");
+            _inviteTF = createTextField(_inviteBtn.width, _inviteBtn.height, 12, "СПРОСИТЬ");
             _inviteTF.nativeFilters = [new GlowFilter(0, 1, 2, 2, 2, 3)];
             _inviteTF.x = -3;
             _inviteTF.y = 32;
@@ -110,7 +112,7 @@ public class FriendTile extends AbstractView {
             _inviteBtn.x = -6;
             _inviteBtn.y = 62;
 
-            _inviteTF = createTextField(86, 46, 12, "ПОЗВАТЬ\nДРУЗЕЙ");
+            _inviteTF = createTextField(_inviteBtn.width, _inviteBtn.height, 12, "ПОЗВАТЬ\nДРУЗЕЙ");
             _inviteTF.nativeFilters = [new GlowFilter(0, 1, 2, 2, 2, 3)];
             _inviteTF.x = -6;
             _inviteTF.y = 62;
@@ -124,7 +126,7 @@ public class FriendTile extends AbstractView {
             _levelIcon.x = 2;
             _levelIcon.y = -4;
 
-            _levelTF = createTextField(22, 12, 5, String(_friend.level));
+            _levelTF = createTextField(_inviteBtn.width, _inviteBtn.height, 5, String(_friend.level));
             _levelTF.nativeFilters = [new GlowFilter(0, 1, 2, 2, 2, 3)];
             _levelTF.x = 10;
             _levelTF.y = -3;
@@ -135,7 +137,7 @@ public class FriendTile extends AbstractView {
             _inviteBtn.x = -3;
             _inviteBtn.y = 32;
 
-            _inviteTF = createTextField(37, 16, 5, "СПРОСИТЬ");
+            _inviteTF = createTextField(_inviteBtn.width, _inviteBtn.height, 5, "СПРОСИТЬ");
             _inviteTF.nativeFilters = [new GlowFilter(0, 1, 2, 2, 2, 3)];
             _inviteTF.x = -3;
             _inviteTF.y = 32;

@@ -29,7 +29,7 @@ import starling.utils.AssetManager;
 
 public class BottomPanel extends AbstractView {
 
-    public static var TILE: int = 56;
+    public static var TILE: int;
 
     private var _controller: GameController;
 
@@ -52,23 +52,32 @@ public class BottomPanel extends AbstractView {
         _controller.game.word.addEventListener(Word.ERROR, handleError);
         _controller.game.word.addEventListener(Word.CLEAR, handleClear);
 
-        super(assets, deviceType)
+        super(assets, deviceType);
+
+        // TODO: localization
     }
 
     override protected function initialize():void {
         _slotsContainer = new Sprite();
+        _slotsContainer.x = stage.stageWidth/2;
         addChild(_slotsContainer);
 
-        var texture: Texture = _assets.getTexture("main_letter_under");
-        TILE = texture.width*0.94;
-
         _error = new ErrorView(_assets, _deviceType, "ОШИБКА");
-        addChild(_error);
-        _error.pivotX = _error.width/2;
+        _error.x = stage.stageWidth/2;
         _error.visible = false;
 
         _lettersContainer = new Sprite();
+        _lettersContainer.x = stage.stageWidth/2;
         addChild(_lettersContainer);
+
+        _deleteBtn = new Button(_assets.getTexture("main_del_btn_down"), "", _assets.getTexture("main_del_btn_up"));
+        _deleteBtn.addEventListener(Event.TRIGGERED, handleDelete);
+        addChild(_deleteBtn);
+
+        super.initialize();
+
+        addChild(_error);
+        _error.pivotX = _error.width/2;
 
         _letters = new <LetterTile>[];
         for (var i: int = 0; i < _controller.game.stack.letters.length; i++) {
@@ -79,33 +88,36 @@ public class BottomPanel extends AbstractView {
             _lettersContainer.addChild(letter);
             _letters[i] = letter;
         }
-
         _lettersContainer.pivotX = _lettersContainer.width/2;
 
         addEventListener(LetterTile.MOVE_FROM, handleMoveFrom);
         addEventListener(LetterTile.MOVE_TO, handleMoveTo);
-
-        _deleteBtn = new Button(_assets.getTexture("main_del_btn_down"), "", _assets.getTexture("main_del_btn_up"));
-        _deleteBtn.addEventListener(Event.TRIGGERED, handleDelete);
-        addChild(_deleteBtn);
     }
 
-    override protected function align():void {
-        switch (_deviceType) {
-            case DeviceType.iPad:
-                place(_slotsContainer, stage.stageWidth/2, 712);
-                place(_error, stage.stageWidth/2, 712);
-                place(_lettersContainer, stage.stageWidth/2, 785);
-                place(_deleteBtn, 680, 705);
-                break;
-            case DeviceType.iPhone5:
-            case DeviceType.iPhone4:
-                place(_slotsContainer, stage.stageWidth/2, 373);
-                place(_error, stage.stageWidth/2, 373);
-                place(_lettersContainer, stage.stageWidth/2, 410);
-                place(_deleteBtn, 225, 330);
-                break;
-        }
+    override protected function initializeIPad():void {
+        _slotsContainer.y = 712;
+
+        _error.y = 712;
+
+        _lettersContainer.y = 785;
+
+        _deleteBtn.x = 680;
+        _deleteBtn.y = 705;
+
+        TILE = 56;
+    }
+
+    override protected function initializeIPhone():void {
+        _slotsContainer.y = 373;
+
+        _error.y = 373;
+
+        _lettersContainer.y = 410;
+
+        _deleteBtn.x = 225;
+        _deleteBtn.y = 330;
+
+        TILE = 31;
     }
 
     private function handleInit(event: Event):void {

@@ -9,8 +9,6 @@ package com.orchideus.guessWord.ui.game {
 import com.orchideus.guessWord.data.DeviceType;
 import com.orchideus.guessWord.ui.abstract.AbstractView;
 
-import starling.display.Image;
-
 import starling.utils.AssetManager;
 
 public class RightPanel extends AbstractView {
@@ -24,18 +22,18 @@ public class RightPanel extends AbstractView {
     override protected function initialize():void {
         _bar = new ScoreBar(_assets, _deviceType);
         addChild(_bar);
+
+        super.initialize();
     }
 
-    override protected function align():void {
-        switch (_deviceType) {
-            case DeviceType.iPad:
-                place(_bar, 693, 283);
-                break;
-            case DeviceType.iPhone5:
-            case DeviceType.iPhone4:
-                place(_bar, 286, 175);
-                break;
-        }
+    override protected function initializeIPad():void {
+        _bar.x = 693;
+        _bar.y = 283;
+    }
+
+    override protected function initializeIPhone():void {
+        _bar.x = 286;
+        _bar.y = 190;
     }
 }
 }

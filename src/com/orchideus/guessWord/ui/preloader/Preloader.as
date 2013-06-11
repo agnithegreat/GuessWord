@@ -43,6 +43,9 @@ public class Preloader extends Screen {
         _controller.addEventListener(GameController.SHOW_LANGUAGES, handleShowLanguages);
 
         super(assets, deviceType, "preloader_under");
+
+        // TODO: localization
+        // TODO: подобрать фильтры
     }
 
     override protected function initialize():void {
@@ -50,46 +53,60 @@ public class Preloader extends Screen {
         addChild(_logo);
 
         _title = new Image(_assets.getTexture("preloader_logo_rus"));
+        _title.pivotX = _title.width/2;
         addChild(_title);
 
         _progress = new Gauge(_assets.getTexture("preloader_filler"));
-        _progress.ratioH = 0;
         addChild(_progress);
-
-        _progressTF = new TextField(100, 25, "-------", "Arial", 20, 0xFFFFFF, true);
-        _progressTF.nativeFilters = [new GlowFilter(0x424242, 1, 3, 3, 3, 3)];
-        _progressTF.hAlign = HAlign.CENTER;
-        _progressTF.vAlign = VAlign.TOP;
-        _progressTF.text = "";
-        addChild(_progressTF);
 
         _langs = new Sprite();
         addChild(_langs);
+
+        super.initialize();
+
+        addChild(_progressTF);
+
+        _progress.ratioH = 0;
     }
 
-    override protected function align():void {
-        super.align();
+    override protected function initializeIPad():void {
+        _logo.x = 30;
+        _logo.y = 30;
 
-        switch (_deviceType) {
-            case DeviceType.iPad:
-                place(_logo, 30, 30);
-                place(_title, 22, 100);
-                place(_progress, 242, 418);
-                place(_progressTF, 334, 432);
-                _progressTF.fontSize = 20;
-                place(_langs, 25, 780);
-                break;
-            case DeviceType.iPhone5:
-            case DeviceType.iPhone4:
-                place(this, 0, (stage.stageHeight-_background.height)/2);
-                place(_logo, 125, (stage.stageHeight-_logo.height) - 10 - y);
-                place(_title, 22, 100);
-                place(_progress, 100, 218);
-                place(_progressTF, 110, 221);
-                _progressTF.fontSize = 12;
-                place(_langs, 12, 395);
-                break;
-        }
+        _title.x = stage.stageWidth/2;
+        _title.y = 180;
+
+        _progress.x = 242;
+        _progress.y = 418;
+
+        _progressTF = createTextField(_progress.width, _progress.height, 20);
+        _progressTF.nativeFilters = [new GlowFilter(0x424242, 1, 3, 3, 3, 3)];
+        _progressTF.x = 242;
+        _progressTF.y = 418;
+
+        _langs.x = 25;
+        _langs.y = 780;
+    }
+
+    override protected function initializeIPhone():void {
+        y = (stage.stageHeight-_background.height)/2;
+
+        _logo.x = 125;
+        _logo.y = (stage.stageHeight-_logo.height) - 10 - y;
+
+        _title.x = stage.stageWidth/2;
+        _title.y = 100;
+
+        _progress.x = 100;
+        _progress.y = 218;
+
+        _progressTF = createTextField(_progress.width, _progress.height, 12);
+        _progressTF.nativeFilters = [new GlowFilter(0x424242, 1, 3, 3, 3, 3)];
+        _progressTF.x = 100;
+        _progressTF.y = 218;
+
+        _langs.x = 12;
+        _langs.y = 395;
     }
 
     private function handleProgress(event: Event):void {
@@ -99,6 +116,8 @@ public class Preloader extends Screen {
     }
 
     private function handleShowLanguages(event: Event):void {
+        _progressTF.text = "ВЫБЕРИТЕ ЯЗЫК";
+
         for (var i:int = 0; i < Language.languages.length; i++) {
             var lang: Language = Language.languages[i];
             var tile: LanguageTile = new LanguageTile(i, lang, _assets, _deviceType);

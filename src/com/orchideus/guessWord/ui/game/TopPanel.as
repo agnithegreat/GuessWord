@@ -33,50 +33,52 @@ public class TopPanel extends AbstractView {
         _player.addEventListener(Player.UPDATE, handleUpdate);
 
         super(assets, deviceType);
+
+        // TODO: подобрать фильтры
     }
 
     override protected function initialize():void {
-        _levelTF = new TextField(70, 40, "", "Arial", 36, 0xFFFFFF, true);
-        _levelTF.nativeFilters = [new GlowFilter(0x333333, 1, 3, 3, 3, 3)];
-        _levelTF.x = 64;
-        _levelTF.y = 31;
-        addChild(_levelTF);
-
-        _moneyTF = new TextField(88, 25, "", "Arial", 20, 0xFFFFFF, true);
-        _moneyTF.nativeFilters = [new GlowFilter(0x333333, 1, 3, 3, 3, 3)];
-        _moneyTF.x = 626;
-        _moneyTF.y = 41;
-        addChild(_moneyTF);
-
         _bankBtn = new Button(_assets.getTexture("main_plus_btn_up"), "", _assets.getTexture("main_plus_btn_down"));
         _bankBtn.addEventListener(Event.TRIGGERED, handleBank);
-        _bankBtn.x = 712;
-        _bankBtn.y = 24;
         addChild(_bankBtn);
+
+        super.initialize();
+
+        addChild(_levelTF);
+
+        addChild(_moneyTF);
 
         update();
     }
 
-    override protected function align():void {
-        super.align();
+    override protected function initializeIPad():void {
+        _levelTF = createTextField(70, 40, 36);
+        _levelTF.nativeFilters = [new GlowFilter(0x333333, 1, 3, 3, 3, 3)];
+        _levelTF.x = 64;
+        _levelTF.y = 31;
 
-        switch (_deviceType) {
-            case DeviceType.iPad:
-                place(_levelTF, 64, 31);
-                place(_moneyTF, 626, 41);
-                place(_bankBtn, 712, 24);
-                break;
-            case DeviceType.iPhone5:
-            case DeviceType.iPhone4:
-                resize(_levelTF, 35, 20);
-                place(_levelTF, 30, 53);
-                _levelTF.fontSize = 16;
-                resize(_moneyTF, 44, 12);
-                place(_moneyTF, 250, 57);
-                _moneyTF.fontSize = 12;
-                place(_bankBtn, 293, 51);
-                break;
-        }
+        _moneyTF = createTextField(88, 25, 20);
+        _moneyTF.nativeFilters = [new GlowFilter(0x333333, 1, 3, 3, 3, 3)];
+        _moneyTF.x = 626;
+        _moneyTF.y = 41;
+
+        _bankBtn.x = 712;
+        _bankBtn.y = 24;
+    }
+
+    override protected function initializeIPhone():void {
+        _levelTF = createTextField(35, 20, 16);
+        _levelTF.nativeFilters = [new GlowFilter(0x333333, 1, 3, 3, 3, 3)];
+        _levelTF.x = 30;
+        _levelTF.y = 53;
+
+        _moneyTF = createTextField(44, 12, 12);
+        _moneyTF.nativeFilters = [new GlowFilter(0x333333, 1, 3, 3, 3, 3)];
+        _moneyTF.x = 250;
+        _moneyTF.y = 57;
+
+        _bankBtn.x = 292;
+        _bankBtn.y = 51;
     }
 
     private function update():void {

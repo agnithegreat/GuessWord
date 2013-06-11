@@ -24,6 +24,8 @@ public class ScoreBar extends AbstractView {
 
     public function ScoreBar(assets:AssetManager, deviceType:DeviceType) {
         super(assets, deviceType);
+
+        // TODO: подобрать фильтры
     }
 
     override protected function initialize():void {
@@ -33,25 +35,29 @@ public class ScoreBar extends AbstractView {
         _timeBar = new Image(_assets.getTexture("main_time_under"));
         addChild(_timeBar);
 
-        _timeTF = new TextField(_timeBar.width, _timeBar.height, "00:00", "Arial", 24, 0xFFFFFF, true);
-        _timeTF.nativeFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
+        super.initialize();
+
         addChild(_timeTF);
     }
 
-    override protected function align():void {
-        switch (_deviceType) {
-            case DeviceType.iPad:
-                place(_timeBar, -9, 316);
-                place(_timeTF, -9, 316);
-                break;
-            case DeviceType.iPhone5:
-            case DeviceType.iPhone4:
-                place(_front, 0, 15);
-                place(_timeBar, -4, 147);
-                place(_timeTF, -4, 147);
-                _timeTF.fontSize = 10;
-                break;
-        }
+    override protected function initializeIPad():void {
+        _timeBar.x = -9;
+        _timeBar.y = 316;
+
+        _timeTF = createTextField(_timeBar.width, _timeBar.height, 24, "00:00");
+        _timeTF.nativeFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
+        _timeTF.x = -9;
+        _timeTF.y = 316;
+    }
+
+    override protected function initializeIPhone():void {
+        _timeBar.x = -4;
+        _timeBar.y = 132;
+
+        _timeTF = createTextField(_timeBar.width, _timeBar.height, 10, "00:00");
+        _timeTF.nativeFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
+        _timeTF.x = -4;
+        _timeTF.y = 132;
     }
 }
 }

@@ -23,9 +23,7 @@ import starling.utils.AssetManager;
 
 public class MiddlePanel extends AbstractView {
 
-//    public static var tile: int = 595; // HD
-//    public static var tile: int = 242; // SD
-    public static var tile: int;
+    public static var TILE: int;
 
     private var _game: Game;
 
@@ -48,11 +46,12 @@ public class MiddlePanel extends AbstractView {
     }
 
     override protected function initialize():void {
-        var texture: Texture = _assets.getTexture("main_big_pic_under");
-        tile = texture.width;
-
         _picsContainer = new Sprite();
         addChild(_picsContainer);
+
+        super.initialize();
+
+        _picsContainer.x = (stage.stageWidth-TILE)/2;
 
         _pic1 = new ImageTile(_assets, _deviceType, _game.pic1);
         _pic1.pivotX = 0;
@@ -63,40 +62,40 @@ public class MiddlePanel extends AbstractView {
         _picsContainer.addChild(_pic1);
 
         _pic2 = new ImageTile(_assets, _deviceType, _game.pic2);
-        _pic2.pivotX = tile;
+        _pic2.pivotX = TILE;
         _pic2.pivotY = 0;
-        _pic2.x = tile;
+        _pic2.x = TILE;
         _pic2.y = 0;
         _pic2.addEventListener(TouchEvent.TOUCH, handleTouch);
         _picsContainer.addChild(_pic2);
 
         _pic3 = new ImageTile(_assets, _deviceType, _game.pic3);
         _pic3.pivotX = 0;
-        _pic3.pivotY = tile;
+        _pic3.pivotY = TILE;
         _pic3.x = 0;
-        _pic3.y = tile;
+        _pic3.y = TILE;
         _pic3.addEventListener(TouchEvent.TOUCH, handleTouch);
         _picsContainer.addChild(_pic3);
 
         _pic4 = new ImageTile(_assets, _deviceType, _game.pic4);
-        _pic4.pivotX = tile;
-        _pic4.pivotY = tile;
-        _pic4.x = tile;
-        _pic4.y = tile;
+        _pic4.pivotX = TILE;
+        _pic4.pivotY = TILE;
+        _pic4.x = TILE;
+        _pic4.y = TILE;
         _pic4.addEventListener(TouchEvent.TOUCH, handleTouch);
         _picsContainer.addChild(_pic4);
     }
 
-    override protected function align():void {
-        switch (_deviceType) {
-            case DeviceType.iPad:
-                place(_picsContainer, (stage.stageWidth-tile)/2, 95);
-                break;
-            case DeviceType.iPhone5:
-            case DeviceType.iPhone4:
-                place(_picsContainer, (stage.stageWidth-tile)/2, 80);
-                break;
-        }
+    override protected function initializeIPad():void {
+        _picsContainer.y = 95;
+
+        TILE = 595;
+    }
+
+    override protected function initializeIPhone():void {
+        _picsContainer.y = 80;
+
+        TILE = 242;
     }
 
     public function update():void {

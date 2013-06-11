@@ -29,26 +29,27 @@ public class WinPanel extends AbstractView {
 
     public function WinPanel(assets: AssetManager, deviceType: DeviceType) {
         super(assets, deviceType);
+
+        // TODO: localization
+        // TODO: подобрать фильтры
     }
 
     override protected function initialize():void {
-        _winTF = new TextField(stage.stageWidth, 50, "ОТЛИЧНО!", "Arial", 28, 0xFFFFFF, true);
-        _winTF.nativeFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
-        addChild(_winTF);
-
-        _msgTF = new TextField(stage.stageWidth, 100, "", "Arial", 28, 0xFFFFFF, true);
-        _msgTF.vAlign = VAlign.TOP;
-        _msgTF.nativeFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
-        addChild(_msgTF);
-
         _continueBtn = new Button(_assets.getTexture("main_next_btn_up"), "", _assets.getTexture("main_next_btn_down"));
         _continueBtn.addEventListener(Event.TRIGGERED, handleContinue);
         _continueBtn.pivotX = _continueBtn.width/2;
         addChild(_continueBtn);
 
-        _continueTF = new TextField(_continueBtn.width, _continueBtn.height, "ПРОДОЛЖИТЬ", "Arial", 24, 0xFFFFFF, true);
+        super.initialize();
+
+        _winTF.touchable = false;
+        addChild(_winTF);
+
+        _msgTF.touchable = false;
+        _msgTF.vAlign = VAlign.TOP;
+        addChild(_msgTF);
+
         _continueTF.pivotX = _continueTF.width/2;
-        _continueTF.nativeFilters = [new GlowFilter(0, 1, 3, 3, 4, 3)];
         _continueTF.touchable = false;
         addChild(_continueTF);
 
@@ -56,25 +57,40 @@ public class WinPanel extends AbstractView {
         _msgTF.text = "ЧТОБЫ ДОГНАТЬ БЛИЖАЙШЕГО ДРУГА\nВАМ НУЖНО ОТГАДАТЬ ЕЩЕ " + 18 + " СЛОВ"
     }
 
-    override protected function align():void {
-        switch (_deviceType) {
-            case DeviceType.iPad:
-                place(_winTF, 0, 712);
-                place(_continueBtn, (stage.stageWidth)/2, 785);
-                place(_continueTF, (stage.stageWidth)/2, 785);
-                _continueTF.fontSize = 36;
-                break;
-            case DeviceType.iPhone5:
-            case DeviceType.iPhone4:
-                place(_winTF, 0, 330);
-                _winTF.fontSize = 20;
-                place(_msgTF, 0, 370);
-                _msgTF.fontSize = 12;
-                place(_continueBtn, (stage.stageWidth)/2, 420);
-                place(_continueTF, (stage.stageWidth)/2, 420);
-                _continueTF.fontSize = 18;
-                break;
-        }
+    override protected function initializeIPad():void {
+        _winTF = createTextField(stage.stageWidth, 50, 42, "ОТЛИЧНО!");
+        _winTF.nativeFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
+        _winTF.y = 695;
+
+        _msgTF = createTextField(stage.stageWidth, 60, 18);
+        _msgTF.nativeFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
+        _msgTF.y = 750;
+
+        _continueBtn.x = stage.stageWidth/2;
+        _continueBtn.y = 805;
+
+        _continueTF = createTextField(_continueBtn.width, _continueBtn.height, 30, "ПРОДОЛЖИТЬ");
+        _continueTF.nativeFilters = [new GlowFilter(0, 1, 3, 3, 4, 3)];
+        _continueTF.x = stage.stageWidth/2;
+        _continueTF.y = 805;
+    }
+
+    override protected function initializeIPhone():void {
+        _winTF = createTextField(stage.stageWidth, 50, 20, "ОТЛИЧНО!");
+        _winTF.nativeFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
+        _winTF.y = 330;
+
+        _msgTF = createTextField(stage.stageWidth, 100, 12);
+        _msgTF.nativeFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
+        _msgTF.y = 370;
+
+        _continueBtn.x = stage.stageWidth/2;
+        _continueBtn.y = 420;
+
+        _continueTF = createTextField(_continueBtn.width, _continueBtn.height, 18, "ПРОДОЛЖИТЬ");
+        _continueTF.nativeFilters = [new GlowFilter(0, 1, 3, 3, 4, 3)];
+        _continueTF.x = stage.stageWidth/2;
+        _continueTF.y = 420;
     }
 
     private function handleContinue(event: Event):void {

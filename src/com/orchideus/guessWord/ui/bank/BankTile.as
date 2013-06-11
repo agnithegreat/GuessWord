@@ -91,7 +91,7 @@ public class BankTile extends AbstractView {
         _buyBtn.x = 382;
         _buyBtn.y = 2;
 
-        _buyTF = createTextField(106, 53, 16, "КУПИТЬ");
+        _buyTF = createTextField(_buyBtn.width, _buyBtn.height, 16, "КУПИТЬ");
         _buyTF.nativeFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
         _buyTF.x = 382;
         _buyTF.y = 2;
@@ -120,7 +120,7 @@ public class BankTile extends AbstractView {
         _buyBtn.x = 210;
         _buyBtn.y = 2;
 
-        _buyTF = createTextField(60, 32, 8, "КУПИТЬ");
+        _buyTF = createTextField(_buyBtn.width, _buyBtn.height, 8, "КУПИТЬ");
         _buyTF.nativeFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
         _buyTF.x = 210;
         _buyTF.y = 2;

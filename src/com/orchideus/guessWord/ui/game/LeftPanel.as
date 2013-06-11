@@ -32,22 +32,30 @@ public class LeftPanel extends AbstractView {
 
         _changePic = new BonusTile(_assets, _deviceType, Bonus.BONUSES[Bonus.CHANGE_PICTURE]);
         addChild(_changePic);
+
+        super.initialize();
     }
 
-    override protected function align():void {
-        switch (_deviceType) {
-            case DeviceType.iPad:
-                place(_openLetter, 4, 105);
-                place(_removeLetters, 4, 256);
-                place(_changePic, 4, 409);
-                break;
-            case DeviceType.iPhone5:
-            case DeviceType.iPhone4:
-                place(_openLetter, 1, 90);
-                place(_removeLetters, 1, 165);
-                place(_changePic, 1, 240);
-                break;
-        }
+    override protected function initializeIPad():void {
+        _openLetter.x = 4;
+        _openLetter.y = 105;
+
+        _removeLetters.x = 4;
+        _removeLetters.y = 257;
+
+        _changePic.x = 4;
+        _changePic.y = 409;
+    }
+
+    override protected function initializeIPhone():void {
+        _openLetter.x = 1;
+        _openLetter.y = 90;
+
+        _removeLetters.x = 1;
+        _removeLetters.y = 165;
+
+        _changePic.x = 1;
+        _changePic.y = 240;
     }
 }
 }

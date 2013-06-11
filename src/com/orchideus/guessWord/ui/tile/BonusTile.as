@@ -101,8 +101,8 @@ public class BonusTile extends AbstractView {
                 resize(_text2, _back.width-8, 12);
 
                 place(_moneyIcon, 5, 48);
-                place(_price, 18, 47);
-                resize(_price, 15, 15);
+                place(_price, 16, 47);
+                resize(_price, 18, 15);
                 _price.fontSize = 10;
                 break;
         }

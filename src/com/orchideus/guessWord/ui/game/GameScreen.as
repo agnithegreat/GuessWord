@@ -67,27 +67,25 @@ public class GameScreen extends Screen {
         _soundBtn.addEventListener(Event.TRIGGERED, handleSound);
         addChild(_soundBtn);
 
+        super.initialize();
+
         updateSoundState();
     }
 
-    override protected function align():void {
-        super.align();
+    override protected function initializeIPad():void {
+        _friendBar.y = 916;
 
-        switch (_deviceType) {
-            case DeviceType.iPad:
-                place(_friendBar, 0, 916);
-                place(_soundBtn, 700, 810);
-                break;
-            case DeviceType.iPhone5:
-                place(_friendBar, 0, 475);
-                place(_soundBtn, 55, 328);
-                break;
-            case DeviceType.iPhone4:
-                place(this, 0, -44);
-                place(_friendBar, 0, 475);
-                place(_soundBtn, 55, 328);
-                break;
-        }
+        _soundBtn.x = 700;
+        _soundBtn.y = 810;
+    }
+
+    override protected function initializeIPhone():void {
+        y = (stage.stageHeight-_background.height)/2;
+
+        _friendBar.y = 475;
+
+        _soundBtn.x = 55;
+        _soundBtn.y = 328;
     }
 
     private function handleInitGame(event: Event):void {

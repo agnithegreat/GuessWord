@@ -36,6 +36,8 @@ public class LanguageTile extends AbstractView {
         _lang = lang;
 
         super(assets, deviceType);
+
+        // TODO: подобрать фильтры
     }
 
     override protected function initialize():void {

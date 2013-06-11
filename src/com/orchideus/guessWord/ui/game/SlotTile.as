@@ -31,17 +31,12 @@ public class SlotTile extends AbstractView {
         addChild(_back);
 
         addChild(_letter);
+
+        super.initialize();
     }
 
-    override protected function align():void {
-        switch (_deviceType) {
-            case DeviceType.iPad:
-                break;
-            case DeviceType.iPhone5:
-            case DeviceType.iPhone4:
-                _back.x = 2;
-                break;
-        }
+    override protected function initializeIPhone():void {
+        _back.x = 2;
     }
 
     override public function destroy():void {

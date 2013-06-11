@@ -7,7 +7,7 @@
  */
 package {
 
-[SWF(frameRate="60", width="320", height="480")]
+[SWF(frameRate="60", width="640", height="960")]
 public class GuessIPhone extends Guess {
     public function GuessIPhone() {
         super();
