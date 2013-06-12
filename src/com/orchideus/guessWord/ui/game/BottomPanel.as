@@ -7,7 +7,7 @@
  */
 package com.orchideus.guessWord.ui.game {
 import com.orchideus.guessWord.GameController;
-import com.orchideus.guessWord.data.DeviceType;
+import com.orchideus.guessWord.data.CommonRefs;
 import com.orchideus.guessWord.data.Sound;
 import com.orchideus.guessWord.game.Game;
 import com.orchideus.guessWord.game.Letter;
@@ -24,8 +24,6 @@ import starling.events.Event;
 import starling.events.Touch;
 import starling.events.TouchEvent;
 import starling.events.TouchPhase;
-import starling.textures.Texture;
-import starling.utils.AssetManager;
 
 public class BottomPanel extends AbstractView {
 
@@ -43,7 +41,7 @@ public class BottomPanel extends AbstractView {
 
     private var _deleteBtn: Button;
 
-    public function BottomPanel(assets: AssetManager, deviceType: DeviceType, controller: GameController) {
+    public function BottomPanel(refs: CommonRefs, controller: GameController) {
         _controller = controller;
         _controller.game.addEventListener(Game.INIT, handleInit);
         _controller.game.addEventListener(Game.RESET, handleReset);
@@ -52,9 +50,7 @@ public class BottomPanel extends AbstractView {
         _controller.game.word.addEventListener(Word.ERROR, handleError);
         _controller.game.word.addEventListener(Word.CLEAR, handleClear);
 
-        super(assets, deviceType);
-
-        // TODO: localization
+        super(refs);
     }
 
     override protected function initialize():void {
@@ -62,7 +58,7 @@ public class BottomPanel extends AbstractView {
         _slotsContainer.x = stage.stageWidth/2;
         addChild(_slotsContainer);
 
-        _error = new ErrorView(_assets, _deviceType, "ОШИБКА");
+        _error = new ErrorView(_refs, _refs.locale.getString("main.word.mistake"));
         _error.x = stage.stageWidth/2;
         _error.visible = false;
 
@@ -70,7 +66,7 @@ public class BottomPanel extends AbstractView {
         _lettersContainer.x = stage.stageWidth/2;
         addChild(_lettersContainer);
 
-        _deleteBtn = new Button(_assets.getTexture("main_del_btn_down"), "", _assets.getTexture("main_del_btn_up"));
+        _deleteBtn = new Button(_refs.assets.getTexture("main_del_btn_down"), "", _refs.assets.getTexture("main_del_btn_up"));
         _deleteBtn.addEventListener(Event.TRIGGERED, handleDelete);
         addChild(_deleteBtn);
 
@@ -81,7 +77,7 @@ public class BottomPanel extends AbstractView {
 
         _letters = new <LetterTile>[];
         for (var i: int = 0; i < _controller.game.stack.letters.length; i++) {
-            var letter: LetterTile = new LetterTile(_assets, _deviceType, _controller.game.stack.letters[i]);
+            var letter: LetterTile = new LetterTile(_refs, _controller.game.stack.letters[i]);
             letter.addEventListener(TouchEvent.TOUCH, handleSelectLetter);
             letter.x = (i%10)*TILE;
             letter.y = int(i/10)*TILE;
@@ -124,7 +120,7 @@ public class BottomPanel extends AbstractView {
         _slots = new <SlotTile>[];
         for (var i: int = 0; i < _controller.game.word.length; i++) {
             var letter: Letter = _controller.game.word.letters[i];
-            _slots[i] = new SlotTile(_assets, _deviceType, letter);
+            _slots[i] = new SlotTile(_refs, letter);
             _slots[i].addEventListener(TouchEvent.TOUCH, handleRemoveLetter);
             _slots[i].x = i*TILE;
             _slotsContainer.addChild(_slots[i]);
@@ -202,7 +198,7 @@ public class BottomPanel extends AbstractView {
         var fromPos: Rectangle = from.getBounds(this);
         var toPos: Rectangle = to.getBounds(this);
 
-        var phantom: LetterTile = new LetterTile(_assets, _deviceType, to.letter);
+        var phantom: LetterTile = new LetterTile(_refs, to.letter);
         phantom.x = fromPos.x;
         phantom.y = fromPos.y
         addChild(phantom);

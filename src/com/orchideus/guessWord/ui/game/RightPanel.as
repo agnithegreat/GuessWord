@@ -7,12 +7,10 @@
  */
 package com.orchideus.guessWord.ui.game {
 import com.orchideus.guessWord.GameController;
-import com.orchideus.guessWord.data.DeviceType;
+import com.orchideus.guessWord.data.CommonRefs;
 import com.orchideus.guessWord.ui.abstract.AbstractView;
 import com.orchideus.guessWord.ui.tile.AskHelpTile;
 import com.orchideus.guessWord.ui.tile.InviteTile;
-
-import starling.utils.AssetManager;
 
 public class RightPanel extends AbstractView {
 
@@ -23,20 +21,20 @@ public class RightPanel extends AbstractView {
 
     private var _bar: ScoreBar;
 
-    public function RightPanel(assets: AssetManager, deviceType: DeviceType, controller: GameController) {
+    public function RightPanel(refs: CommonRefs, controller: GameController) {
         _controller = controller;
 
-        super(assets, deviceType);
+        super(refs);
     }
 
     override protected function initialize():void {
-        _bar = new ScoreBar(_assets, _deviceType, _controller);
+        _bar = new ScoreBar(_refs, _controller);
         addChild(_bar);
 
-        _askHelp = new AskHelpTile(_assets, _deviceType);
+        _askHelp = new AskHelpTile(_refs);
         addChild(_askHelp);
 
-        _invite = new InviteTile(_assets, _deviceType);
+        _invite = new InviteTile(_refs);
         addChild(_invite);
 
         super.initialize();

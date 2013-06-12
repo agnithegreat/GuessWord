@@ -6,6 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 package com.orchideus.guessWord.data {
+import com.orchideus.guessWord.localization.LocalizationManager;
 
 public class Bonus {
 
@@ -17,10 +18,10 @@ public class Bonus {
 
     public static var BONUSES: Object = {};
 
-    public static function init(data: Object):void {
-        BONUSES[OPEN_LETTER] = new Bonus(OPEN_LETTER, "main_openletter_ico", ["ОТКРЫТЬ","БУКВУ"], data.opensymbol_price);
-        BONUSES[REMOVE_LETTERS] = new Bonus(REMOVE_LETTERS, "main_removeletters_ico", ["УБРАТЬ","БУКВЫ"], data.removesymbols_price);
-        BONUSES[CHANGE_PICTURE] = new Bonus(CHANGE_PICTURE, "main_onemorepic_ico", ["ЕЩЕ","КАРТИНКА"], data.changepic_price);
+    public static function init(data: Object, locale: LocalizationManager):void {
+        BONUSES[OPEN_LETTER] = new Bonus(OPEN_LETTER, "main_openletter_ico", locale.getString("main.bonus.openletter").split("\n"), data.opensymbol_price);
+        BONUSES[REMOVE_LETTERS] = new Bonus(REMOVE_LETTERS, "main_removeletters_ico", locale.getString("main.bonus.removeletters").split("\n"), data.removesymbols_price);
+        BONUSES[CHANGE_PICTURE] = new Bonus(CHANGE_PICTURE, "main_onemorepic_ico", locale.getString("main.bonus.changepic").split("\n"), data.changepic_price);
     }
 
     public var id: String;

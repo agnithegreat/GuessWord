@@ -7,7 +7,7 @@
  */
 package com.orchideus.guessWord.ui.preloader {
 import com.orchideus.guessWord.GameController;
-import com.orchideus.guessWord.data.DeviceType;
+import com.orchideus.guessWord.data.CommonRefs;
 import com.orchideus.guessWord.data.Language;
 import com.orchideus.guessWord.ui.abstract.Screen;
 
@@ -20,9 +20,6 @@ import starling.events.TouchEvent;
 import starling.events.TouchPhase;
 import starling.extensions.Gauge;
 import starling.text.TextField;
-import starling.utils.AssetManager;
-import starling.utils.HAlign;
-import starling.utils.VAlign;
 
 public class Preloader extends Screen {
 
@@ -40,26 +37,26 @@ public class Preloader extends Screen {
     private var _langs: Sprite;
 
 
-    public function Preloader(assets: AssetManager, deviceType: DeviceType, controller: GameController) {
+    public function Preloader(refs: CommonRefs, controller: GameController) {
         _controller = controller;
         _controller.addEventListener(GameController.PROGRESS, handleProgress);
         _controller.addEventListener(GameController.SHOW_LANGUAGES, handleShowLanguages);
 
-        super(assets, deviceType, "preloader_under");
+        super(refs, "preloader_under");
 
-        // TODO: localization
         // TODO: подобрать фильтры
     }
 
     override protected function initialize():void {
-        _logo = new Image(_assets.getTexture("preloader_duck"));
+        _logo = new Image(_refs.assets.getTexture("preloader_duck"));
         addChild(_logo);
 
-        _title = new Image(_assets.getTexture("preloader_logo_rus"));
+        // TODO: logo localization
+        _title = new Image(_refs.assets.getTexture("preloader_logo_rus"));
         _title.pivotX = _title.width/2;
         addChild(_title);
 
-        _progress = new Gauge(_assets.getTexture("preloader_filler"));
+        _progress = new Gauge(_refs.assets.getTexture("preloader_filler"));
         addChild(_progress);
 
         _langs = new Sprite();
@@ -125,11 +122,11 @@ public class Preloader extends Screen {
     }
 
     private function handleShowLanguages(event: Event):void {
-        _progressTF.text = "ВЫБЕРИТЕ ЯЗЫК";
+        _progressTF.text = _refs.locale.getString("preloader.selectlang");
 
         for (var i:int = 0; i < Language.languages.length; i++) {
             var lang: Language = Language.languages[i];
-            var tile: LanguageTile = new LanguageTile(_assets, _deviceType, lang);
+            var tile: LanguageTile = new LanguageTile(_refs, lang);
             tile.addEventListener(TouchEvent.TOUCH, handleSelectLanguage);
             tile.x = i<6 ? i%3 * TILE_WIDTH : TILE_WIDTH;
             tile.y = int(i/3) * TILE_HEIGHT;

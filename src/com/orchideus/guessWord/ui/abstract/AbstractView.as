@@ -6,6 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 package com.orchideus.guessWord.ui.abstract {
+import com.orchideus.guessWord.data.CommonRefs;
 import com.orchideus.guessWord.data.DeviceType;
 
 import starling.display.DisplayObject;
@@ -13,7 +14,6 @@ import starling.display.DisplayObject;
 import starling.display.Sprite;
 import starling.events.Event;
 import starling.text.TextField;
-import starling.utils.AssetManager;
 
 public class AbstractView extends Sprite {
 
@@ -21,19 +21,16 @@ public class AbstractView extends Sprite {
         return new TextField(width, height, text, "Arial", size, color, true);
     }
 
-    protected var _assets: AssetManager;
+    protected var _refs: CommonRefs;
 
-    protected var _deviceType: DeviceType;
-
-    public function AbstractView(assets: AssetManager, deviceType: DeviceType) {
-        _assets = assets;
-        _deviceType = deviceType;
+    public function AbstractView(refs: CommonRefs) {
+        _refs = refs;
 
         addEventListener(Event.ADDED_TO_STAGE, handleAdded);
     }
 
     protected function initialize():void {
-        if (_deviceType == DeviceType.iPad) {
+        if (_refs.device == DeviceType.iPad) {
             initializeIPad();
         } else {
             initializeIPhone();
@@ -70,7 +67,7 @@ public class AbstractView extends Sprite {
     }
 
     public function destroy():void {
-        _assets = null;
+        _refs = null;
     }
 }
 }

@@ -6,7 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 package com.orchideus.guessWord.ui.tile {
-import com.orchideus.guessWord.data.DeviceType;
+import com.orchideus.guessWord.data.CommonRefs;
 import com.orchideus.guessWord.data.Pic;
 import com.orchideus.guessWord.ui.abstract.AbstractView;
 
@@ -19,7 +19,6 @@ import starling.core.Starling;
 import starling.display.Image;
 import starling.text.TextField;
 import starling.textures.Texture;
-import starling.utils.AssetManager;
 import starling.utils.HAlign;
 import starling.utils.VAlign;
 
@@ -43,14 +42,14 @@ public class ImageTile extends AbstractView {
 
     private var _description: TextField;
 
-    public function ImageTile(assets: AssetManager, deviceType: DeviceType, pic: Pic) {
+    public function ImageTile(refs: CommonRefs, pic: Pic) {
         _pic = pic;
 
-        super(assets, deviceType);
+        super(refs);
     }
 
     override protected function initialize():void {
-        _border = new Image(_assets.getTexture("main_big_pic_under"));
+        _border = new Image(_refs.assets.getTexture("main_big_pic_under"));
         addChild(_border);
 
         _image = new Image(Texture.empty());

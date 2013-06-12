@@ -7,7 +7,7 @@
  */
 package com.orchideus.guessWord.ui.game {
 import com.orchideus.guessWord.data.Bank;
-import com.orchideus.guessWord.data.DeviceType;
+import com.orchideus.guessWord.data.CommonRefs;
 import com.orchideus.guessWord.data.Player;
 import com.orchideus.guessWord.data.Sound;
 import com.orchideus.guessWord.ui.abstract.AbstractView;
@@ -18,7 +18,6 @@ import flash.filters.GlowFilter;
 import starling.display.Button;
 import starling.events.Event;
 import starling.text.TextField;
-import starling.utils.AssetManager;
 
 public class TopPanel extends AbstractView {
 
@@ -31,21 +30,21 @@ public class TopPanel extends AbstractView {
     private var _moneyTF: TextField;
     private var _bankBtn: Button;
 
-    public function TopPanel(assets: AssetManager, deviceType: DeviceType, player: Player) {
+    public function TopPanel(refs: CommonRefs, player: Player) {
         _player = player;
         _player.addEventListener(Player.UPDATE, handleUpdate);
 
-        super(assets, deviceType);
+        super(refs);
 
         // TODO: подобрать фильтры
     }
 
     override protected function initialize():void {
-        _bankBtn = new Button(_assets.getTexture("main_plus_btn_up"), "", _assets.getTexture("main_plus_btn_down"));
+        _bankBtn = new Button(_refs.assets.getTexture("main_plus_btn_up"), "", _refs.assets.getTexture("main_plus_btn_down"));
         _bankBtn.addEventListener(Event.TRIGGERED, handleBank);
         addChild(_bankBtn);
 
-        _wordStats = new WordStatsTile(_assets, _deviceType);
+        _wordStats = new WordStatsTile(_refs);
         addChild(_wordStats);
 
         super.initialize();

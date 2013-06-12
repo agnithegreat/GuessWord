@@ -7,8 +7,7 @@
  */
 package com.orchideus.guessWord.ui.game {
 import com.orchideus.guessWord.GameController;
-import com.orchideus.guessWord.data.DeviceType;
-import com.orchideus.guessWord.data.Variables;
+import com.orchideus.guessWord.data.CommonRefs;
 import com.orchideus.guessWord.game.Score;
 import com.orchideus.guessWord.ui.abstract.AbstractView;
 
@@ -18,7 +17,6 @@ import starling.display.Image;
 import starling.display.Sprite;
 import starling.events.Event;
 import starling.text.TextField;
-import starling.utils.AssetManager;
 import starling.utils.HAlign;
 
 public class ScoreBar extends AbstractView {
@@ -44,13 +42,12 @@ public class ScoreBar extends AbstractView {
     private var _bonusTF: TextField;
     private var _bonusValueTF: TextField;
 
-    public function ScoreBar(assets:AssetManager, deviceType:DeviceType, controller: GameController) {
+    public function ScoreBar(refs: CommonRefs, controller: GameController) {
         _controller = controller;
         _controller.score.addEventListener(Score.UPDATE, handleUpdate);
 
-        super(assets, deviceType);
+        super(refs);
 
-        // TODO: localization
         // TODO: подобрать фильтры
     }
 
@@ -58,10 +55,10 @@ public class ScoreBar extends AbstractView {
         _coinsContainer = new Sprite();
         addChild(_coinsContainer);
 
-        _front = new Image(_assets.getTexture("main_GRADUSNIK"));
+        _front = new Image(_refs.assets.getTexture("main_GRADUSNIK"));
         addChild(_front);
 
-        _timeBar = new Image(_assets.getTexture("main_time_under"));
+        _timeBar = new Image(_refs.assets.getTexture("main_time_under"));
         addChild(_timeBar);
 
         super.initialize();
@@ -94,7 +91,7 @@ public class ScoreBar extends AbstractView {
         _timeTF.x = -9;
         _timeTF.y = 316;
 
-        _bonusTF = createTextField(_timeBar.width, _timeBar.height, 20, "БОНУС");
+        _bonusTF = createTextField(_timeBar.width, _timeBar.height, 20, _refs.locale.getString("main.score.bonus"));
         _bonusTF.nativeFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
         _bonusTF.x = -9;
         _bonusTF.y = 354;
@@ -129,7 +126,7 @@ public class ScoreBar extends AbstractView {
         _timeTF.x = -4;
         _timeTF.y = 132;
 
-        _bonusTF = createTextField(_timeBar.width, _timeBar.height, 8, "БОНУС");
+        _bonusTF = createTextField(_timeBar.width, _timeBar.height, 8, _refs.locale.getString("main.score.bonus"));
         _bonusTF.nativeFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
         _bonusTF.x = -4;
         _bonusTF.y = 151;
@@ -147,7 +144,7 @@ public class ScoreBar extends AbstractView {
 
     private function createCoins():void {
         for (var i:int = 0; i < 36; i++) {
-            var coin: Image = new Image(_assets.getTexture("main_bonus_coin"));
+            var coin: Image = new Image(_refs.assets.getTexture("main_bonus_coin"));
             coin.y = -i*TILE;
             _coinsContainer.addChild(coin);
         }

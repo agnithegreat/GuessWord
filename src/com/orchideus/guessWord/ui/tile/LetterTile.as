@@ -6,6 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 package com.orchideus.guessWord.ui.tile {
+import com.orchideus.guessWord.data.CommonRefs;
 import com.orchideus.guessWord.data.DeviceType;
 import com.orchideus.guessWord.data.Sound;
 import com.orchideus.guessWord.game.Letter;
@@ -40,20 +41,20 @@ public class LetterTile extends AbstractView {
         return _letter;
     }
 
-    public function LetterTile(assets: AssetManager, deviceType: DeviceType, letter: Letter) {
+    public function LetterTile(refs: CommonRefs, letter: Letter) {
         _letter = letter;
         _letter.addEventListener(Letter.UPDATE, handleUpdate);
         _letter.addEventListener(Letter.MISTAKE, handleMistake);
 
-        super(assets, deviceType);
+        super(refs);
 
         // TODO: подобрать фильтры
     }
 
     override protected function initialize():void {
-        _up = _assets.getTexture("main_letter_under");
-        _down = _assets.getTexture("main_letter_under_down");
-        _mistake = _assets.getTexture("main_mistake_btn_under");
+        _up = _refs.assets.getTexture("main_letter_under");
+        _down = _refs.assets.getTexture("main_letter_under_down");
+        _mistake = _refs.assets.getTexture("main_mistake_btn_under");
 
         _back = new Image(_up);
         addChild(_back);

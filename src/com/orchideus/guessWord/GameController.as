@@ -8,6 +8,7 @@
 package com.orchideus.guessWord {
 import com.orchideus.guessWord.data.Bank;
 import com.orchideus.guessWord.data.Bonus;
+import com.orchideus.guessWord.data.CommonRefs;
 import com.orchideus.guessWord.data.DeviceType;
 import com.orchideus.guessWord.data.Friend;
 import com.orchideus.guessWord.data.Language;
@@ -17,13 +18,16 @@ import com.orchideus.guessWord.data.Sound;
 import com.orchideus.guessWord.data.Variables;
 import com.orchideus.guessWord.game.Game;
 import com.orchideus.guessWord.game.Score;
+import com.orchideus.guessWord.localization.LocalizationManager;
+import com.orchideus.guessWord.server.PushNotifications;
 import com.orchideus.guessWord.server.Server;
 import com.orchideus.guessWord.ui.MainScreen;
 import com.sticksports.nativeExtensions.inAppPurchase.InAppPurchase;
 
 import flash.events.TimerEvent;
-
 import flash.utils.Timer;
+
+import pl.mateuszmackowiak.nativeANE.dialogs.NativeAlertDialog;
 
 import starling.display.Sprite;
 import starling.events.Event;
@@ -58,6 +62,10 @@ public class GameController extends EventDispatcher {
 
     private var _server: Server;
 
+    private var _pushNotifications: PushNotifications;
+
+    private var _locale: LocalizationManager;
+
     private var _bonusTime: uint;
 
     private var _date: Date;
@@ -74,13 +82,15 @@ public class GameController extends EventDispatcher {
         return _tempData;
     }
 
-    public function GameController(container: Sprite, assets: AssetManager, deviceType: DeviceType) {
+    public function GameController(container: Sprite, assets: AssetManager, deviceType: DeviceType, locale: LocalizationManager) {
         _player = new Player();
 
         _timer = new Timer(1000);
         _timer.addEventListener(TimerEvent.TIMER, handleTimer);
 
-        _view = new MainScreen(assets, deviceType, this);
+        _locale = locale;
+
+        _view = new MainScreen(new CommonRefs(assets, deviceType, _locale), this);
         container.addChild(_view);
         addViewEventListeners();
     }
@@ -103,9 +113,13 @@ public class GameController extends EventDispatcher {
 
         _score = new Score();
 
+//        _pushNotifications = new PushNotifications();
+//        _pushNotifications.init();
+
         _server = new Server();
         _server.init("1", _player.uid);
         _server.addEventListener(Server.DATA, handleData);
+        _server.addEventListener(Server.INTERNET_UNAVAILABLE, handleInternetUnavailable);
 
         _server.getParameters();
         _server.getFriendBar("");
@@ -116,6 +130,8 @@ public class GameController extends EventDispatcher {
     private function startLevel():void {
         _game.init();
         _score.init(Variables.bonus_time, Variables.bonus_max, Variables.bonus_dec);
+
+        handleInternetUnavailable(null);
     }
 
     private function addViewEventListeners():void {
@@ -146,7 +162,7 @@ public class GameController extends EventDispatcher {
                     _timer.start();
 
                     _player.parse(data.player.params);
-                    Bonus.init(data.variables);
+                    Bonus.init(data.variables, _locale);
                     Bank.parse(data.bank);
                     Variables.parse(data.variables);
 
@@ -206,6 +222,12 @@ public class GameController extends EventDispatcher {
                     dispatchEventWith(FRIENDS);
                 }
                 break;
+        }
+    }
+
+    private function handleInternetUnavailable(event: Event):void {
+        if (NativeAlertDialog.isSupported) {
+            NativeAlertDialog.showAlert("test", "Error", new <String>["Close"], null, false);
         }
     }
 

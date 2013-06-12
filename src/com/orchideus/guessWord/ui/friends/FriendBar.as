@@ -7,7 +7,7 @@
  */
 package com.orchideus.guessWord.ui.friends {
 import com.orchideus.guessWord.GameController;
-import com.orchideus.guessWord.data.DeviceType;
+import com.orchideus.guessWord.data.CommonRefs;
 import com.orchideus.guessWord.data.Friend;
 import com.orchideus.guessWord.data.Sound;
 import com.orchideus.guessWord.ui.abstract.AbstractView;
@@ -15,7 +15,6 @@ import com.orchideus.guessWord.ui.abstract.AbstractView;
 import starling.display.Button;
 import starling.display.Sprite;
 import starling.events.Event;
-import starling.utils.AssetManager;
 
 public class FriendBar extends AbstractView {
 
@@ -35,11 +34,11 @@ public class FriendBar extends AbstractView {
 
     private var _invite: FriendTile;
 
-    public function FriendBar(assets:AssetManager, deviceType:DeviceType, controller: GameController) {
+    public function FriendBar(refs: CommonRefs, controller: GameController) {
         _controller = controller;
         _controller.addEventListener(GameController.FRIENDS, handleUpdate);
 
-        super(assets, deviceType);
+        super(refs);
     }
 
     override protected function initialize():void {
@@ -48,25 +47,25 @@ public class FriendBar extends AbstractView {
         _container = new Sprite();
         addChild(_container);
 
-        _leftBtn = new Button(_assets.getTexture("main_scroll_btn_up"), "", _assets.getTexture("main_scroll_btn_down"));
+        _leftBtn = new Button(_refs.assets.getTexture("main_scroll_btn_up"), "", _refs.assets.getTexture("main_scroll_btn_down"));
         _leftBtn.addEventListener(Event.TRIGGERED, handleClick);
         _leftBtn.scaleX = -1;
         addChild(_leftBtn);
 
-        _rightBtn = new Button(_assets.getTexture("main_scroll_btn_up"), "", _assets.getTexture("main_scroll_btn_down"));
+        _rightBtn = new Button(_refs.assets.getTexture("main_scroll_btn_up"), "", _refs.assets.getTexture("main_scroll_btn_down"));
         _rightBtn.addEventListener(Event.TRIGGERED, handleClick);
         addChild(_rightBtn);
 
-        _startBtn = new Button(_assets.getTexture("main_page_scroll_btn_up"), "", _assets.getTexture("main_page_scroll_btn_down"));
+        _startBtn = new Button(_refs.assets.getTexture("main_page_scroll_btn_up"), "", _refs.assets.getTexture("main_page_scroll_btn_down"));
         _startBtn.addEventListener(Event.TRIGGERED, handleClick);
         _startBtn.scaleX = -1;
         addChild(_startBtn);
 
-        _endBtn = new Button(_assets.getTexture("main_page_scroll_btn_up"), "", _assets.getTexture("main_page_scroll_btn_down"));
+        _endBtn = new Button(_refs.assets.getTexture("main_page_scroll_btn_up"), "", _refs.assets.getTexture("main_page_scroll_btn_down"));
         _endBtn.addEventListener(Event.TRIGGERED, handleClick);
         addChild(_endBtn);
 
-        _invite = new FriendTile(_assets, _deviceType);
+        _invite = new FriendTile(_refs);
         _invite.addEventListener(Event.TRIGGERED, handleClick);
         addChild(_invite);
 
@@ -120,7 +119,7 @@ public class FriendBar extends AbstractView {
 
         var amount: int = Math.max(tiles, Friend.FRIENDS_ARRAY.length);
         for (var i:int = 0; i < amount; i++) {
-            var tile: FriendTile = new FriendTile(_assets, _deviceType, i < Friend.FRIENDS_ARRAY.length ? Friend.FRIENDS_ARRAY[i] : null);
+            var tile: FriendTile = new FriendTile(_refs, i < Friend.FRIENDS_ARRAY.length ? Friend.FRIENDS_ARRAY[i] : null);
             _tiles.push(tile);
         }
 

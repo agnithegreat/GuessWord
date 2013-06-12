@@ -7,7 +7,7 @@
  */
 package com.orchideus.guessWord.ui.bank {
 import com.orchideus.guessWord.data.Bank;
-import com.orchideus.guessWord.data.DeviceType;
+import com.orchideus.guessWord.data.CommonRefs;
 import com.orchideus.guessWord.data.Sound;
 import com.orchideus.guessWord.ui.abstract.AbstractView;
 
@@ -17,7 +17,6 @@ import starling.display.Button;
 import starling.display.Image;
 import starling.events.Event;
 import starling.text.TextField;
-import starling.utils.AssetManager;
 import starling.utils.HAlign;
 
 public class BankTile extends AbstractView {
@@ -36,23 +35,22 @@ public class BankTile extends AbstractView {
     private var _buyBtn: Button;
     private var _buyTF: TextField;
 
-    public function BankTile(assets:AssetManager, deviceType:DeviceType, bank: Bank) {
+    public function BankTile(refs: CommonRefs, bank: Bank) {
         _bank = bank;
 
-        super(assets, deviceType);
+        super(refs);
 
-        // TODO: localization
         // TODO: подобрать фильтры
     }
 
     override protected function initialize():void {
-        _back = new Image(_assets.getTexture(_bank.best_value ? "bank_bestitem_under" : "bank_item_under"));
+        _back = new Image(_refs.assets.getTexture(_bank.best_value ? "bank_bestitem_under" : "bank_item_under"));
         addChild(_back);
 
-        _coin = new Image(_assets.getTexture("bank_coin_ico"));
+        _coin = new Image(_refs.assets.getTexture("bank_coin_ico"));
         addChild(_coin);
 
-        _buyBtn = new Button(_assets.getTexture(_bank.best_value ? "bank_bestbuy_btn_up" : "bank_buy_btn_up"), "", _assets.getTexture(_bank.best_value ? "bank_bestbuy_btn_down" : "bank_buy_btn_down"));
+        _buyBtn = new Button(_refs.assets.getTexture(_bank.best_value ? "bank_bestbuy_btn_up" : "bank_buy_btn_up"), "", _refs.assets.getTexture(_bank.best_value ? "bank_bestbuy_btn_down" : "bank_buy_btn_down"));
         _buyBtn.addEventListener(Event.TRIGGERED, handleClick);
         addChild(_buyBtn);
 
@@ -77,21 +75,21 @@ public class BankTile extends AbstractView {
         _value.x = 44;
 
         if (_bank.best_value) {
-            _bestValue = createTextField(115, 55, 14, "ПОПУЛЯРНЫЙ\nПЛАТЕЖ!", 0x006097);
+            _bestValue = createTextField(115, 55, 14, _refs.locale.getString("bank.tile.bestbuy"), 0x006097);
             _bestValue.nativeFilters = [new GlowFilter(0xFFFFFF, 1, 3, 3, 5, 3)];
             _bestValue.x = 122;
             _bestValue.y = 2;
             addChild(_bestValue);
         }
 
-        _price = createTextField(195, 55, 24, String(_bank.price)+" руб");
+        _price = createTextField(195, 55, 24, String(_bank.price)+" "+_refs.locale.getString("bank.tile.currency"));
         _price.nativeFilters = [new GlowFilter(0, 1, 3, 3, 5, 3)];
         _price.x = 177;
 
         _buyBtn.x = 382;
         _buyBtn.y = 2;
 
-        _buyTF = createTextField(_buyBtn.width, _buyBtn.height, 16, "КУПИТЬ");
+        _buyTF = createTextField(_buyBtn.width, _buyBtn.height, 16, _refs.locale.getString("bank.tile.buy"));
         _buyTF.nativeFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
         _buyTF.x = 382;
         _buyTF.y = 2;
@@ -106,21 +104,21 @@ public class BankTile extends AbstractView {
         _value.x = 25;
 
         if (_bank.best_value) {
-            _bestValue = createTextField(65, 33, 8, "ПОПУЛЯРНЫЙ\nПЛАТЕЖ!", 0x006097);
+            _bestValue = createTextField(65, 33, 8, _refs.locale.getString("bank.tile.bestbuy"), 0x006097);
             _bestValue.nativeFilters = [new GlowFilter(0xFFFFFF, 1, 3, 3, 5, 3)];
             _bestValue.x = 70;
             _bestValue.y = 1;
             addChild(_bestValue);
         }
 
-        _price = createTextField(105, 33, 16, String(_bank.price)+" руб");
+        _price = createTextField(105, 33, 16, String(_bank.price)+" "+_refs.locale.getString("bank.tile.currency"));
         _price.nativeFilters = [new GlowFilter(0, 1, 3, 3, 5, 3)];
         _price.x = 100;
 
         _buyBtn.x = 210;
         _buyBtn.y = 2;
 
-        _buyTF = createTextField(_buyBtn.width, _buyBtn.height, 8, "КУПИТЬ");
+        _buyTF = createTextField(_buyBtn.width, _buyBtn.height, 8, _refs.locale.getString("bank.tile.buy"));
         _buyTF.nativeFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
         _buyTF.x = 210;
         _buyTF.y = 2;

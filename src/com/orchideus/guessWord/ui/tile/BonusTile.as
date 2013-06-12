@@ -7,7 +7,7 @@
  */
 package com.orchideus.guessWord.ui.tile {
 import com.orchideus.guessWord.data.Bonus;
-import com.orchideus.guessWord.data.DeviceType;
+import com.orchideus.guessWord.data.CommonRefs;
 import com.orchideus.guessWord.ui.abstract.AbstractView;
 
 import flash.filters.GlowFilter;
@@ -16,7 +16,6 @@ import starling.display.Button;
 import starling.display.Image;
 import starling.events.Event;
 import starling.text.TextField;
-import starling.utils.AssetManager;
 import starling.utils.HAlign;
 import starling.utils.VAlign;
 
@@ -34,25 +33,25 @@ public class BonusTile extends AbstractView {
     private var _moneyIcon: Image;
     private var _price: TextField;
 
-    public function BonusTile(assets: AssetManager, deviceType: DeviceType, bonus: Bonus) {
+    public function BonusTile(refs: CommonRefs, bonus: Bonus) {
         _bonus = bonus;
 
-         super(assets, deviceType);
+         super(refs);
 
         // TODO: подобрать фильтры
     }
 
     override protected function initialize():void {
-        _back = new Button(_assets.getTexture("main_cheat_btn_up"), "", _assets.getTexture("main_cheat_btn_down"));
+        _back = new Button(_refs.assets.getTexture("main_cheat_btn_up"), "", _refs.assets.getTexture("main_cheat_btn_down"));
         _back.addEventListener(Event.TRIGGERED, handleTriggered);
         addChild(_back);
 
-        _icon = new Image(_assets.getTexture(_bonus.icon));
+        _icon = new Image(_refs.assets.getTexture(_bonus.icon));
         _icon.pivotX = _icon.width/2;
         _icon.touchable = false;
         addChild(_icon);
 
-        _moneyIcon = new Image(_assets.getTexture("main_coin_ico"));
+        _moneyIcon = new Image(_refs.assets.getTexture("main_coin_ico"));
         _moneyIcon.touchable = false;
         addChild(_moneyIcon);
 

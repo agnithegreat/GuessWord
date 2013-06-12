@@ -7,7 +7,7 @@
  */
 package com.orchideus.guessWord.ui {
 import com.orchideus.guessWord.GameController;
-import com.orchideus.guessWord.data.DeviceType;
+import com.orchideus.guessWord.data.CommonRefs;
 import com.orchideus.guessWord.ui.abstract.Screen;
 import com.orchideus.guessWord.ui.bank.BankPopup;
 import com.orchideus.guessWord.ui.game.GameScreen;
@@ -16,8 +16,6 @@ import com.orchideus.guessWord.ui.preloader.Preloader;
 import feathers.core.PopUpManager;
 
 import starling.display.Quad;
-
-import starling.utils.AssetManager;
 
 public class MainScreen extends Screen {
 
@@ -32,14 +30,14 @@ public class MainScreen extends Screen {
         return _overlay;
     }
 
-    public function MainScreen(assets:AssetManager, deviceType: DeviceType, controller: GameController) {
+    public function MainScreen(refs: CommonRefs, controller: GameController) {
         _controller = controller;
 
-        super(assets, deviceType);
+        super(refs);
     }
 
     override protected function initialize():void {
-        _preloader = new Preloader(_assets, _deviceType, _controller);
+        _preloader = new Preloader(_refs, _controller);
         addChild(_preloader);
 
         _overlay = new Quad(stage.stageWidth, stage.stageHeight, 0);
@@ -53,13 +51,13 @@ public class MainScreen extends Screen {
             _preloader = null;
         }
 
-        _game = new GameScreen(_assets, _deviceType, _controller);
+        _game = new GameScreen(_refs, _controller);
         addChild(_game);
     }
 
     public function showBank():void {
         if (!_bank) {
-            _bank = new BankPopup(_assets, _deviceType);
+            _bank = new BankPopup(_refs);
         }
 
         PopUpManager.addPopUp(_bank, true, true, getOverlay);

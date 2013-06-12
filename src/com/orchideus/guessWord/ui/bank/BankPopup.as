@@ -7,7 +7,7 @@
  */
 package com.orchideus.guessWord.ui.bank {
 import com.orchideus.guessWord.data.Bank;
-import com.orchideus.guessWord.data.DeviceType;
+import com.orchideus.guessWord.data.CommonRefs;
 import com.orchideus.guessWord.data.Sound;
 import com.orchideus.guessWord.ui.abstract.Screen;
 
@@ -19,7 +19,6 @@ import starling.display.Button;
 import starling.display.Sprite;
 import starling.events.Event;
 import starling.text.TextField;
-import starling.utils.AssetManager;
 
 public class BankPopup extends Screen {
 
@@ -31,15 +30,14 @@ public class BankPopup extends Screen {
 
     private var _container: Sprite;
 
-    public function BankPopup(assets: AssetManager, deviceType: DeviceType) {
-        super(assets, deviceType, "bank_under");
+    public function BankPopup(refs: CommonRefs) {
+        super(refs, "bank_under");
 
-        // TODO: localization
         // TODO: подобрать фильтры
     }
 
     override protected function initialize():void {
-        _closeBtn = new Button(_assets.getTexture("bank_close_btn"), "", _assets.getTexture("bank_close_btn_down"));
+        _closeBtn = new Button(_refs.assets.getTexture("bank_close_btn"), "", _refs.assets.getTexture("bank_close_btn_down"));
         _closeBtn.addEventListener(Event.TRIGGERED, handleClose);
         addChild(_closeBtn);
 
@@ -53,14 +51,14 @@ public class BankPopup extends Screen {
 
         for (var i:int = 0; i < Bank.VALUES.length; i++) {
             var bank: Bank = Bank.VALUES[i];
-            var bankTile: BankTile = new BankTile(_assets, _deviceType, bank);
+            var bankTile: BankTile = new BankTile(_refs, bank);
             _container.addChild(bankTile);
             bankTile.y = i * TILE;
         }
     }
 
     override protected function initializeIPad():void {
-        _title = createTextField(_background.width, 60, 30, "КУПИТЬ МОНЕТЫ");
+        _title = createTextField(_background.width, 60, 30, _refs.locale.getString("bank.popup.title"));
         _title.nativeFilters = [new GlowFilter(0, 1, 3, 3, 5, 3)];
 
         _closeBtn.x = 522;
@@ -73,7 +71,7 @@ public class BankPopup extends Screen {
     }
 
     override protected function initializeIPhone():void {
-        _title = createTextField(_background.width, 32, 16, "КУПИТЬ МОНЕТЫ");
+        _title = createTextField(_background.width, 32, 16, _refs.locale.getString("bank.popup.title"));
         _title.nativeFilters = [new GlowFilter(0, 1, 3, 3, 5, 3)];
 
         _closeBtn.x = 271;

@@ -6,7 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 package com.orchideus.guessWord.ui.preloader {
-import com.orchideus.guessWord.data.DeviceType;
+import com.orchideus.guessWord.data.CommonRefs;
 import com.orchideus.guessWord.data.Language;
 import com.orchideus.guessWord.ui.abstract.AbstractView;
 
@@ -15,7 +15,6 @@ import flash.filters.GlowFilter;
 import starling.display.Button;
 import starling.display.Image;
 import starling.text.TextField;
-import starling.utils.AssetManager;
 
 public class LanguageTile extends AbstractView {
 
@@ -29,19 +28,19 @@ public class LanguageTile extends AbstractView {
     private var _icon: Image;
 
 
-    public function LanguageTile(assets: AssetManager, deviceType: DeviceType, lang: Language) {
+    public function LanguageTile(refs: CommonRefs, lang: Language) {
         _lang = lang;
 
-        super(assets, deviceType);
+        super(refs);
 
         // TODO: подобрать фильтры
     }
 
     override protected function initialize():void {
-        _back = new Button(_assets.getTexture("preloader_btn_up"), "", _assets.getTexture("preloader_btn_down"));
+        _back = new Button(_refs.assets.getTexture("preloader_btn_up"), "", _refs.assets.getTexture("preloader_btn_down"));
         addChild(_back);
 
-        _icon = new Image(_assets.getTexture(_lang.icon));
+        _icon = new Image(_refs.assets.getTexture(_lang.icon));
         addChild(_icon);
 
         super.initialize();

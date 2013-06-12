@@ -7,10 +7,13 @@
  */
 package com.orchideus.guessWord.server {
 
+import air.net.URLMonitor;
+
 import flash.events.Event;
 import flash.events.HTTPStatusEvent;
 import flash.events.IOErrorEvent;
 import flash.events.SecurityErrorEvent;
+import flash.events.StatusEvent;
 import flash.net.URLLoader;
 import flash.net.URLLoaderDataFormat;
 import flash.net.URLRequest;
@@ -22,6 +25,7 @@ import starling.events.EventDispatcher;
 public class Server extends EventDispatcher {
 
     public static const DATA: String = "data_Server";
+    public static const INTERNET_UNAVAILABLE: String = "internet_unavailable";
 
     public static const GET_PARAMETERS: String = "get_parameters";
     public static const CHECK_WORD: String = "check_word";
@@ -42,6 +46,8 @@ public class Server extends EventDispatcher {
     private var _stack: Vector.<URLRequest>;
     private var _currentRequest: URLRequest;
 
+    private var _monitor: URLMonitor;
+
     public function Server() {
         _loader = new URLLoader();
         _loader.dataFormat = URLLoaderDataFormat.TEXT;
@@ -56,6 +62,24 @@ public class Server extends EventDispatcher {
     public function init(key: String, id: String):void {
         auth_key = key;
         uid = id;
+
+        checkConnection();
+    }
+
+    private function checkConnection():void {
+        var url:URLRequest = new URLRequest("http://archive.davidtucker.net/index.php");
+        url.method = "HEAD";
+
+        _monitor = new URLMonitor(url);
+        _monitor.pollInterval = 3000;
+        _monitor.addEventListener(StatusEvent.STATUS, handleConnection);
+        _monitor.start();
+    }
+
+    private function handleConnection(event: StatusEvent):void {
+        if (!_monitor.available) {
+            dispatchEventWith(INTERNET_UNAVAILABLE);
+        }
     }
 
     public function getParameters():void {

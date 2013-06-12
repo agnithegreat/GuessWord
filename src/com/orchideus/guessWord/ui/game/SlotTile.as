@@ -6,13 +6,12 @@
  * To change this template use File | Settings | File Templates.
  */
 package com.orchideus.guessWord.ui.game {
-import com.orchideus.guessWord.data.DeviceType;
+import com.orchideus.guessWord.data.CommonRefs;
 import com.orchideus.guessWord.game.Letter;
 import com.orchideus.guessWord.ui.abstract.AbstractView;
 import com.orchideus.guessWord.ui.tile.LetterTile;
 
 import starling.display.Image;
-import starling.utils.AssetManager;
 
 public class SlotTile extends AbstractView {
 
@@ -20,14 +19,14 @@ public class SlotTile extends AbstractView {
 
     private var _letter: LetterTile;
 
-    public function SlotTile(assets: AssetManager, deviceType: DeviceType, letter: Letter) {
-        _letter = new LetterTile(assets, deviceType, letter);
+    public function SlotTile(refs: CommonRefs, letter: Letter) {
+        _letter = new LetterTile(refs, letter);
 
-        super(assets, deviceType);
+        super(refs);
     }
 
     override protected function initialize():void {
-        _back = new Image(_assets.getTexture("main_mistake_shadow"));
+        _back = new Image(_refs.assets.getTexture("main_mistake_shadow"));
         addChild(_back);
 
         addChild(_letter);

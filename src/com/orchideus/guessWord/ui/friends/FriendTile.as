@@ -6,7 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 package com.orchideus.guessWord.ui.friends {
-import com.orchideus.guessWord.data.DeviceType;
+import com.orchideus.guessWord.data.CommonRefs;
 import com.orchideus.guessWord.data.Friend;
 import com.orchideus.guessWord.data.Sound;
 import com.orchideus.guessWord.ui.abstract.AbstractView;
@@ -17,7 +17,6 @@ import starling.display.Button;
 import starling.display.Image;
 import starling.events.Event;
 import starling.text.TextField;
-import starling.utils.AssetManager;
 
 public class FriendTile extends AbstractView {
 
@@ -32,28 +31,27 @@ public class FriendTile extends AbstractView {
     private var _inviteBtn: Button;
     private var _inviteTF: TextField;
 
-    public function FriendTile(assets:AssetManager, deviceType:DeviceType, friend: Friend = null) {
+    public function FriendTile(refs: CommonRefs, friend: Friend = null) {
         _friend = friend;
 
-        super(assets, deviceType);
+        super(refs);
 
-        // TODO: localization
         // TODO: подобрать фильтры
     }
 
     override protected function initialize():void {
         if (_friend) {
-            _invite = new Image(_assets.getTexture("main_friend_under"));
+            _invite = new Image(_refs.assets.getTexture("main_friend_under"));
             addChild(_invite);
 
-            _levelIcon = new Image(_assets.getTexture("main_lvl_sm_ico"));
+            _levelIcon = new Image(_refs.assets.getTexture("main_lvl_sm_ico"));
             addChild(_levelIcon);
 
-            _avatar = new Image(_assets.getTexture("main_ava_under"));
+            _avatar = new Image(_refs.assets.getTexture("main_ava_under"));
             // TODO: подгрузка фотки
             addChild(_avatar);
 
-            _inviteBtn = new Button(_assets.getTexture("main_ask_btn_up"), "", _assets.getTexture("main_ask_btn_down"));
+            _inviteBtn = new Button(_refs.assets.getTexture("main_ask_btn_up"), "", _refs.assets.getTexture("main_ask_btn_down"));
             _inviteBtn.addEventListener(Event.TRIGGERED, handleClick);
             addChild(_inviteBtn);
 
@@ -64,13 +62,13 @@ public class FriendTile extends AbstractView {
             _inviteTF.touchable = false;
             addChild(_inviteTF);
         } else {
-            _invite = new Image(_assets.getTexture("main_invite_under"));
+            _invite = new Image(_refs.assets.getTexture("main_invite_under"));
             addChild(_invite);
 
-            _avatar = new Image(_assets.getTexture("main_invite_ava"));
+            _avatar = new Image(_refs.assets.getTexture("main_invite_ava"));
             addChild(_avatar);
 
-            _inviteBtn = new Button(_assets.getTexture("main_invite_btn_up"), "", _assets.getTexture("main_invite_btn_down"));
+            _inviteBtn = new Button(_refs.assets.getTexture("main_invite_btn_up"), "", _refs.assets.getTexture("main_invite_btn_down"));
             _inviteBtn.addEventListener(Event.TRIGGERED, handleClick);
             addChild(_inviteBtn);
 
@@ -99,7 +97,7 @@ public class FriendTile extends AbstractView {
             _inviteBtn.x = -6;
             _inviteBtn.y = 74;
 
-            _inviteTF = createTextField(_inviteBtn.width, _inviteBtn.height, 12, "СПРОСИТЬ");
+            _inviteTF = createTextField(_inviteBtn.width, _inviteBtn.height, 12, _refs.locale.getString("main.friends.ask"));
             _inviteTF.nativeFilters = [new GlowFilter(0, 1, 2, 2, 2, 3)];
             _inviteTF.x = -6;
             _inviteTF.y = 74;
@@ -110,7 +108,7 @@ public class FriendTile extends AbstractView {
             _inviteBtn.x = -6;
             _inviteBtn.y = 62;
 
-            _inviteTF = createTextField(_inviteBtn.width, _inviteBtn.height, 12, "ПОЗВАТЬ\nДРУЗЕЙ");
+            _inviteTF = createTextField(_inviteBtn.width, _inviteBtn.height, 12, _refs.locale.getString("main.friends.invite"));
             _inviteTF.nativeFilters = [new GlowFilter(0, 1, 2, 2, 2, 3)];
             _inviteTF.x = -6;
             _inviteTF.y = 62;
@@ -135,7 +133,7 @@ public class FriendTile extends AbstractView {
             _inviteBtn.x = -3;
             _inviteBtn.y = 32;
 
-            _inviteTF = createTextField(_inviteBtn.width, _inviteBtn.height, 5, "СПРОСИТЬ");
+            _inviteTF = createTextField(_inviteBtn.width, _inviteBtn.height, 5, _refs.locale.getString("main.friends.ask"));
             _inviteTF.nativeFilters = [new GlowFilter(0, 1, 2, 2, 2, 3)];
             _inviteTF.x = -3;
             _inviteTF.y = 32;
@@ -146,7 +144,7 @@ public class FriendTile extends AbstractView {
             _inviteBtn.x = -3;
             _inviteBtn.y = 28;
 
-            _inviteTF = createTextField(37, 21, 5, "ПОЗВАТЬ\nДРУЗЕЙ");
+            _inviteTF = createTextField(37, 21, 5, _refs.locale.getString("main.friends.invite"));
             _inviteTF.nativeFilters = [new GlowFilter(0, 1, 2, 2, 2, 3)];
             _inviteTF.x = -3;
             _inviteTF.y = 28;

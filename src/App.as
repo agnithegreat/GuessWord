@@ -9,6 +9,7 @@ package {
 import com.orchideus.guessWord.GameController;
 import com.orchideus.guessWord.data.DeviceType;
 import com.orchideus.guessWord.data.Sound;
+import com.orchideus.guessWord.localization.LocalizationManager;
 
 import flash.filesystem.File;
 
@@ -24,16 +25,25 @@ public class App extends Sprite {
 
     private var _deviceType: DeviceType;
 
+    private var _locale: LocalizationManager;
+
     private var _controller: GameController;
 
     public function start(assets: AssetManager, assetsPath: String, deviceType: DeviceType):void {
         _assets = assets;
-        _onLoad = initPreloader;
-        _assets.loadQueue(handleProgress);
 
         _assetsPath = assetsPath;
 
         _deviceType = deviceType;
+
+        _locale = new LocalizationManager();
+        // TODO: localization select
+        _locale.loadLocale("locale/ru.csv", handleLoadLocale);
+    }
+
+    private function handleLoadLocale():void {
+        _onLoad = initPreloader;
+        _assets.loadQueue(handleProgress);
     }
 
     private function handleProgress(ratio: Number):void {
@@ -52,7 +62,7 @@ public class App extends Sprite {
 
         Fonts.init();
 
-        _controller = new GameController(this, _assets, _deviceType);
+        _controller = new GameController(this, _assets, _deviceType, _locale);
 
         var dir: File = File.applicationDirectory;
         _assets.enqueue(

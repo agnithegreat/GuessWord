@@ -7,7 +7,7 @@
  */
 package com.orchideus.guessWord.ui.game {
 import com.orchideus.guessWord.GameController;
-import com.orchideus.guessWord.data.DeviceType;
+import com.orchideus.guessWord.data.CommonRefs;
 import com.orchideus.guessWord.data.Sound;
 import com.orchideus.guessWord.game.Game;
 import com.orchideus.guessWord.ui.abstract.Screen;
@@ -15,7 +15,6 @@ import com.orchideus.guessWord.ui.friends.FriendBar;
 
 import starling.display.Button;
 import starling.events.Event;
-import starling.utils.AssetManager;
 
 public class GameScreen extends Screen {
 
@@ -32,38 +31,38 @@ public class GameScreen extends Screen {
 
     private var _soundBtn: Button;
 
-    public function GameScreen(assets:AssetManager, deviceType: DeviceType, controller: GameController) {
+    public function GameScreen(refs: CommonRefs, controller: GameController) {
         _controller = controller;
         _controller.game.addEventListener(Game.INIT, handleInitGame);
         _controller.game.addEventListener(Game.WIN, handleWin);
 
-        super(assets, deviceType, "main_under");
+        super(refs, "main_under");
     }
 
     override protected function initialize():void {
-        _topPanel = new TopPanel(_assets, _deviceType, _controller.player);
+        _topPanel = new TopPanel(_refs, _controller.player);
         addChild(_topPanel);
 
-        _leftPanel = new LeftPanel(_assets, _deviceType);
+        _leftPanel = new LeftPanel(_refs);
 
-        _rightPanel = new RightPanel(_assets, _deviceType, _controller);
+        _rightPanel = new RightPanel(_refs, _controller);
         addChild(_rightPanel);
 
-        _middlePanel = new MiddlePanel(_assets, _deviceType, _controller.game);
+        _middlePanel = new MiddlePanel(_refs, _controller.game);
         addChild(_middlePanel);
 
-        _bottomPanel = new BottomPanel(_assets, _deviceType, _controller);
+        _bottomPanel = new BottomPanel(_refs, _controller);
         addChild(_bottomPanel);
 
-        _winPanel = new WinPanel(_assets, _deviceType);
+        _winPanel = new WinPanel(_refs);
         _winPanel.addEventListener(WinPanel.CONTINUE, handleContinue);
         addChild(_winPanel);
         _winPanel.visible = false;
 
-        _friendBar = new FriendBar(_assets, _deviceType, _controller);
+        _friendBar = new FriendBar(_refs, _controller);
         addChild(_friendBar);
 
-        _soundBtn = new Button(_assets.getTexture("main_sound_up"), "", _assets.getTexture("main_sound_down"));
+        _soundBtn = new Button(_refs.assets.getTexture("main_sound_up"), "", _refs.assets.getTexture("main_sound_down"));
         _soundBtn.addEventListener(Event.TRIGGERED, handleSound);
         addChild(_soundBtn);
 
@@ -116,8 +115,8 @@ public class GameScreen extends Screen {
     }
 
     private function updateSoundState():void {
-        _soundBtn.upState = Sound.enabled ? _assets.getTexture("main_sound_up") : _assets.getTexture("main_no_sound_up");
-        _soundBtn.downState = Sound.enabled ? _assets.getTexture("main_sound_down") : _assets.getTexture("main_no_sound_down");
+        _soundBtn.upState = Sound.enabled ? _refs.assets.getTexture("main_sound_up") : _refs.assets.getTexture("main_no_sound_up");
+        _soundBtn.downState = Sound.enabled ? _refs.assets.getTexture("main_sound_down") : _refs.assets.getTexture("main_no_sound_down");
     }
 }
 }

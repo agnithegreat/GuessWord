@@ -6,7 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 package com.orchideus.guessWord.ui.game {
-import com.orchideus.guessWord.data.DeviceType;
+import com.orchideus.guessWord.data.CommonRefs;
 import com.orchideus.guessWord.data.Pic;
 import com.orchideus.guessWord.data.Sound;
 import com.orchideus.guessWord.game.Game;
@@ -18,8 +18,6 @@ import starling.events.Event;
 import starling.events.Touch;
 import starling.events.TouchEvent;
 import starling.events.TouchPhase;
-import starling.textures.Texture;
-import starling.utils.AssetManager;
 
 public class MiddlePanel extends AbstractView {
 
@@ -37,12 +35,12 @@ public class MiddlePanel extends AbstractView {
     private var _pic3: ImageTile;
     private var _pic4: ImageTile;
 
-    public function MiddlePanel(assets: AssetManager, deviceType: DeviceType, game: Game) {
+    public function MiddlePanel(refs: CommonRefs, game: Game) {
         _game = game;
         _game.addEventListener(Game.ZOOM, handleZoom);
         _game.addEventListener(Game.PIC_CHANGED, handlePicChanged);
 
-        super(assets, deviceType)
+        super(refs);
     }
 
     override protected function initialize():void {
@@ -53,7 +51,7 @@ public class MiddlePanel extends AbstractView {
 
         _picsContainer.x = (stage.stageWidth-TILE)/2;
 
-        _pic1 = new ImageTile(_assets, _deviceType, _game.pic1);
+        _pic1 = new ImageTile(_refs, _game.pic1);
         _pic1.pivotX = 0;
         _pic1.pivotY = 0;
         _pic1.x = 0;
@@ -61,7 +59,7 @@ public class MiddlePanel extends AbstractView {
         _pic1.addEventListener(TouchEvent.TOUCH, handleTouch);
         _picsContainer.addChild(_pic1);
 
-        _pic2 = new ImageTile(_assets, _deviceType, _game.pic2);
+        _pic2 = new ImageTile(_refs, _game.pic2);
         _pic2.pivotX = TILE;
         _pic2.pivotY = 0;
         _pic2.x = TILE;
@@ -69,7 +67,7 @@ public class MiddlePanel extends AbstractView {
         _pic2.addEventListener(TouchEvent.TOUCH, handleTouch);
         _picsContainer.addChild(_pic2);
 
-        _pic3 = new ImageTile(_assets, _deviceType, _game.pic3);
+        _pic3 = new ImageTile(_refs, _game.pic3);
         _pic3.pivotX = 0;
         _pic3.pivotY = TILE;
         _pic3.x = 0;
@@ -77,7 +75,7 @@ public class MiddlePanel extends AbstractView {
         _pic3.addEventListener(TouchEvent.TOUCH, handleTouch);
         _picsContainer.addChild(_pic3);
 
-        _pic4 = new ImageTile(_assets, _deviceType, _game.pic4);
+        _pic4 = new ImageTile(_refs, _game.pic4);
         _pic4.pivotX = TILE;
         _pic4.pivotY = TILE;
         _pic4.x = TILE;

@@ -6,20 +6,19 @@
  * To change this template use File | Settings | File Templates.
  */
 package com.orchideus.guessWord.ui.abstract {
-import com.orchideus.guessWord.data.DeviceType;
+import com.orchideus.guessWord.data.CommonRefs;
 
 import starling.display.Image;
-import starling.utils.AssetManager;
 
 public class Screen extends AbstractView {
 
     protected var _background: Image;
 
-    public function Screen(assets: AssetManager, deviceType: DeviceType, background: String = null) {
-        super(assets, deviceType);
+    public function Screen(refs: CommonRefs, background: String = null) {
+        super(refs);
 
         if (background) {
-            _background = new Image(_assets.getTexture(background));
+            _background = new Image(_refs.assets.getTexture(background));
             addChild(_background);
         }
     }

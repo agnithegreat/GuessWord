@@ -6,7 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 package com.orchideus.guessWord.ui.game {
-import com.orchideus.guessWord.data.DeviceType;
+import com.orchideus.guessWord.data.CommonRefs;
 import com.orchideus.guessWord.ui.abstract.AbstractView;
 
 import flash.filters.GlowFilter;
@@ -14,7 +14,6 @@ import flash.filters.GlowFilter;
 import starling.display.Button;
 import starling.events.Event;
 import starling.text.TextField;
-import starling.utils.AssetManager;
 import starling.utils.VAlign;
 
 public class WinPanel extends AbstractView {
@@ -27,15 +26,14 @@ public class WinPanel extends AbstractView {
     private var _continueBtn: Button;
     private var _continueTF: TextField;
 
-    public function WinPanel(assets: AssetManager, deviceType: DeviceType) {
-        super(assets, deviceType);
+    public function WinPanel(refs: CommonRefs) {
+        super(refs);
 
-        // TODO: localization
         // TODO: подобрать фильтры
     }
 
     override protected function initialize():void {
-        _continueBtn = new Button(_assets.getTexture("main_next_btn_up"), "", _assets.getTexture("main_next_btn_down"));
+        _continueBtn = new Button(_refs.assets.getTexture("main_next_btn_up"), "", _refs.assets.getTexture("main_next_btn_down"));
         _continueBtn.addEventListener(Event.TRIGGERED, handleContinue);
         _continueBtn.pivotX = _continueBtn.width/2;
         addChild(_continueBtn);
@@ -54,11 +52,11 @@ public class WinPanel extends AbstractView {
         addChild(_continueTF);
 
         // TODO: replace amount
-        _msgTF.text = "ЧТОБЫ ДОГНАТЬ БЛИЖАЙШЕГО ДРУГА\nВАМ НУЖНО ОТГАДАТЬ ЕЩЕ " + 18 + " СЛОВ"
+        _msgTF.text = _refs.locale.getString("main.success.msg").replace("[value]", 18);
     }
 
     override protected function initializeIPad():void {
-        _winTF = createTextField(stage.stageWidth, 50, 42, "ОТЛИЧНО!");
+        _winTF = createTextField(stage.stageWidth, 50, 42, _refs.locale.getString("main.success.title"));
         _winTF.nativeFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
         _winTF.y = 695;
 
@@ -69,14 +67,14 @@ public class WinPanel extends AbstractView {
         _continueBtn.x = stage.stageWidth/2;
         _continueBtn.y = 805;
 
-        _continueTF = createTextField(_continueBtn.width, _continueBtn.height, 30, "ПРОДОЛЖИТЬ");
+        _continueTF = createTextField(_continueBtn.width, _continueBtn.height, 30, _refs.locale.getString("main.success.continue"));
         _continueTF.nativeFilters = [new GlowFilter(0, 1, 3, 3, 4, 3)];
         _continueTF.x = stage.stageWidth/2;
         _continueTF.y = 805;
     }
 
     override protected function initializeIPhone():void {
-        _winTF = createTextField(stage.stageWidth, 50, 20, "ОТЛИЧНО!");
+        _winTF = createTextField(stage.stageWidth, 50, 20, _refs.locale.getString("main.success.title"));
         _winTF.nativeFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
         _winTF.y = 330;
 
@@ -87,7 +85,7 @@ public class WinPanel extends AbstractView {
         _continueBtn.x = stage.stageWidth/2;
         _continueBtn.y = 420;
 
-        _continueTF = createTextField(_continueBtn.width, _continueBtn.height, 18, "ПРОДОЛЖИТЬ");
+        _continueTF = createTextField(_continueBtn.width, _continueBtn.height, 18, _refs.locale.getString("main.success.continue"));
         _continueTF.nativeFilters = [new GlowFilter(0, 1, 3, 3, 4, 3)];
         _continueTF.x = stage.stageWidth/2;
         _continueTF.y = 420;
