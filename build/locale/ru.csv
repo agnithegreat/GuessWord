@@ -17,3 +17,5 @@ bank.popup.title,КУПИТЬ МОНЕТЫ
 bank.tile.bestbuy,ПОПУЛЯРНЫЙ^ПЛАТЕЖ!
 bank.tile.currency,руб
 bank.tile.buy,КУПИТЬ
+alert.connection.title,Ошибка
+alert.connection.msg,Необходимо соединение с интернетом

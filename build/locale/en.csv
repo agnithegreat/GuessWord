@@ -17,3 +17,5 @@ bank.popup.title,BUY COINS
 bank.tile.bestbuy,BEST^OFFER
 bank.tile.currency,
 bank.tile.buy,BUY
+alert.connection.title,Error
+alert.connection.msg,No internet connection

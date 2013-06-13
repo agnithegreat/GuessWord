@@ -67,7 +67,7 @@ public class Server extends EventDispatcher {
     }
 
     private function checkConnection():void {
-        var url:URLRequest = new URLRequest("http://archive.davidtucker.net/index.php");
+        var url:URLRequest = new URLRequest("http://google.com");
         url.method = "HEAD";
 
         _monitor = new URLMonitor(url);

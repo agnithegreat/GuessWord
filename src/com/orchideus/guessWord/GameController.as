@@ -19,15 +19,14 @@ import com.orchideus.guessWord.data.Variables;
 import com.orchideus.guessWord.game.Game;
 import com.orchideus.guessWord.game.Score;
 import com.orchideus.guessWord.localization.LocalizationManager;
-import com.orchideus.guessWord.server.PushNotifications;
 import com.orchideus.guessWord.server.Server;
+import com.orchideus.guessWord.server.Service;
 import com.orchideus.guessWord.ui.MainScreen;
-import com.sticksports.nativeExtensions.inAppPurchase.InAppPurchase;
+
+import flash.desktop.NativeApplication;
 
 import flash.events.TimerEvent;
 import flash.utils.Timer;
-
-import pl.mateuszmackowiak.nativeANE.dialogs.NativeAlertDialog;
 
 import starling.display.Sprite;
 import starling.events.Event;
@@ -61,8 +60,6 @@ public class GameController extends EventDispatcher {
     private var _view: MainScreen;
 
     private var _server: Server;
-
-    private var _pushNotifications: PushNotifications;
 
     private var _locale: LocalizationManager;
 
@@ -113,16 +110,13 @@ public class GameController extends EventDispatcher {
 
         _score = new Score();
 
-//        _pushNotifications = new PushNotifications();
-//        _pushNotifications.init();
-
         _server = new Server();
         _server.init("1", _player.uid);
         _server.addEventListener(Server.DATA, handleData);
         _server.addEventListener(Server.INTERNET_UNAVAILABLE, handleInternetUnavailable);
 
         _server.getParameters();
-        _server.getFriendBar("");
+//        _server.getFriendBar("");
 
         _view.showGame();
     }
@@ -130,8 +124,6 @@ public class GameController extends EventDispatcher {
     private function startLevel():void {
         _game.init();
         _score.init(Variables.bonus_time, Variables.bonus_max, Variables.bonus_dec);
-
-        handleInternetUnavailable(null);
     }
 
     private function addViewEventListeners():void {
@@ -226,9 +218,7 @@ public class GameController extends EventDispatcher {
     }
 
     private function handleInternetUnavailable(event: Event):void {
-        if (NativeAlertDialog.isSupported) {
-            NativeAlertDialog.showAlert("test", "Error", new <String>["Close"], null, false);
-        }
+        Service.showAlert(_locale.getString("alert.connection.title"), _locale.getString("alert.connection.msg"));
     }
 
     // ************************
@@ -299,11 +289,7 @@ public class GameController extends EventDispatcher {
     }
 
     private function handleBuyBank(event: Event):void {
-        if (InAppPurchase.isSupported && InAppPurchase.canMakePayments) {
-            var bank: Bank = event.data as Bank;
-            InAppPurchase.purchaseProduct(String(bank.id));
-            // TODO: wait for signal, then finishTransaction(id);
-        }
+        Service.makePurchase(event.data as Bank);
     }
 
     private function handleSelectPic(event: Event):void {

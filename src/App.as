@@ -10,6 +10,7 @@ import com.orchideus.guessWord.GameController;
 import com.orchideus.guessWord.data.DeviceType;
 import com.orchideus.guessWord.data.Sound;
 import com.orchideus.guessWord.localization.LocalizationManager;
+import com.orchideus.guessWord.server.Service;
 
 import flash.filesystem.File;
 
@@ -61,6 +62,8 @@ public class App extends Sprite {
         Sound.listen(stage);
 
         Fonts.init();
+
+        Service.init();
 
         _controller = new GameController(this, _assets, _deviceType, _locale);
 

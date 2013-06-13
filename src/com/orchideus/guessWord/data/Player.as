@@ -39,10 +39,10 @@ public class Player extends EventDispatcher {
     }
 
     public function parse(data: Object):void {
-        if (data.level) {
+        if (data.hasOwnProperty("level")) {
             _data.data.level = data.level;
         }
-        if (data.money) {
+        if (data.hasOwnProperty("money")) {
             _data.data.money = data.money;
         }
         save();

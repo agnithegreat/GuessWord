@@ -84,7 +84,7 @@ public class LetterTile extends AbstractView {
 
     public function update():void {
         _tf.text = _letter.letter ? _letter.letter.toUpperCase() : "";
-        visible = _tf.text;
+        visible = Boolean(_tf.text);
 
         _back.texture = _up;
     }
