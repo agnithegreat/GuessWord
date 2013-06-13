@@ -24,19 +24,19 @@ public class LettersStack extends EventDispatcher {
 
     public function init(letters: Array):void {
         for (var i:int = 0; i < _letters.length; i++) {
-            _letters[i].letter = letters.length>i ? letters[i] : null;
+            _letters[i].setLetter(letters.length>i ? letters[i] : null, false);
         }
     }
 
     public function removeLetter(id: int):void {
-        _letters[id].letter = null;
+        _letters[id].setLetter(null, true);
     }
 
     public function addLetter(letter: String):void {
         var i: int = 0;
         while (i<_letters.length) {
             if (!_letters[i].letter) {
-                _letters[i].letter = letter;
+                _letters[i].setLetter(letter, true);
                 break;
             }
             i++;

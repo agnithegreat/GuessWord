@@ -6,24 +6,28 @@
  * To change this template use File | Settings | File Templates.
  */
 package com.orchideus.guessWord.ui.game {
+import com.orchideus.guessWord.data.CommonRefs;
+import com.orchideus.guessWord.data.Pic;
 import com.orchideus.guessWord.data.Sound;
 import com.orchideus.guessWord.game.Game;
+import com.orchideus.guessWord.ui.abstract.AbstractView;
 import com.orchideus.guessWord.ui.tile.ImageTile;
 
 import starling.display.Sprite;
+import starling.events.Event;
 import starling.events.Touch;
 import starling.events.TouchEvent;
 import starling.events.TouchPhase;
-import starling.utils.AssetManager;
 
-public class MiddlePanel extends Sprite {
+public class MiddlePanel extends AbstractView {
 
-    public static var tile: int = 595;
-    public static var imageTile: int = 595;
+    public static var TILE: int;
 
-    private var _assets: AssetManager;
+    private var _game: Game;
 
     private var _picsContainer: Sprite;
+
+    private var _clickedImage: ImageTile;
     private var _zoomedImage: ImageTile;
 
     private var _pic1: ImageTile;
@@ -31,17 +35,23 @@ public class MiddlePanel extends Sprite {
     private var _pic3: ImageTile;
     private var _pic4: ImageTile;
 
-    public function MiddlePanel(assets: AssetManager) {
-        _assets = assets;
+    public function MiddlePanel(refs: CommonRefs, game: Game) {
+        _game = game;
+        _game.addEventListener(Game.ZOOM, handleZoom);
+        _game.addEventListener(Game.PIC_CHANGED, handlePicChanged);
+
+        super(refs);
     }
 
-    public function init():void {
+    override protected function initialize():void {
         _picsContainer = new Sprite();
-        _picsContainer.x = (stage.stageWidth-tile)/2;
-        _picsContainer.y = 95;
         addChild(_picsContainer);
 
-        _pic1 = new ImageTile(_assets);
+        super.initialize();
+
+        _picsContainer.x = (stage.stageWidth-TILE)/2;
+
+        _pic1 = new ImageTile(_refs, _game.pic1);
         _pic1.pivotX = 0;
         _pic1.pivotY = 0;
         _pic1.x = 0;
@@ -49,62 +59,86 @@ public class MiddlePanel extends Sprite {
         _pic1.addEventListener(TouchEvent.TOUCH, handleTouch);
         _picsContainer.addChild(_pic1);
 
-        _pic2 = new ImageTile(_assets);
-        _pic2.pivotX = imageTile;
+        _pic2 = new ImageTile(_refs, _game.pic2);
+        _pic2.pivotX = TILE;
         _pic2.pivotY = 0;
-        _pic2.x = tile;
+        _pic2.x = TILE;
         _pic2.y = 0;
         _pic2.addEventListener(TouchEvent.TOUCH, handleTouch);
         _picsContainer.addChild(_pic2);
 
-        _pic3 = new ImageTile(_assets);
+        _pic3 = new ImageTile(_refs, _game.pic3);
         _pic3.pivotX = 0;
-        _pic3.pivotY = imageTile;
+        _pic3.pivotY = TILE;
         _pic3.x = 0;
-        _pic3.y = tile;
+        _pic3.y = TILE;
         _pic3.addEventListener(TouchEvent.TOUCH, handleTouch);
         _picsContainer.addChild(_pic3);
 
-        _pic4 = new ImageTile(_assets);
-        _pic4.pivotX = imageTile;
-        _pic4.pivotY = imageTile;
-        _pic4.x = tile;
-        _pic4.y = tile;
+        _pic4 = new ImageTile(_refs, _game.pic4);
+        _pic4.pivotX = TILE;
+        _pic4.pivotY = TILE;
+        _pic4.x = TILE;
+        _pic4.y = TILE;
         _pic4.addEventListener(TouchEvent.TOUCH, handleTouch);
         _picsContainer.addChild(_pic4);
     }
 
-    public function update(game: Game):void {
-        _pic1.init(game.pic1.url);
-        _pic2.init(game.pic2.url);
-        _pic3.init(game.pic3.url);
-        _pic4.init(game.pic4.url);
+    override protected function initializeIPad():void {
+        _picsContainer.y = 95;
+
+        TILE = 595;
     }
 
-    public function updateDescription(game: Game):void {
-        _pic1.showDescription(game.pic1.description);
-        _pic2.showDescription(game.pic2.description);
-        _pic3.showDescription(game.pic3.description);
-        _pic4.showDescription(game.pic4.description);
+    override protected function initializeIPhone():void {
+        _picsContainer.y = 80;
+
+        TILE = 242;
+    }
+
+    public function update():void {
+        _pic1.load();
+        _pic2.load();
+        _pic3.load();
+        _pic4.load();
+    }
+
+    public function updateDescription():void {
+        _pic1.showDescription();
+        _pic2.showDescription();
+        _pic3.showDescription();
+        _pic4.showDescription();
     }
 
     private function handleTouch(event: TouchEvent):void {
-        var image: ImageTile = event.currentTarget as ImageTile;
-        var touch: Touch = event.getTouch(image, TouchPhase.ENDED);
+        _clickedImage = event.currentTarget as ImageTile;
+        var touch: Touch = event.getTouch(_clickedImage, TouchPhase.ENDED);
         if (touch) {
-            if (image.zoomed) {
-                image.scale();
+            dispatchEventWith(Pic.SELECT, true, _clickedImage.pic);
+        }
+    }
+
+    private function handleZoom(event: Event):void {
+        if (_clickedImage) {
+            if (_clickedImage.zoomed) {
+                _clickedImage.scale();
                 _zoomedImage = null;
 
-                Sound.play(Sound.SMALL_PIC);
+                dispatchEventWith(Sound.SOUND, true, Sound.SMALL_PIC);
             } else if (!_zoomedImage) {
-                _picsContainer.addChild(image);
-                _zoomedImage = image;
-                image.scale();
+                _picsContainer.addChild(_clickedImage);
+                _zoomedImage = _clickedImage;
+                _clickedImage.scale();
 
-                Sound.play(Sound.BIG_PIC);
+                dispatchEventWith(Sound.SOUND, true, Sound.BIG_PIC);
             }
+
+            _clickedImage = null;
         }
+    }
+
+    private function handlePicChanged(event: Event):void {
+        this["_pic"+event.data].load();
     }
 }
 }

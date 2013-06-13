@@ -6,9 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 package com.orchideus.guessWord.game {
-import com.orchideus.guessWord.data.Bonus;
 import com.orchideus.guessWord.data.Pic;
-import com.orchideus.guessWord.data.Player;
 
 import starling.core.Starling;
 
@@ -19,9 +17,10 @@ public class Game extends EventDispatcher {
 
     public static const INIT: String = "init_Game";
     public static const UPDATE: String = "update_Game";
+    public static const ZOOM: String = "zoom_Game";
+    public static const PIC_CHANGED: String = "pic_changed_Game";
     public static const RESET: String = "reset_Game";
     public static const SEND_WORD: String = "send_word_Game";
-    public static const USE_BONUS: String = "use_bonus_Game";
     public static const WIN: String = "win_Game";
 
     private var _word: Word;
@@ -34,28 +33,30 @@ public class Game extends EventDispatcher {
         return _stack;
     }
 
-    private var _changed_pic: int;
-    private var _current_wrong_pic_url: String;
-    private var _current_wrong_pic_id: int;
-
     public var pic1: Pic;
     public var pic2: Pic;
     public var pic3: Pic;
     public var pic4: Pic;
 
-    private var _letters: Array;
-    private var _availableLetters: Array;
+    public var pic5: Pic;
+
+    private var _changedPic: int;
 
     public function Game() {
         _word = new Word();
         _word.addEventListener(Word.FULL, handleWordFull);
 
-        pic1 = new Pic();
-        pic2 = new Pic();
-        pic3 = new Pic();
-        pic4 = new Pic();
+        pic1 = new Pic(1);
+        pic2 = new Pic(2);
+        pic3 = new Pic(3);
+        pic4 = new Pic(4);
+        pic5 = new Pic(5);
 
         _stack = new LettersStack();
+    }
+
+    public function init():void {
+        dispatchEventWith(INIT);
     }
 
     public function initWord(data: Object):void {
@@ -63,20 +64,13 @@ public class Game extends EventDispatcher {
 
         updateWord(data);
 
-        _current_wrong_pic_url = data.current_wrong_pic_url;
-        _current_wrong_pic_id = data.current_wrong_pic_id;
-
         pic1.url = data.pic1;
         pic2.url = data.pic2;
         pic3.url = data.pic3;
         pic4.url = data.pic4;
+        pic5.url = data.pic5;
 
-        pic1.description = data.pic1_descr;
-        pic2.description = data.pic2_descr;
-        pic3.description = data.pic3_descr;
-        pic4.description = data.pic4_descr;
-
-        dispatchEventWith(INIT);
+        updateDescription(data);
     }
 
     public function updateStack(data: Object):void {
@@ -85,17 +79,23 @@ public class Game extends EventDispatcher {
         }
     }
 
-    public function updatePlayer(data: Object):void {
-        Player.parse(data);
-        update();
-    }
-
     public function updateWord(data: Object):void {
-
         var symLen: int = data.symbols ? data.symbols.length : 0;
         for (var i:int = 0; i < symLen; i++) {
             var symbol: Object = data.symbols[i];
             _word.openSymbol(symbol.position, symbol.symbol);
+        }
+    }
+
+    public function zoom():void {
+        dispatchEventWith(ZOOM);
+    }
+
+    public function changePic(id: int):void {
+        if (id) {
+            _changedPic = id;
+            this["pic"+id].url = pic5.url;
+            dispatchEventWith(PIC_CHANGED, false, id);
         }
     }
 
@@ -104,10 +104,13 @@ public class Game extends EventDispatcher {
         pic2.description = data.pic2_descr;
         pic3.description = data.pic3_descr;
         pic4.description = data.pic4_descr;
+
+        if (_changedPic) {
+            this["pic"+_changedPic].description = data.pic5_descr;
+        }
     }
 
     public function selectLetter(id: int):void {
-        trace(_word.isComplete);
         if (!_word.isComplete) {
             var letter: String = _stack.letters[id].letter;
             _stack.removeLetter(id);
@@ -124,16 +127,6 @@ public class Game extends EventDispatcher {
         }
     }
 
-    public function useBonus(bonus: Bonus):void {
-        if (Player.money >= bonus.price) {
-            dispatchEventWith(USE_BONUS, false, bonus.id);
-        }
-    }
-
-    public function win():void {
-        dispatchEventWith(WIN);
-    }
-
     public function wordError():void {
         _word.error();
         Starling.juggler.delayCall(reset, 1.5);
@@ -144,6 +137,10 @@ public class Game extends EventDispatcher {
             removeLetter(i, true);
         }
         dispatchEventWith(RESET);
+    }
+
+    public function win():void {
+        dispatchEventWith(WIN);
     }
 
     private function update():void {

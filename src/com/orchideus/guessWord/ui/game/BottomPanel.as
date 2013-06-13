@@ -6,10 +6,13 @@
  * To change this template use File | Settings | File Templates.
  */
 package com.orchideus.guessWord.ui.game {
+import com.orchideus.guessWord.GameController;
+import com.orchideus.guessWord.data.CommonRefs;
 import com.orchideus.guessWord.data.Sound;
 import com.orchideus.guessWord.game.Game;
 import com.orchideus.guessWord.game.Letter;
 import com.orchideus.guessWord.game.Word;
+import com.orchideus.guessWord.ui.abstract.AbstractView;
 import com.orchideus.guessWord.ui.tile.LetterTile;
 
 import flash.geom.Rectangle;
@@ -21,15 +24,12 @@ import starling.events.Event;
 import starling.events.Touch;
 import starling.events.TouchEvent;
 import starling.events.TouchPhase;
-import starling.utils.AssetManager;
 
-public class BottomPanel extends Sprite {
+public class BottomPanel extends AbstractView {
 
-    public static const TILE: int = 56;
+    public static var TILE: int;
 
-    private var _assets: AssetManager;
-
-    private var _game: Game;
+    private var _controller: GameController;
 
     private var _slots: Vector.<SlotTile>;
     private var _slotsContainer: Sprite;
@@ -41,62 +41,86 @@ public class BottomPanel extends Sprite {
 
     private var _deleteBtn: Button;
 
-    public function BottomPanel(assets: AssetManager) {
-        _assets = assets;
+    public function BottomPanel(refs: CommonRefs, controller: GameController) {
+        _controller = controller;
+        _controller.game.addEventListener(Game.INIT, handleInit);
+        _controller.game.addEventListener(Game.RESET, handleReset);
+        _controller.game.addEventListener(Game.WIN, handleWin);
+
+        _controller.game.word.addEventListener(Word.ERROR, handleError);
+        _controller.game.word.addEventListener(Word.CLEAR, handleClear);
+
+        super(refs);
     }
 
-    public function init(game: Game):void {
-        _game = game;
-        _game.addEventListener(Game.INIT, handleInit);
-        _game.addEventListener(Game.RESET, handleReset);
-        _game.addEventListener(Game.WIN, handleWin);
-
-        _game.word.addEventListener(Word.ERROR, handleError);
-        _game.word.addEventListener(Word.CLEAR, handleClear);
-
+    override protected function initialize():void {
         _slotsContainer = new Sprite();
         _slotsContainer.x = stage.stageWidth/2;
-        _slotsContainer.y = 712;
         addChild(_slotsContainer);
 
-        _error = new ErrorView("ОШИБКА", _assets);
+        _error = new ErrorView(_refs, _refs.locale.getString("main.word.mistake"));
         _error.x = stage.stageWidth/2;
-        _error.y = 712;
-        _error.pivotX = _error.width/2;
         _error.visible = false;
-        addChild(_error);
 
         _lettersContainer = new Sprite();
         _lettersContainer.x = stage.stageWidth/2;
-        _lettersContainer.y = 785;
         addChild(_lettersContainer);
 
-        _letters = new <LetterTile>[];
-        for (var i: int = 0; i < _game.stack.letters.length; i++) {
-            _letters[i] = new LetterTile(_game.stack.letters[i], _assets);
-            _letters[i].addEventListener(TouchEvent.TOUCH, handleSelectLetter);
-            _letters[i].x = (i%10)*TILE;
-            _letters[i].y = int(i/10)*TILE;
-            _lettersContainer.addChild(_letters[i]);
-        }
+        _deleteBtn = new Button(_refs.assets.getTexture("main_del_btn_down"), "", _refs.assets.getTexture("main_del_btn_up"));
+        _deleteBtn.addEventListener(Event.TRIGGERED, handleDelete);
+        addChild(_deleteBtn);
 
+        super.initialize();
+
+        addChild(_error);
+        _error.pivotX = _error.width/2;
+
+        _letters = new <LetterTile>[];
+        for (var i: int = 0; i < _controller.game.stack.letters.length; i++) {
+            var letter: LetterTile = new LetterTile(_refs, _controller.game.stack.letters[i]);
+            letter.addEventListener(TouchEvent.TOUCH, handleSelectLetter);
+            letter.x = (i%10)*TILE;
+            letter.y = int(i/10)*TILE;
+            _lettersContainer.addChild(letter);
+            _letters[i] = letter;
+        }
         _lettersContainer.pivotX = _lettersContainer.width/2;
 
         addEventListener(LetterTile.MOVE_FROM, handleMoveFrom);
         addEventListener(LetterTile.MOVE_TO, handleMoveTo);
+    }
 
-        _deleteBtn = new Button(_assets.getTexture("delete_btn_down"), "", _assets.getTexture("delete_btn_up"));
-        _deleteBtn.addEventListener(Event.TRIGGERED, handleDelete);
+    override protected function initializeIPad():void {
+        _slotsContainer.y = 712;
+
+        _error.y = 712;
+
+        _lettersContainer.y = 785;
+
         _deleteBtn.x = 680;
         _deleteBtn.y = 705;
-        addChild(_deleteBtn);
+
+        TILE = 56;
+    }
+
+    override protected function initializeIPhone():void {
+        _slotsContainer.y = 373;
+
+        _error.y = 373;
+
+        _lettersContainer.y = 410;
+
+        _deleteBtn.x = 225;
+        _deleteBtn.y = 330;
+
+        TILE = 31;
     }
 
     private function handleInit(event: Event):void {
         _slots = new <SlotTile>[];
-        for (var i: int = 0; i < _game.word.length; i++) {
-            var letter: Letter = _game.word.letters[i];
-            _slots[i] = new SlotTile(letter, _assets);
+        for (var i: int = 0; i < _controller.game.word.length; i++) {
+            var letter: Letter = _controller.game.word.letters[i];
+            _slots[i] = new SlotTile(_refs, letter);
             _slots[i].addEventListener(TouchEvent.TOUCH, handleRemoveLetter);
             _slots[i].x = i*TILE;
             _slotsContainer.addChild(_slots[i]);
@@ -106,7 +130,7 @@ public class BottomPanel extends Sprite {
     }
 
     private function handleWin(event: Event):void {
-        Sound.play(Sound.WIN);
+        dispatchEventWith(Sound.SOUND, true, Sound.WIN);
     }
 
     private function handleError(event:Event):void {
@@ -114,7 +138,7 @@ public class BottomPanel extends Sprite {
         _slotsContainer.visible = false;
         _deleteBtn.visible = false;
 
-        Sound.play(Sound.LOSE);
+        dispatchEventWith(Sound.SOUND, true, Sound.LOSE);
     }
 
     private function handleClear(event: Event):void {
@@ -138,7 +162,7 @@ public class BottomPanel extends Sprite {
         var touch: Touch = event.getTouch(letter, TouchPhase.BEGAN);
         if (touch) {
             var index: int = _letters.indexOf(letter);
-            _game.selectLetter(index);
+            _controller.game.selectLetter(index);
         }
     }
 
@@ -147,7 +171,7 @@ public class BottomPanel extends Sprite {
         var touch: Touch = event.getTouch(slot, TouchPhase.BEGAN);
         if (touch) {
             var index: int = _slots.indexOf(slot);
-            _game.removeLetter(index);
+            _controller.game.removeLetter(index);
         }
     }
 
@@ -174,7 +198,7 @@ public class BottomPanel extends Sprite {
         var fromPos: Rectangle = from.getBounds(this);
         var toPos: Rectangle = to.getBounds(this);
 
-        var phantom: LetterTile = new LetterTile(to.letter, _assets);
+        var phantom: LetterTile = new LetterTile(_refs, to.letter);
         phantom.x = fromPos.x;
         phantom.y = fromPos.y
         addChild(phantom);
@@ -188,9 +212,9 @@ public class BottomPanel extends Sprite {
     }
 
     private function handleDelete(event: Event):void {
-        Sound.play(Sound.BACKSPACE);
+        dispatchEventWith(Sound.SOUND, true, Sound.BACKSPACE);
 
-        _game.reset();
+        _controller.game.reset();
     }
 }
 }

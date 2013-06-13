@@ -1,35 +1,29 @@
 package {
+import com.orchideus.guessWord.data.DeviceType;
+
 import flash.desktop.NativeApplication;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.filesystem.File;
 import flash.geom.Rectangle;
-import flash.media.AudioPlaybackMode;
-import flash.media.SoundMixer;
 import flash.system.Capabilities;
 
 import starling.core.Starling;
 import starling.events.Event;
-import starling.textures.Texture;
-
 import starling.utils.AssetManager;
 import starling.utils.RectangleUtil;
 import starling.utils.ScaleMode;
 import starling.utils.formatString;
 
-[SWF(frameRate="60", width="768", height="1024")]
 public class Guess extends Sprite {
-
-    private static const iPhone: Rectangle = new Rectangle(0,0,320,480);
-    private static const iPad: Rectangle = new Rectangle(0,0,768,1024);
-    public static var size: Rectangle;
 
     private var _assets: AssetManager;
 
     private var viewPort:Rectangle;
 
     private var basicAssetsPath:String;
-    private var _scaleFactor: Number;
+
+    private var _deviceType: DeviceType;
 
     private var _starling: Starling;
 
@@ -42,7 +36,7 @@ public class Guess extends Sprite {
     }
 
     private function handleAddedToStage(event:flash.events.Event = null):void {
-        removeEventListener(flash.events.Event.ADDED_TO_STAGE, init);
+        removeEventListener(flash.events.Event.ADDED_TO_STAGE, handleAddedToStage);
         init();
     }
 
@@ -52,30 +46,26 @@ public class Guess extends Sprite {
         Starling.handleLostContext = !iOS;
 
         var deviceSize: Rectangle = iOS ? new Rectangle(0, 0, stage.fullScreenWidth, stage.fullScreenHeight) : new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
-        size = deviceSize.width==768 || deviceSize.width==1536 ? iPad : iPhone;
-        var isPad: int = deviceSize.width==768 || deviceSize.width==1536 ? 2 : 0;
-        viewPort = RectangleUtil.fit(size, deviceSize, ScaleMode.SHOW_ALL);
+        _deviceType = deviceSize.width==768 || deviceSize.width==1536 ? DeviceType.iPad : (deviceSize.height==1136 ? DeviceType.iPhone5 : DeviceType.iPhone4);
+        viewPort = RectangleUtil.fit(_deviceType.size, deviceSize, ScaleMode.SHOW_ALL);
 
-        _scaleFactor = viewPort.width==320 || viewPort.width==768 ? 1 : 2;
+        var isPad: int = deviceSize.width==768 || deviceSize.width==1536 ? 4 : 2;
 
-        _scaleFactor = 2;
-        isPad = 2;
-
-        _assets = new AssetManager(_scaleFactor);
-        basicAssetsPath = formatString("textures/{0}x", _scaleFactor + isPad);
+        _assets = new AssetManager(2);
+        basicAssetsPath = formatString("textures/{0}x", isPad);
 
         var dir: File = File.applicationDirectory;
         _assets.enqueue(
-                dir.resolvePath(formatString("preloader/{0}x", _scaleFactor + isPad))
+                dir.resolvePath(formatString("preloader/{0}x", isPad))
         );
         initApp ();
     }
 
     private function initApp ():void {
         _starling = new Starling(App, stage, viewPort);
-        _starling.stage.stageWidth = size.width;
-        _starling.stage.stageHeight = size.height;
-        _starling.showStats = true;
+        _starling.stage.stageWidth = _deviceType.size.width;
+        _starling.stage.stageHeight = _deviceType.size.height;
+//        _starling.showStats = true;
         _starling.simulateMultitouch = false;
         _starling.enableErrorChecking = Capabilities.isDebugger;
 
@@ -90,7 +80,7 @@ public class Guess extends Sprite {
 
     private function handleRootCreated(event: Object,  app: App):void {
         _starling.removeEventListener(starling.events.Event.ROOT_CREATED, handleRootCreated);
-        app.start(_assets, basicAssetsPath);
+        app.start(_assets, basicAssetsPath, _deviceType);
         _starling.start();
     }
 }

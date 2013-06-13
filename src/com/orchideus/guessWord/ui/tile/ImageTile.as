@@ -6,6 +6,10 @@
  * To change this template use File | Settings | File Templates.
  */
 package com.orchideus.guessWord.ui.tile {
+import com.orchideus.guessWord.data.CommonRefs;
+import com.orchideus.guessWord.data.Pic;
+import com.orchideus.guessWord.ui.abstract.AbstractView;
+
 import flash.display.Bitmap;
 import flash.display.Loader;
 import flash.events.Event;
@@ -13,18 +17,20 @@ import flash.net.URLRequest;
 
 import starling.core.Starling;
 import starling.display.Image;
-import starling.display.Quad;
-import starling.display.Sprite;
 import starling.text.TextField;
 import starling.textures.Texture;
-import starling.utils.AssetManager;
 import starling.utils.HAlign;
 import starling.utils.VAlign;
 
-public class ImageTile extends Sprite {
+public class ImageTile extends AbstractView {
 
-    public static const scaleAmount: Number = 0.492;
+    public static var scaleAmount: Number = 0.496;
     public static const delay: Number = 0.2;
+
+    private var _pic: Pic;
+    public function get pic():Pic {
+        return _pic;
+    }
 
     private var _zoomed: Boolean;
     public function get zoomed():Boolean {
@@ -34,47 +40,59 @@ public class ImageTile extends Sprite {
     private var _border: Image;
     private var _image: Image;
 
-    private var _hide: Quad;
     private var _description: TextField;
 
-    public function ImageTile(assets: AssetManager) {
-        _border = new Image(assets.getTexture("pic_under_big"));
+    public function ImageTile(refs: CommonRefs, pic: Pic) {
+        _pic = pic;
+
+        super(refs);
+    }
+
+    override protected function initialize():void {
+        _border = new Image(_refs.assets.getTexture("main_big_pic_under"));
         addChild(_border);
 
         _image = new Image(Texture.empty());
-        _image.x = 8;
-        _image.y = 8;
 
-        scaleX = scaleY = scaleAmount;
+        super.initialize();
 
-        _hide = new Quad(580, 583, 0);
-        _hide.x = 8;
-        _hide.y = 8;
-        _hide.alpha = 0.5;
-
-        _description = new TextField(564, 567, "", "Arial", 42, 0xFFFFFF, true);
-        _description.x = 16;
-        _description.y = 16;
         _description.hAlign = HAlign.LEFT;
         _description.vAlign = VAlign.CENTER;
+
+        scaleX = scaleY = scaleAmount;
     }
 
-    public function init(url: String):void {
+    override protected function initializeIPad():void {
+        _image.x = 9;
+        _image.y = 8;
+
+        _description = createTextField(_border.width*0.9, _border.height*0.9, 42);
+        _description.x = 18;
+        _description.y = 16;
+
+        scaleAmount = 0.493;
+    }
+
+    override protected function initializeIPhone():void {
+        _image.x = 5;
+        _image.y = 5;
+
+        _description = createTextField(_border.width*0.9, _border.height*0.9, 20);
+        _description.x = 10;
+        _description.y = 10;
+
+        scaleAmount = 0.496;
+    }
+
+    public function load():void {
         var loader:Loader = new Loader();
-        loader.load(new URLRequest(url));
+        loader.load(new URLRequest(_pic.url));
         loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onComplete);
 
-        if (_hide.parent) {
-            removeChild(_hide);
-            removeChild(_description);
+        if (_image.parent) {
+            removeChild(_image);
         }
-    }
-
-    public function showDescription(title: String):void {
-        _description.text = title;
-
-        addChild(_hide);
-        addChild(_description);
+        hideDescription();
     }
 
     public function scale(animated: Boolean = true):void {
@@ -83,14 +101,27 @@ public class ImageTile extends Sprite {
         _zoomed = !_zoomed;
     }
 
+    public function showDescription():void {
+        _description.text = _pic.description;
+
+        _image.color = 0x666666;
+
+        addChild(_description);
+    }
+
+    public function hideDescription():void {
+        _image.color = 0xFFFFFF;
+        removeChild(_description);
+    }
+
     private function onComplete(event: Event):void {
         var loadedBitmap: Bitmap = event.currentTarget.loader.content as Bitmap;
         var texture: Texture = Texture.fromBitmap(loadedBitmap);
 
         _image.texture = texture;
         _image.readjustSize();
-        _image.width = 580;
-        _image.height = 583;
+        _image.width = _border.width-_image.x*2;
+        _image.height = _border.height-_image.y*2;
         addChild(_image);
     }
 }

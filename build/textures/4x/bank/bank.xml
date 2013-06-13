@@ -3,9 +3,14 @@
     <!-- Created with TexturePacker -->
     <!-- http://texturepacker.com -->
     <!--  -->
-    <SubTexture name="bank_under" x="2" y="2" width="1127" height="842"/>
-    <SubTexture name="best_buy_btn_down" x="1131" y="2" width="213" height="107"/>
-    <SubTexture name="best_buy_btn_up" x="1346" y="2" width="213" height="107"/>
-    <SubTexture name="best_buy_under" x="2" y="846" width="977" height="110"/>
-    <SubTexture name="buy_under" x="981" y="846" width="977" height="110"/>
+    <SubTexture name="bank_bestbuy_btn_down" x="0" y="0" width="213" height="107"/>
+    <SubTexture name="bank_bestbuy_btn_up" x="215" y="0" width="213" height="107"/>
+    <SubTexture name="bank_bestitem_under" x="430" y="0" width="977" height="110"/>
+    <SubTexture name="bank_buy_btn_down" x="1409" y="0" width="213" height="107"/>
+    <SubTexture name="bank_buy_btn_up" x="1624" y="0" width="213" height="107"/>
+    <SubTexture name="bank_close_btn" x="1839" y="0" width="46" height="47"/>
+    <SubTexture name="bank_close_btn_down" x="1887" y="0" width="52" height="51"/>
+    <SubTexture name="bank_coin_ico" x="1941" y="0" width="94" height="101"/>
+    <SubTexture name="bank_item_under" x="0" y="112" width="977" height="110"/>
+    <SubTexture name="bank_under" x="0" y="224" width="1127" height="842"/>
 </TextureAtlas>

@@ -9,7 +9,10 @@ package com.orchideus.guessWord.data {
 
 public class Bank {
 
-    public static var VALUES: Vector.<Bank>;
+    public static const OPEN: String = "open_Bank";
+    public static const BUY: String = "buy_Bank";
+
+    public static var VALUES: Vector.<Bank> = new <Bank>[];
 
     public var id: int;
     public var value: int;
@@ -18,8 +21,6 @@ public class Bank {
     public var network: int;
 
     public static function parse(data: Object):void {
-        VALUES = new <Bank>[];
-
         for (var i:int = 0; i < data.length; i++) {
             var bank: Bank = new Bank();
             bank.id = data[i].id;

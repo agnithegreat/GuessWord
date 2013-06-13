@@ -6,127 +6,117 @@
  * To change this template use File | Settings | File Templates.
  */
 package com.orchideus.guessWord.ui.game {
-import com.orchideus.guessWord.data.Bonus;
+import com.orchideus.guessWord.GameController;
+import com.orchideus.guessWord.data.CommonRefs;
 import com.orchideus.guessWord.data.Sound;
 import com.orchideus.guessWord.game.Game;
-import com.orchideus.guessWord.ui.tile.BonusTile;
-
-import feathers.controls.Screen;
+import com.orchideus.guessWord.ui.abstract.Screen;
+import com.orchideus.guessWord.ui.friends.FriendBar;
 
 import starling.display.Button;
-
-import starling.display.Image;
 import starling.events.Event;
-import starling.utils.AssetManager;
 
 public class GameScreen extends Screen {
 
-    private var _assets: AssetManager;
-    public function get assets():AssetManager {
-        return _assets;
-    }
-    public function set assets(value: AssetManager):void {
-        _assets = value;
-    }
-
-    private var _app: App;
-    public function get app():App {
-        return _app;
-    }
-    public function set app(value: App):void {
-        _app = value;
-        _app.addEventListener(App.INIT, handleInit);
-    }
-
-    private var _game: Game;
-
-    private var _background: Image;
+    private var _controller: GameController;
 
     private var _topPanel: TopPanel;
     private var _leftPanel: LeftPanel;
+    private var _rightPanel: RightPanel;
     private var _middlePanel: MiddlePanel;
     private var _bottomPanel: BottomPanel;
-
     private var _winPanel: WinPanel;
+
+    private var _friendBar: FriendBar;
 
     private var _soundBtn: Button;
 
-    override protected function initialize():void {
-        _background = new Image(assets.getTexture("main_under"));
-        addChild(_background);
+    public function GameScreen(refs: CommonRefs, controller: GameController) {
+        _controller = controller;
+        _controller.game.addEventListener(Game.INIT, handleInitGame);
+        _controller.game.addEventListener(Game.WIN, handleWin);
 
-        _topPanel = new TopPanel(_assets);
+        super(refs, "main_under");
+    }
+
+    override protected function initialize():void {
+        _topPanel = new TopPanel(_refs, _controller.player);
         addChild(_topPanel);
 
-        _leftPanel = new LeftPanel(_assets);
-        _leftPanel.addEventListener(BonusTile.USE, handleUseBonus);
-        addChild(_leftPanel);
+        _leftPanel = new LeftPanel(_refs);
 
-        _middlePanel = new MiddlePanel(_assets);
+        _rightPanel = new RightPanel(_refs, _controller);
+        addChild(_rightPanel);
+
+        _middlePanel = new MiddlePanel(_refs, _controller.game);
         addChild(_middlePanel);
 
-        _bottomPanel = new BottomPanel(_assets);
+        _bottomPanel = new BottomPanel(_refs, _controller);
         addChild(_bottomPanel);
 
-        _winPanel = new WinPanel(_assets);
+        _winPanel = new WinPanel(_refs);
         _winPanel.addEventListener(WinPanel.CONTINUE, handleContinue);
         addChild(_winPanel);
         _winPanel.visible = false;
 
-        _soundBtn = new Button(_assets.getTexture("sound_btn_down"), "", _assets.getTexture("sound_btn_up"));
+        _friendBar = new FriendBar(_refs, _controller);
+        addChild(_friendBar);
+
+        _soundBtn = new Button(_refs.assets.getTexture("main_sound_up"), "", _refs.assets.getTexture("main_sound_down"));
         _soundBtn.addEventListener(Event.TRIGGERED, handleSound);
-        _soundBtn.x = 700;
-        _soundBtn.y = 810;
         addChild(_soundBtn);
+
+        super.initialize();
+
+        updateSoundState();
     }
 
-    private function handleInit(event: Event):void {
-        _game = _app.game;
-        _game.addEventListener(Game.INIT, handleInitGame);
-        _game.addEventListener(Game.WIN, handleWin);
-        _game.addEventListener(Game.UPDATE, handleUpdate);
+    override protected function initializeIPad():void {
+        _friendBar.y = 916;
 
-        _topPanel.init();
-        _leftPanel.init();
-        _middlePanel.init();
-        _bottomPanel.init(_game);
-        _winPanel.init();
+        _soundBtn.x = 700;
+        _soundBtn.y = 810;
+    }
+
+    override protected function initializeIPhone():void {
+        y = (stage.stageHeight-_background.height)/2;
+
+        _friendBar.y = 475;
+
+        _soundBtn.x = 55;
+        _soundBtn.y = 328;
     }
 
     private function handleInitGame(event: Event):void {
-        _middlePanel.update(_game);
-    }
+        addChild(_leftPanel);
 
-    private function handleUpdate(event: Event):void {
-        _topPanel.update();
-    }
+        _bottomPanel.visible = true;
+        _winPanel.visible = false;
 
-    private function handleUseBonus(event: Event):void {
-        _game.useBonus(event.data as Bonus);
+        _middlePanel.update();
     }
 
     private function handleWin(event: Event):void {
-        _middlePanel.updateDescription(_game);
+        _middlePanel.updateDescription();
 
         _bottomPanel.visible = false;
         _winPanel.visible = true;
     }
 
     private function handleContinue(event: Event):void {
-        _bottomPanel.visible = true;
-        _winPanel.visible = false;
-
-        _app.nextRound();
+        _controller.nextRound();
     }
 
     private function handleSound(event: Event):void {
-        Sound.play(Sound.CLICK);
+        dispatchEventWith(Sound.SOUND, true, Sound.CLICK);
 
         Sound.enabled = !Sound.enabled;
+        updateSoundState();
+    }
 
-        // TODO: добавить стейты
-        _soundBtn.downState = _assets.getTexture("sound_btn_down");
-        _soundBtn.upState = _assets.getTexture("sound_btn_up");
+    private function updateSoundState():void {
+        _soundBtn.upState = Sound.enabled ? _refs.assets.getTexture("main_sound_up") : _refs.assets.getTexture("main_no_sound_up");
+        _soundBtn.downState = Sound.enabled ? _refs.assets.getTexture("main_sound_down") : _refs.assets.getTexture("main_no_sound_down");
     }
 }
 }

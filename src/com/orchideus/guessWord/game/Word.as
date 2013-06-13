@@ -62,16 +62,20 @@ public class Word extends EventDispatcher {
     }
 
     public function openSymbol(id: int, letter: String):void {
-        _letters[id].letter = letter;
+        _letters[id].setLetter(letter, false);
         _letters[id].locked = true;
 
         while (_letters[_filled].letter) {
             _filled++;
         }
+
+        if (isComplete) {
+            Starling.juggler.delayCall(full, 0.3);
+        }
     }
 
     public function setLetter(value: String):void {
-        _letters[_filled].letter = value;
+        _letters[_filled].setLetter(value, true);
         update();
 
         while (_letters[_filled].letter) {
@@ -92,7 +96,7 @@ public class Word extends EventDispatcher {
             return false;
         }
 
-        _letters[id].letter = null;
+        _letters[id].setLetter(null, true);
         _filled = Math.min(_filled, id);
         update();
 

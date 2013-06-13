@@ -6,18 +6,25 @@
  * To change this template use File | Settings | File Templates.
  */
 package com.orchideus.guessWord.ui.game {
+import com.orchideus.guessWord.data.CommonRefs;
 import com.orchideus.guessWord.game.Letter;
+import com.orchideus.guessWord.ui.abstract.AbstractView;
 
-import starling.display.Sprite;
-import starling.utils.AssetManager;
+public class ErrorView extends AbstractView {
 
-public class ErrorView extends Sprite {
+    private var _letters: String;
 
-    public function ErrorView(letters: String, assets: AssetManager) {
-        for (var i:int = 0; i < letters.length; i++) {
+    public function ErrorView(refs: CommonRefs, letters: String) {
+        _letters = letters;
+
+        super(refs);
+    }
+
+    override protected function initialize():void {
+        for (var i:int = 0; i < _letters.length; i++) {
             var letter: Letter = new Letter();
-            letter.letter = letters.charAt(i);
-            var slot: SlotTile = new SlotTile(letter, assets);
+            letter.setLetter(_letters.charAt(i), false);
+            var slot: SlotTile = new SlotTile(_refs, letter);
             slot.x = i * BottomPanel.TILE;
             addChild(slot);
             letter.mistake();

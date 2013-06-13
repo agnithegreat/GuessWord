@@ -6,11 +6,17 @@
  * To change this template use File | Settings | File Templates.
  */
 package com.orchideus.guessWord.data {
+import flash.media.AudioPlaybackMode;
+import flash.media.SoundMixer;
 import flash.net.SharedObject;
 
+import starling.display.Stage;
+import starling.events.Event;
 import starling.utils.AssetManager;
 
 public class Sound {
+
+    public static const SOUND: String = "sound_Sound";
 
     public static const BTN_OVER: String = "Btn_over";
     public static const CLICK: String = "click";
@@ -27,6 +33,7 @@ public class Sound {
     private static var _data: SharedObject;
     public static function set enabled(value: Boolean):void {
         _data.data.sound = value;
+        _data.flush();
     }
     public static function get enabled():Boolean {
         return _data.data.sound;
@@ -35,14 +42,23 @@ public class Sound {
     private static var _assets: AssetManager;
 
     public static function init(assets: AssetManager):void {
+        SoundMixer.audioPlaybackMode = AudioPlaybackMode.AMBIENT;
+
         _data = SharedObject.getLocal("data");
         _assets = assets;
     }
 
+    public static function listen(stage: Stage):void {
+        stage.addEventListener(SOUND, handlePlaySound);
+    }
 
-    public static function play(name: String):void {
+    private static function handlePlaySound(event: Event):void {
+        play(event.data as String);
+    }
+
+    public static function play(sound: String):void {
         if (enabled) {
-            _assets.playSound(name);
+            _assets.playSound(sound);
         }
     }
 }

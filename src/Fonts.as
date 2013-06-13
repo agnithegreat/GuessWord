@@ -6,12 +6,11 @@
  * To change this template use File | Settings | File Templates.
  */
 package {
-import flash.text.Font;
 
 public class Fonts {
 
     [Embed(source="../assets/fonts/arialbd.ttf", fontFamily="Arial", mimeType="application/x-font", embedAsCFF="false")]
-    public static var ArialFont:Class;
+    public static var Arial: Class;
 
     public static function init():void {
     }

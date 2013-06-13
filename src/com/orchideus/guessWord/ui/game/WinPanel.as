@@ -6,49 +6,89 @@
  * To change this template use File | Settings | File Templates.
  */
 package com.orchideus.guessWord.ui.game {
+import com.orchideus.guessWord.data.CommonRefs;
+import com.orchideus.guessWord.ui.abstract.AbstractView;
+
 import flash.filters.GlowFilter;
 
 import starling.display.Button;
-import starling.display.Sprite;
 import starling.events.Event;
 import starling.text.TextField;
-import starling.utils.AssetManager;
+import starling.utils.VAlign;
 
-public class WinPanel extends Sprite {
+public class WinPanel extends AbstractView {
 
     public static const CONTINUE: String = "continue_WinPanel";
 
-    private var _assets: AssetManager;
-
     private var _winTF: TextField;
+    private var _msgTF: TextField;
 
     private var _continueBtn: Button;
+    private var _continueTF: TextField;
 
-    public function WinPanel(assets: AssetManager) {
-        _assets = assets;
+    public function WinPanel(refs: CommonRefs) {
+        super(refs);
+
+        // TODO: подобрать фильтры
     }
 
-    public function init():void {
-        _winTF = new TextField(400, 50, "ОТЛИЧНО!", "Arial", 28, 0xFFFFFF, true);
-        _winTF.nativeFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
-        _winTF.x = stage.stageWidth/2;
-        _winTF.y = 712;
-        _winTF.pivotX = _winTF.width/2;
-        addChild(_winTF);
-
-        _continueBtn = new Button(_assets.getTexture("invitefriend_btn_up"), "ПРОДОЛЖИТЬ", _assets.getTexture("invitefriend_btn_down"));
-
-        _continueBtn.fontBold = true;
-        _continueBtn.fontColor = 0xFFFFFF;
-        _continueBtn.fontName = "Arial";
-        _continueBtn.fontSize = 32;
-
-        _continueBtn.x = stage.stageWidth/2;
-        _continueBtn.y = 785;
+    override protected function initialize():void {
+        _continueBtn = new Button(_refs.assets.getTexture("main_next_btn_up"), "", _refs.assets.getTexture("main_next_btn_down"));
+        _continueBtn.addEventListener(Event.TRIGGERED, handleContinue);
         _continueBtn.pivotX = _continueBtn.width/2;
         addChild(_continueBtn);
 
-        _continueBtn.addEventListener(Event.TRIGGERED, handleContinue);
+        super.initialize();
+
+        _winTF.touchable = false;
+        addChild(_winTF);
+
+        _msgTF.touchable = false;
+        _msgTF.vAlign = VAlign.TOP;
+        addChild(_msgTF);
+
+        _continueTF.pivotX = _continueTF.width/2;
+        _continueTF.touchable = false;
+        addChild(_continueTF);
+
+        // TODO: replace amount
+        _msgTF.text = _refs.locale.getString("main.success.msg").replace("[value]", 18);
+    }
+
+    override protected function initializeIPad():void {
+        _winTF = createTextField(stage.stageWidth, 50, 42, _refs.locale.getString("main.success.title"));
+        _winTF.nativeFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
+        _winTF.y = 695;
+
+        _msgTF = createTextField(stage.stageWidth, 60, 18);
+        _msgTF.nativeFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
+        _msgTF.y = 750;
+
+        _continueBtn.x = stage.stageWidth/2;
+        _continueBtn.y = 805;
+
+        _continueTF = createTextField(_continueBtn.width, _continueBtn.height, 30, _refs.locale.getString("main.success.continue"));
+        _continueTF.nativeFilters = [new GlowFilter(0, 1, 3, 3, 4, 3)];
+        _continueTF.x = stage.stageWidth/2;
+        _continueTF.y = 805;
+    }
+
+    override protected function initializeIPhone():void {
+        _winTF = createTextField(stage.stageWidth, 50, 20, _refs.locale.getString("main.success.title"));
+        _winTF.nativeFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
+        _winTF.y = 330;
+
+        _msgTF = createTextField(stage.stageWidth, 100, 12);
+        _msgTF.nativeFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
+        _msgTF.y = 370;
+
+        _continueBtn.x = stage.stageWidth/2;
+        _continueBtn.y = 420;
+
+        _continueTF = createTextField(_continueBtn.width, _continueBtn.height, 18, _refs.locale.getString("main.success.continue"));
+        _continueTF.nativeFilters = [new GlowFilter(0, 1, 3, 3, 4, 3)];
+        _continueTF.x = stage.stageWidth/2;
+        _continueTF.y = 420;
     }
 
     private function handleContinue(event: Event):void {
