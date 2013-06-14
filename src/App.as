@@ -11,10 +11,8 @@ import com.orchideus.guessWord.data.DeviceType;
 import com.orchideus.guessWord.data.Language;
 import com.orchideus.guessWord.data.Sound;
 import com.orchideus.guessWord.localization.LocalizationManager;
-import com.orchideus.guessWord.server.Service;
 
 import flash.display.Bitmap;
-
 import flash.filesystem.File;
 
 import starling.core.Starling;
@@ -63,8 +61,6 @@ public class App extends Sprite {
         Sound.listen(stage);
 
         Fonts.init();
-
-        Service.init();
 
         _locale = new LocalizationManager();
         _controller = new GameController(this, _assets, _deviceType, _locale);

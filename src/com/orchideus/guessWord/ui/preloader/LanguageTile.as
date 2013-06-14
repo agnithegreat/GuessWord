@@ -25,8 +25,8 @@ public class LanguageTile extends AbstractView {
 
     private var _back: Button;
     private var _text: TextField;
+    private var _textFilters: Array;
     private var _icon: Image;
-
 
     public function LanguageTile(refs: CommonRefs, lang: Language) {
         _lang = lang;
@@ -41,6 +41,7 @@ public class LanguageTile extends AbstractView {
         addChild(_back);
 
         _icon = new Image(_refs.assets.getTexture(_lang.icon));
+        _icon.touchable = false;
         addChild(_icon);
 
         super.initialize();
@@ -51,7 +52,7 @@ public class LanguageTile extends AbstractView {
 
     override protected function initializeIPad():void {
         _text = createTextField(_back.width*0.8, _back.height, 26, _lang.title);
-        _text.nativeFilters = [new GlowFilter(0, 1, 2, 2, 2, 3)];
+        _textFilters = [new GlowFilter(0, 1, 2, 2, 2, 3)];
         _text.x = 40;
 
         _icon.x = -10;
@@ -60,11 +61,15 @@ public class LanguageTile extends AbstractView {
 
     override protected function initializeIPhone():void {
         _text = createTextField(_back.width*0.8, _back.height, 10, _lang.title);
-        _text.nativeFilters = [new GlowFilter(0, 1, 2, 2, 2, 3)];
+        _textFilters = [new GlowFilter(0, 1, 2, 2, 2, 3)];
         _text.x = 20;
 
         _icon.x = -5;
         _icon.y = -3;
+    }
+
+    override protected function applyFilters():void {
+        _text.nativeFilters = _textFilters;
     }
 
     override public function destroy():void {

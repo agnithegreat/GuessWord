@@ -23,8 +23,10 @@ public class TopPanel extends AbstractView {
     private var _player: Player;
 
     private var _levelTF: TextField;
+    private var _levelFilters: Array;
 
     private var _moneyTF: TextField;
+    private var _moneyFilters: Array;
     private var _bankBtn: Button;
 
     public function TopPanel(refs: CommonRefs, player: Player) {
@@ -43,8 +45,10 @@ public class TopPanel extends AbstractView {
 
         super.initialize();
 
+        _levelTF.touchable = false;
         addChild(_levelTF);
 
+        _moneyTF.touchable = false;
         addChild(_moneyTF);
 
         update();
@@ -52,12 +56,12 @@ public class TopPanel extends AbstractView {
 
     override protected function initializeIPad():void {
         _levelTF = createTextField(70, 40, 36);
-        _levelTF.nativeFilters = [new GlowFilter(0x333333, 1, 3, 3, 3, 3)];
+        _levelFilters = [new GlowFilter(0x333333, 1, 3, 3, 3, 3)];
         _levelTF.x = 64;
         _levelTF.y = 31;
 
         _moneyTF = createTextField(88, 30, 24);
-        _moneyTF.nativeFilters = [new GlowFilter(0x333333, 1, 3, 3, 3, 3)];
+        _moneyFilters = [new GlowFilter(0x333333, 1, 3, 3, 3, 3)];
         _moneyTF.x = 622;
         _moneyTF.y = 37;
 
@@ -67,17 +71,22 @@ public class TopPanel extends AbstractView {
 
     override protected function initializeIPhone():void {
         _levelTF = createTextField(35, 20, 16);
-        _levelTF.nativeFilters = [new GlowFilter(0x333333, 1, 3, 3, 3, 3)];
+        _levelFilters = [new GlowFilter(0x333333, 1, 3, 3, 3, 3)];
         _levelTF.x = 30;
         _levelTF.y = 53;
 
         _moneyTF = createTextField(44, 12, 12);
-        _moneyTF.nativeFilters = [new GlowFilter(0x333333, 1, 3, 3, 3, 3)];
+        _moneyFilters = [new GlowFilter(0x333333, 1, 3, 3, 3, 3)];
         _moneyTF.x = 250;
         _moneyTF.y = 57;
 
         _bankBtn.x = 292;
         _bankBtn.y = 51;
+    }
+
+    override protected function applyFilters():void {
+        _levelTF.nativeFilters = _levelFilters;
+        _moneyTF.nativeFilters = _moneyFilters;
     }
 
     private function update():void {

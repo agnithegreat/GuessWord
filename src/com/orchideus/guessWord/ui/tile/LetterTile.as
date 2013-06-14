@@ -7,7 +7,6 @@
  */
 package com.orchideus.guessWord.ui.tile {
 import com.orchideus.guessWord.data.CommonRefs;
-import com.orchideus.guessWord.data.DeviceType;
 import com.orchideus.guessWord.data.Sound;
 import com.orchideus.guessWord.game.Letter;
 import com.orchideus.guessWord.ui.abstract.AbstractView;
@@ -21,7 +20,6 @@ import starling.events.TouchEvent;
 import starling.events.TouchPhase;
 import starling.text.TextField;
 import starling.textures.Texture;
-import starling.utils.AssetManager;
 
 public class LetterTile extends AbstractView {
 
@@ -35,6 +33,7 @@ public class LetterTile extends AbstractView {
     private var _back: Image;
 
     private var _tf: TextField;
+    private var _tfFilters: Array;
 
     private var _letter: Letter;
     public function get letter():Letter {
@@ -61,6 +60,7 @@ public class LetterTile extends AbstractView {
 
         super.initialize();
 
+        _tf.touchable = false;
         addChild(_tf);
 
         addEventListener(TouchEvent.TOUCH, handleTouch);
@@ -70,16 +70,20 @@ public class LetterTile extends AbstractView {
 
     override protected function initializeIPad():void {
         _tf = createTextField(width, height, 32, "", 0x857d59);
-        _tf.nativeFilters = [new GlowFilter(0xFFFFFF, 1, 1, 1, 3, 3),
+        _tfFilters = [new GlowFilter(0xFFFFFF, 1, 1, 1, 3, 3),
                              new DropShadowFilter(2, 90, 0, 0.75, 2, 2, 3, 3, true),
                              new DropShadowFilter(2, 90, 0xFFFFFF, 1, 1, 1, 3, 3)];
     }
 
     override protected function initializeIPhone():void {
         _tf = createTextField(width, height, 18, "", 0x857d59);
-        _tf.nativeFilters = [new GlowFilter(0xFFFFFF, 1, 1, 1, 3, 3),
+        _tfFilters = [new GlowFilter(0xFFFFFF, 1, 1, 1, 3, 3),
                              new DropShadowFilter(2, 90, 0, 0.75, 2, 2, 3, 3, true),
                              new DropShadowFilter(2, 90, 0xFFFFFF, 1, 1, 1, 3, 3)];
+    }
+
+    override protected function applyFilters():void {
+        _tf.nativeFilters = _tfFilters;
     }
 
     public function update():void {

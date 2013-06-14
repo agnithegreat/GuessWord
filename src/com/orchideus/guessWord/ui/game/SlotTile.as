@@ -27,6 +27,7 @@ public class SlotTile extends AbstractView {
 
     override protected function initialize():void {
         _back = new Image(_refs.assets.getTexture("main_mistake_shadow"));
+        _back.touchable = false;
         addChild(_back);
 
         addChild(_letter);

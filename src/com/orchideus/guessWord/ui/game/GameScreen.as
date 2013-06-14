@@ -33,6 +33,10 @@ public class GameScreen extends Screen {
 
     public function GameScreen(refs: CommonRefs, controller: GameController) {
         _controller = controller;
+
+        _controller.addEventListener(GameController.CHANGE_IMAGE, handleChangeImage);
+        _controller.addEventListener(GameController.IMAGE_CHANGED, handleImageChanged);
+
         _controller.game.addEventListener(Game.INIT, handleInitGame);
         _controller.game.addEventListener(Game.WIN, handleWin);
 
@@ -96,8 +100,18 @@ public class GameScreen extends Screen {
         _middlePanel.update();
     }
 
+    private function handleChangeImage(event: Event):void {
+        _middlePanel.showSelectImage();
+    }
+
+    private function handleImageChanged(event: Event):void {
+        _middlePanel.hideSelectImage();
+    }
+
     private function handleWin(event: Event):void {
         _middlePanel.updateDescription();
+
+        _winPanel.update();
 
         _bottomPanel.visible = false;
         _winPanel.visible = true;

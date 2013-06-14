@@ -8,6 +8,7 @@
 package com.orchideus.guessWord.ui.abstract {
 import com.orchideus.guessWord.data.CommonRefs;
 
+import starling.display.BlendMode;
 import starling.display.Image;
 
 public class Screen extends AbstractView {
@@ -19,6 +20,7 @@ public class Screen extends AbstractView {
 
         if (background) {
             _background = new Image(_refs.assets.getTexture(background));
+            _background.blendMode = BlendMode.NONE;
             addChild(_background);
         }
     }

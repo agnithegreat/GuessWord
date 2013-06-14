@@ -40,6 +40,9 @@ public class GameController extends EventDispatcher {
     public static const SHOW_LANGUAGES: String = "show_languages_GameController";
     public static const FRIENDS: String = "friends_GameController";
 
+    public static const CHANGE_IMAGE: String = "change_image_GameController";
+    public static const IMAGE_CHANGED: String = "image_changed_GameController";
+
     private var _player: Player;
     public function get player():Player {
         return _player;
@@ -90,6 +93,7 @@ public class GameController extends EventDispatcher {
 
         _social = new Social();
         _social.addEventListener(Social.LOGGED_IN, handleLoggedIn);
+        _social.addEventListener(Social.GET_ME, handleGetMe);
         _social.addEventListener(Social.GET_FRIENDS, handleGetFriends);
 
         _timer = new Timer(1000);
@@ -112,6 +116,8 @@ public class GameController extends EventDispatcher {
     }
 
     public function init():void {
+        Service.init(handleUpdateMoney);
+
         _social.init();
 
         if (_player.lang) {
@@ -159,16 +165,24 @@ public class GameController extends EventDispatcher {
         }
     }
 
+    private function handleUpdateMoney():void {
+        _server.getMoney();
+    }
+
     // *************************
     // ** section from social **
     // *************************
     private function handleLoggedIn(event: Event):void {
+        _social.getMe();
+    }
+
+    private function handleGetMe(event: Event):void {
         _social.getFriends();
     }
 
     private function handleGetFriends(event: Event):void {
         Friend.parseFriends(event.data);
-        _server.getFriendBar(Friend.uids);
+        _server.getFriendBar(_social.uid, Friend.uids);
     }
 
     // *************************
@@ -194,6 +208,11 @@ public class GameController extends EventDispatcher {
                     _game.initWord(data.word);
                     _game.changePic(data.player.params.changed_pic);
                     startLevel();
+                }
+                break;
+            case Server.GET_MONEY:
+                if (data.result == "success") {
+                    _player.parse(data.player.params);
                 }
                 break;
             case Server.CHECK_WORD:
@@ -285,7 +304,10 @@ public class GameController extends EventDispatcher {
 
         _currentBonus = bonus;
         if (_currentBonus.id != Bonus.CHANGE_PICTURE) {
+            dispatchEventWith(IMAGE_CHANGED);
             applyBonus();
+        } else {
+            dispatchEventWith(CHANGE_IMAGE);
         }
     }
 
@@ -299,6 +321,7 @@ public class GameController extends EventDispatcher {
                 break;
             case Bonus.CHANGE_PICTURE:
                 if (_currentPic) {
+                    dispatchEventWith(IMAGE_CHANGED);
                     _server.changePicture(_currentPic.id);
                 }
                 break;
@@ -320,7 +343,8 @@ public class GameController extends EventDispatcher {
     }
 
     private function handleOpenBank(event: Event):void {
-        _view.showBank();
+//        _view.showBank();
+        Service.showOffers();
     }
 
     private function handleBuyBank(event: Event):void {
@@ -337,11 +361,17 @@ public class GameController extends EventDispatcher {
     }
 
     private function handleInvite(event: Event):void {
-        _social.invite();
+        // TODO: replace
+        _social.invite("Invite to Guess Word");
     }
 
     private function handleAsk(event: Event):void {
-        _social.post();
+        var to: String = event.data as String;
+        _social.post(_server.url+"words_admin_panel/files/"+_game.word.word_id+"/all_img.jpg",
+                     _locale.getString("social.post.name"),
+                     _locale.getString("social.post.caption"),
+                     _locale.getString("social.post.description"),
+                     to);
     }
 }
 }

@@ -33,6 +33,7 @@ public class Preloader extends Screen {
 
     private var _progress: Gauge;
     private var _progressTF: TextField;
+    private var _progressFilters: Array;
 
     private var _langs: Sprite;
 
@@ -49,14 +50,17 @@ public class Preloader extends Screen {
 
     override protected function initialize():void {
         _logo = new Image(_refs.assets.getTexture("preloader_duck"));
+        _logo.touchable = false;
         addChild(_logo);
 
         // TODO: logo localization
         _title = new Image(_refs.assets.getTexture("preloader_logo_rus"));
+        _title.touchable = false;
         _title.pivotX = _title.width/2;
         addChild(_title);
 
         _progress = new Gauge(_refs.assets.getTexture("preloader_filler"));
+        _progress.touchable = false;
         addChild(_progress);
 
         _langs = new Sprite();
@@ -64,6 +68,7 @@ public class Preloader extends Screen {
 
         super.initialize();
 
+        _progressTF.touchable = false;
         addChild(_progressTF);
 
         _progress.ratioH = 0;
@@ -80,7 +85,7 @@ public class Preloader extends Screen {
         _progress.y = 418;
 
         _progressTF = createTextField(_progress.width, _progress.height, 20);
-        _progressTF.nativeFilters = [new GlowFilter(0x424242, 1, 3, 3, 3, 3)];
+        _progressFilters = [new GlowFilter(0x424242, 1, 3, 3, 3, 3)];
         _progressTF.x = 242;
         _progressTF.y = 418;
 
@@ -104,7 +109,7 @@ public class Preloader extends Screen {
         _progress.y = 218;
 
         _progressTF = createTextField(_progress.width, _progress.height, 10);
-        _progressTF.nativeFilters = [new GlowFilter(0x424242, 1, 3, 3, 3, 3)];
+        _progressFilters = [new GlowFilter(0x424242, 1, 3, 3, 3, 3)];
         _progressTF.x = 100;
         _progressTF.y = 218;
 
@@ -113,6 +118,10 @@ public class Preloader extends Screen {
 
         TILE_WIDTH = 105;
         TILE_HEIGHT = 35;
+    }
+
+    override protected function applyFilters():void {
+        _progressTF.nativeFilters = _progressFilters;
     }
 
     private function handleProgress(event: Event):void {

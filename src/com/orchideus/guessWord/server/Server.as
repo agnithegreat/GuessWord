@@ -28,6 +28,7 @@ public class Server extends EventDispatcher {
     public static const INTERNET_UNAVAILABLE: String = "internet_unavailable";
 
     public static const GET_PARAMETERS: String = "get_parameters";
+    public static const GET_MONEY: String = "get_money";
     public static const CHECK_WORD: String = "check_word";
     public static const START_TIMER: String = "start_timer";
     public static const REMOVE_LETTERS: String = "remove_letters";
@@ -40,7 +41,13 @@ public class Server extends EventDispatcher {
     private static var auth_key: String;
     private static var uid: String;
 
-    private var _url: String = "http://46.72.211.10:82/controller_ios.php";
+    private var _url: String = "http://46.72.211.10:82/";
+    public function get url():String {
+        return _url;
+    }
+
+    private var _controllerURL: String = _url+"controller_ios.php";
+
     private var _loader: URLLoader;
 
     private var _stack: Vector.<URLRequest>;
@@ -86,6 +93,10 @@ public class Server extends EventDispatcher {
         sendRequest(GET_PARAMETERS);
     }
 
+    public function getMoney():void {
+        sendRequest(GET_MONEY);
+    }
+
     public function checkWord(word_id: int, word: String):void {
         sendRequest(CHECK_WORD, {"word_id": String(word_id), "word": word});
     }
@@ -110,8 +121,8 @@ public class Server extends EventDispatcher {
         sendRequest(REMOVE_WRONG_PICTURE);
     }
 
-    public function getFriendBar(ids: String):void {
-        sendRequest(GET_FRIEND_BAR, {"ids": ids});
+    public function getFriendBar(uid: String, ids: String):void {
+        sendRequest(GET_FRIEND_BAR, {"fb_id": uid, "ids": ids});
     }
 
     public function getFriendsWords(ids: Array, word_id: int):void {
@@ -131,7 +142,7 @@ public class Server extends EventDispatcher {
         data.game_type = "1";
         requestVars.data = JSON.stringify(data);
 
-        var request:URLRequest = new URLRequest(_url);
+        var request:URLRequest = new URLRequest(_controllerURL);
         request.method = URLRequestMethod.GET;
         request.data = requestVars;
 

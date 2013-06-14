@@ -110,6 +110,20 @@ public class MiddlePanel extends AbstractView {
         _pic4.showDescription();
     }
 
+    public function showSelectImage():void {
+        _pic1.showSelectImage();
+        _pic2.showSelectImage();
+        _pic3.showSelectImage();
+        _pic4.showSelectImage();
+    }
+
+    public function hideSelectImage():void {
+        _pic1.hideSelectImage();
+        _pic2.hideSelectImage();
+        _pic3.hideSelectImage();
+        _pic4.hideSelectImage();
+    }
+
     private function handleTouch(event: TouchEvent):void {
         _clickedImage = event.currentTarget as ImageTile;
         var touch: Touch = event.getTouch(_clickedImage, TouchPhase.ENDED);

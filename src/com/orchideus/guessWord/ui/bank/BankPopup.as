@@ -25,6 +25,7 @@ public class BankPopup extends Screen {
     public static var TILE: int;
 
     private var _title: TextField;
+    private var _titleFilters: Array;
 
     private var _closeBtn: Button;
 
@@ -59,7 +60,7 @@ public class BankPopup extends Screen {
 
     override protected function initializeIPad():void {
         _title = createTextField(_background.width, 60, 30, _refs.locale.getString("bank.popup.title"));
-        _title.nativeFilters = [new GlowFilter(0, 1, 3, 3, 5, 3)];
+        _titleFilters = [new GlowFilter(0, 1, 3, 3, 5, 3)];
 
         _closeBtn.x = 522;
         _closeBtn.y = 17;
@@ -72,7 +73,7 @@ public class BankPopup extends Screen {
 
     override protected function initializeIPhone():void {
         _title = createTextField(_background.width, 32, 16, _refs.locale.getString("bank.popup.title"));
-        _title.nativeFilters = [new GlowFilter(0, 1, 3, 3, 5, 3)];
+        _titleFilters = [new GlowFilter(0, 1, 3, 3, 5, 3)];
 
         _closeBtn.x = 271;
         _closeBtn.y = 9;
@@ -81,6 +82,10 @@ public class BankPopup extends Screen {
         _container.y = 35;
 
         TILE = 30;
+    }
+
+    override protected function applyFilters():void {
+        _title.nativeFilters = _titleFilters;
     }
 
     private function handleClose(event: Event):void {

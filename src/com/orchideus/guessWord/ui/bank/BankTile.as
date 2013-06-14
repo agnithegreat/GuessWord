@@ -27,13 +27,17 @@ public class BankTile extends AbstractView {
 
     private var _coin: Image;
     private var _value: TextField;
+    private var _valueFilters: Array;
 
     private var _bestValue: TextField;
+    private var _bestValueFilters: Array;
 
     private var _price: TextField;
+    private var _priceFilters: Array;
 
     private var _buyBtn: Button;
     private var _buyTF: TextField;
+    private var _buyFilters: Array;
 
     public function BankTile(refs: CommonRefs, bank: Bank) {
         _bank = bank;
@@ -45,9 +49,11 @@ public class BankTile extends AbstractView {
 
     override protected function initialize():void {
         _back = new Image(_refs.assets.getTexture(_bank.best_value ? "bank_bestitem_under" : "bank_item_under"));
+        _back.touchable = false;
         addChild(_back);
 
         _coin = new Image(_refs.assets.getTexture("bank_coin_ico"));
+        _coin.touchable = false;
         addChild(_coin);
 
         _buyBtn = new Button(_refs.assets.getTexture(_bank.best_value ? "bank_bestbuy_btn_up" : "bank_buy_btn_up"), "", _refs.assets.getTexture(_bank.best_value ? "bank_bestbuy_btn_down" : "bank_buy_btn_down"));
@@ -56,9 +62,11 @@ public class BankTile extends AbstractView {
 
         super.initialize();
 
+        _value.touchable = false;
         _value.hAlign = HAlign.LEFT;
         addChild(_value);
 
+        _price.touchable = false;
         _price.hAlign = HAlign.RIGHT;
         addChild(_price);
 
@@ -71,26 +79,26 @@ public class BankTile extends AbstractView {
         _coin.y = 4;
 
         _value = createTextField(115, 55, 24, String(_bank.value));
-        _value.nativeFilters = [new GlowFilter(0, 1, 3, 3, 5, 3)];
+        _valueFilters = [new GlowFilter(0, 1, 3, 3, 5, 3)];
         _value.x = 44;
 
         if (_bank.best_value) {
             _bestValue = createTextField(115, 55, 14, _refs.locale.getString("bank.tile.bestbuy"), 0x006097);
-            _bestValue.nativeFilters = [new GlowFilter(0xFFFFFF, 1, 3, 3, 5, 3)];
+            _bestValueFilters = [new GlowFilter(0xFFFFFF, 1, 3, 3, 5, 3)];
             _bestValue.x = 122;
             _bestValue.y = 2;
             addChild(_bestValue);
         }
 
         _price = createTextField(195, 55, 24, String(_bank.price)+" "+_refs.locale.getString("bank.tile.currency"));
-        _price.nativeFilters = [new GlowFilter(0, 1, 3, 3, 5, 3)];
+        _priceFilters = [new GlowFilter(0, 1, 3, 3, 5, 3)];
         _price.x = 177;
 
         _buyBtn.x = 382;
         _buyBtn.y = 2;
 
         _buyTF = createTextField(_buyBtn.width, _buyBtn.height, 16, _refs.locale.getString("bank.tile.buy"));
-        _buyTF.nativeFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
+        _buyFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
         _buyTF.x = 382;
         _buyTF.y = 2;
     }
@@ -100,28 +108,37 @@ public class BankTile extends AbstractView {
         _coin.y = 4;
 
         _value = createTextField(65, 33, 16, String(_bank.value));
-        _value.nativeFilters = [new GlowFilter(0, 1, 3, 3, 5, 3)];
+        _valueFilters = [new GlowFilter(0, 1, 3, 3, 5, 3)];
         _value.x = 25;
 
         if (_bank.best_value) {
             _bestValue = createTextField(65, 33, 8, _refs.locale.getString("bank.tile.bestbuy"), 0x006097);
-            _bestValue.nativeFilters = [new GlowFilter(0xFFFFFF, 1, 3, 3, 5, 3)];
+            _bestValueFilters = [new GlowFilter(0xFFFFFF, 1, 3, 3, 5, 3)];
             _bestValue.x = 70;
             _bestValue.y = 1;
             addChild(_bestValue);
         }
 
         _price = createTextField(105, 33, 16, String(_bank.price)+" "+_refs.locale.getString("bank.tile.currency"));
-        _price.nativeFilters = [new GlowFilter(0, 1, 3, 3, 5, 3)];
+        _priceFilters = [new GlowFilter(0, 1, 3, 3, 5, 3)];
         _price.x = 100;
 
         _buyBtn.x = 210;
         _buyBtn.y = 2;
 
         _buyTF = createTextField(_buyBtn.width, _buyBtn.height, 8, _refs.locale.getString("bank.tile.buy"));
-        _buyTF.nativeFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
+        _buyFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
         _buyTF.x = 210;
         _buyTF.y = 2;
+    }
+
+    override protected function applyFilters():void {
+        _value.nativeFilters = _valueFilters;
+        if (_bestValue) {
+            _bestValue.nativeFilters = _bestValueFilters;
+        }
+        _price.nativeFilters = _priceFilters;
+        _buyTF.nativeFilters = _buyFilters;
     }
 
     private function handleClick(event:Event):void {

@@ -8,6 +8,8 @@
 package com.orchideus.guessWord.ui.game {
 import com.orchideus.guessWord.GameController;
 import com.orchideus.guessWord.data.CommonRefs;
+import com.orchideus.guessWord.data.Friend;
+import com.orchideus.guessWord.game.Game;
 import com.orchideus.guessWord.social.Social;
 import com.orchideus.guessWord.ui.abstract.AbstractView;
 import com.orchideus.guessWord.ui.tile.AskHelpTile;
@@ -26,8 +28,11 @@ public class RightPanel extends AbstractView {
 
     private var _bar: ScoreBar;
 
+    private var _logged: Boolean;
+
     public function RightPanel(refs: CommonRefs, controller: GameController) {
         _controller = controller;
+        _controller.game.addEventListener(Game.INIT, handleInit);
         _controller.social.addEventListener(Social.LOGGED_IN, handleLoggedIn);
 
         super(refs);
@@ -35,6 +40,7 @@ public class RightPanel extends AbstractView {
 
     override protected function initialize():void {
         _bar = new ScoreBar(_refs, _controller);
+        _bar.touchable = false;
         addChild(_bar);
 
         _wordStats = new WordStatsTile(_refs);
@@ -81,10 +87,19 @@ public class RightPanel extends AbstractView {
         _invite.y = 138;
     }
 
+    private function handleInit(event: Event):void {
+        if (_logged) {
+            _wordStats.update(Friend.getAnySucceed(_controller.game.word.word_id));
+        }
+    }
+
     private function handleLoggedIn(event: Event):void {
-        _wordStats.enable();
         _askHelp.enable();
         _invite.enable();
+
+        _logged = true;
+
+        handleInit(null);
     }
 }
 }

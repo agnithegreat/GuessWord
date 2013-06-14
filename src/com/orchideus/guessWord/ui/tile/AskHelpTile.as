@@ -30,13 +30,17 @@ public class AskHelpTile extends AbstractView {
     private var _text1: TextField;
     private var _text2: TextField;
     private var _text3: TextField;
+    private var _textFilters: Array;
 
     public function AskHelpTile(refs: CommonRefs) {
         super(refs);
+
+        // TODO: подобрать фильтры
     }
 
     override protected function initialize():void {
-        _back = new Button(_refs.assets.getTexture("main_askhelp_btn_off"));
+        _back = new Button(_refs.assets.getTexture("main_askhelp_btn_off"), "", _refs.assets.getTexture("main_askhelp_btn_off"));
+        _back.addEventListener(Event.TRIGGERED, handleClick);
         addChild(_back);
 
         _icon = new Image(_refs.assets.getTexture("main_askhelp_ico_off"));
@@ -59,28 +63,25 @@ public class AskHelpTile extends AbstractView {
         _text3.vAlign = VAlign.TOP;
         _text3.autoScale = true;
         addChild(_text3);
-
-        _back.addEventListener(Event.TRIGGERED, handleClick);
     }
 
     override protected function initializeIPad():void {
         _icon.x = 10;
         _icon.y = 10;
 
+        _textFilters = [new GlowFilter(0x666666, 1, 2, 2, 3, 3)];
+
         _text1 = createTextField(_back.width-14, 20, 16, _text[0]);
-        _text1.nativeFilters = [new GlowFilter(0x666666, 1, 2, 2, 3, 3)];
         _text1.autoScale = true;
         _text1.x = 7;
         _text1.y = 67;
 
         _text2 = createTextField(_back.width-14, 20, 16, _text[1]);
-        _text2.nativeFilters = [new GlowFilter(0x666666, 1, 2, 2, 3, 3)];
         _text2.autoScale = true;
         _text2.x = 7;
         _text2.y = 67 + _text1.textBounds.height;
 
         _text3 = createTextField(_back.width-14, 20, 16, _text[2]);
-        _text3.nativeFilters = [new GlowFilter(0x666666, 1, 2, 2, 3, 3)];
         _text3.x = 7;
         _text3.y = 67 + _text1.textBounds.height + _text2.textBounds.height;
     }
@@ -89,22 +90,27 @@ public class AskHelpTile extends AbstractView {
         _icon.x = 4;
         _icon.y = 4;
 
+        _textFilters = [new GlowFilter(0x666666, 1, 2, 2, 3, 3)];
+
         _text1 = createTextField(_back.width-8, 8, 16, _text[0]);
-        _text1.nativeFilters = [new GlowFilter(0x666666, 1, 2, 2, 3, 3)];
         _text1.autoScale = true;
         _text1.x = 4;
         _text1.y = 32;
 
         _text2 = createTextField(_back.width-8, 8, 16, _text[1]);
-        _text2.nativeFilters = [new GlowFilter(0x666666, 1, 2, 2, 3, 3)];
         _text2.autoScale = true;
         _text2.x = 4;
         _text2.y = 32 + _text1.textBounds.height;
 
         _text3 = createTextField(_back.width-8, 8, 16, _text[2]);
-        _text3.nativeFilters = [new GlowFilter(0x666666, 1, 2, 2, 3, 3)];
         _text3.x = 4;
         _text3.y = 32 + _text1.textBounds.height + _text2.textBounds.height;
+    }
+
+    override protected function applyFilters():void {
+        _text1.nativeFilters = _textFilters;
+        _text2.nativeFilters = _textFilters;
+        _text3.nativeFilters = _textFilters;
     }
 
     public function enable():void {

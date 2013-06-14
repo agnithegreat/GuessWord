@@ -14,9 +14,9 @@ public class Social extends EventDispatcher {
 
     public static const INVITE: String = "invite_Social";
     public static const ASK: String = "ask_Social";
-    public static const CHALLENGE: String = "challenge_Social";
 
     public static const LOGGED_IN: String = "logged_in_Social";
+    public static const GET_ME: String = "get_me_Social";
     public static const GET_FRIENDS: String = "get_friends_Social";
 
     public static var appID: String = "205742966216110";
@@ -30,10 +30,19 @@ public class Social extends EventDispatcher {
         return isInitiated && _facebook.isSessionOpen;
     }
 
+    private var _me: Object;
+    public function get uid():String {
+        return _me.id;
+    }
+
     public function init():void {
         if (Facebook.isSupported) {
             _facebook = Facebook.getInstance();
             _facebook.init(appID);
+
+            if (session) {
+                dispatchEventWith(LOGGED_IN);
+            }
         }
     }
 
@@ -43,25 +52,29 @@ public class Social extends EventDispatcher {
         }
     }
 
-    public function getFriends():void {
+    public function getMe():void {
         if (session) {
-            _facebook.requestWithGraphPath("/me/friends", null, "GET", handleGetFriends);
+            _facebook.requestWithGraphPath("/me", null, "GET", handleGetMe);
         }
     }
 
-    public function invite():void {
+    public function getFriends():void {
         if (session) {
-            // TODO: message
-            _facebook.dialog("apprequests", {message: "Invite to Guess Word"});
+            _facebook.requestWithGraphPath("/me/friends", {fields: "id,installed"}, "GET", handleGetFriends);
+        }
+    }
+
+    public function invite(message: String):void {
+        if (session) {
+            _facebook.dialog("apprequests", {"message": message});
         } else {
             login();
         }
     }
 
-    public function post():void {
+    public function post(url: String, name: String, caption: String, description: String, to: String = null):void {
         if (session) {
-            // TODO: url, messages
-            _facebook.dialog("feed", {picture: "http://fbrell.com/f8.jpg", name: 'Facebook Dialogs', caption: 'Reference Documentation', description: 'Using Dialogs to interact with people.'});
+            _facebook.dialog("feed", {"to": to, "picture": url, "name": name, "caption": caption, "description": description});
         }
     }
 
@@ -69,6 +82,11 @@ public class Social extends EventDispatcher {
         if (success) {
             dispatchEventWith(LOGGED_IN);
         }
+    }
+
+    private function handleGetMe(data: Object):void {
+        _me = data;
+        dispatchEventWith(GET_ME);
     }
 
     private function handleGetFriends(data: Object):void {

@@ -26,10 +26,13 @@ public class WinPanel extends AbstractView {
     private var _controller: GameController;
 
     private var _winTF: TextField;
+    private var _winFilters: Array;
     private var _msgTF: TextField;
+    private var _msgFilters: Array;
 
     private var _continueBtn: Button;
     private var _continueTF: TextField;
+    private var _continueFilters: Array;
 
     public function WinPanel(refs: CommonRefs, controller: GameController) {
         _controller = controller;
@@ -57,44 +60,52 @@ public class WinPanel extends AbstractView {
         _continueTF.pivotX = _continueTF.width/2;
         _continueTF.touchable = false;
         addChild(_continueTF);
-
-        _msgTF.text = _refs.locale.getString("main.success.msg").replace("[value]", Math.max(0, Friend.bestResult-_controller.player.level));
     }
 
     override protected function initializeIPad():void {
         _winTF = createTextField(stage.stageWidth, 50, 42, _refs.locale.getString("main.success.title"));
-        _winTF.nativeFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
+        _winFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
         _winTF.y = 695;
 
         _msgTF = createTextField(stage.stageWidth, 60, 18);
-        _msgTF.nativeFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
+        _msgFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
         _msgTF.y = 750;
 
         _continueBtn.x = stage.stageWidth/2;
         _continueBtn.y = 805;
 
         _continueTF = createTextField(_continueBtn.width, _continueBtn.height, 30, _refs.locale.getString("main.success.continue"));
-        _continueTF.nativeFilters = [new GlowFilter(0, 1, 3, 3, 4, 3)];
+        _continueFilters = [new GlowFilter(0, 1, 3, 3, 4, 3)];
         _continueTF.x = stage.stageWidth/2;
         _continueTF.y = 805;
     }
 
     override protected function initializeIPhone():void {
         _winTF = createTextField(stage.stageWidth, 50, 20, _refs.locale.getString("main.success.title"));
-        _winTF.nativeFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
+        _winFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
         _winTF.y = 330;
 
         _msgTF = createTextField(stage.stageWidth, 100, 12);
-        _msgTF.nativeFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
+        _msgFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
         _msgTF.y = 370;
 
         _continueBtn.x = stage.stageWidth/2;
         _continueBtn.y = 420;
 
         _continueTF = createTextField(_continueBtn.width, _continueBtn.height, 18, _refs.locale.getString("main.success.continue"));
-        _continueTF.nativeFilters = [new GlowFilter(0, 1, 3, 3, 4, 3)];
+        _continueFilters = [new GlowFilter(0, 1, 3, 3, 4, 3)];
         _continueTF.x = stage.stageWidth/2;
         _continueTF.y = 420;
+    }
+
+    override protected function applyFilters():void {
+        _winTF.nativeFilters = _winFilters;
+        _msgTF.nativeFilters = _msgFilters;
+        _continueTF.nativeFilters = _continueFilters;
+    }
+
+    public function update():void {
+        _msgTF.text = _refs.locale.getString("main.success.msg").replace("[value]", Math.max(0, Friend.bestResult-_controller.player.level));
     }
 
     private function handleContinue(event: Event):void {

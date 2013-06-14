@@ -22,22 +22,29 @@ public class Friend extends EventDispatcher {
     public static var APP_FRIENDS: Array = [];
 
     public static function get uids():String {
-        var uids: Array = [];
+        var ids: Array = [];
         for each (var o: Friend in FRIENDS) {
-            uids.push(o.uid);
+            if (o.installed) {
+                ids.push(o.uid);
+            }
         }
-        return uids.join(",");
+        return ids.join(",");
     }
 
     public static function get bestResult():int {
         return APP_FRIENDS.length>0 ? APP_FRIENDS[0].level : 0;
     }
 
+    public static function getAnySucceed(level: int):Friend {
+        return APP_FRIENDS.length>0 && APP_FRIENDS[0].level>=level ? APP_FRIENDS[0] : null;
+    }
+
     public static function parseFriends(data: Object):void {
-        for each (var fr: Object in data) {
-            var friend: Friend = new Friend();
-            friend.uid = fr.id;
-            friend.url = "https://graph.facebook.com/"+fr.id+"/picture";
+        var len: int = data.data.length;
+        for (var i:int = 0; i < len; i++) {
+            var fr: Object = data.data[i];
+            var friend: Friend = FRIENDS[fr.id] ? FRIENDS[fr.id] : new Friend();
+            friend.parseSocial(fr);
             FRIENDS[fr.id] = friend;
         }
     }
@@ -53,7 +60,10 @@ public class Friend extends EventDispatcher {
         APP_FRIENDS.sortOn("level", Array.NUMERIC+Array.DESCENDING);
     }
     
-    public var uid: String;
+    private var _uid: String;
+    public function get uid():String {
+        return _uid;
+    }
 
     private var _level: int;
     public function get level():int {
@@ -69,11 +79,23 @@ public class Friend extends EventDispatcher {
 
     private var _photo: Texture;
     public function get photo():Texture {
-        return photo;
+        return _photo;
+    }
+
+    private var _installed: Boolean;
+    public function get installed():Boolean {
+        return _installed;
+    }
+
+    public function parseSocial(data: Object):void {
+        _uid = data.id;
+        url = "https://graph.facebook.com/"+_uid+"/picture";
+        _installed = data.installed;
     }
 
     public function parse(data: Object):void {
-        uid = data.vk_id;
+        _uid = data.vk_id;
+        url = "https://graph.facebook.com/"+_uid+"/picture";
         _level = data.level;
     }
 

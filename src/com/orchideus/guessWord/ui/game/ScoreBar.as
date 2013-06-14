@@ -35,12 +35,16 @@ public class ScoreBar extends AbstractView {
     private var _score4: TextField;
     private var _score5: TextField;
     private var _score6: TextField;
+    private var _scoreFilters: Array;
 
     private var _timeBar: Image;
     private var _timeTF: TextField;
+    private var _timeFilters: Array;
 
     private var _bonusTF: TextField;
+    private var _bonusFilters: Array;
     private var _bonusValueTF: TextField;
+    private var _bonusValueFilters: Array;
 
     public function ScoreBar(refs: CommonRefs, controller: GameController) {
         _controller = controller;
@@ -53,20 +57,26 @@ public class ScoreBar extends AbstractView {
 
     override protected function initialize():void {
         _coinsContainer = new Sprite();
+        _coinsContainer.touchable = false;
         addChild(_coinsContainer);
 
         _front = new Image(_refs.assets.getTexture("main_GRADUSNIK"));
+        _front.touchable = false;
         addChild(_front);
 
         _timeBar = new Image(_refs.assets.getTexture("main_time_under"));
+        _timeBar.touchable = false;
         addChild(_timeBar);
 
         super.initialize();
 
+        _timeTF.touchable = false;
         addChild(_timeTF);
 
+        _bonusTF.touchable = false;
         addChild(_bonusTF);
 
+        _bonusValueTF.touchable = false;
         addChild(_bonusValueTF);
 
         createCoins();
@@ -76,10 +86,12 @@ public class ScoreBar extends AbstractView {
         _timeBar.x = -9;
         _timeBar.y = 316;
 
+        _scoreFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
+
         for (var i:int = 1; i <= 6; i++) {
             var tf: TextField = createTextField(30, 30, 16, String(i*2)+"-");
+            tf.touchable = false;
             tf.hAlign = HAlign.RIGHT;
-            tf.nativeFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
             tf.x = -20;
             tf.y = 326 - i * 39;
             this["_score"+i] = tf;
@@ -87,17 +99,17 @@ public class ScoreBar extends AbstractView {
         }
 
         _timeTF = createTextField(_timeBar.width, _timeBar.height, 24, "00:00");
-        _timeTF.nativeFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
+        _timeFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
         _timeTF.x = -9;
         _timeTF.y = 316;
 
         _bonusTF = createTextField(_timeBar.width, _timeBar.height, 20, _refs.locale.getString("main.score.bonus"));
-        _bonusTF.nativeFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
+        _bonusFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
         _bonusTF.x = -9;
         _bonusTF.y = 354;
 
         _bonusValueTF = createTextField(_timeBar.width, _timeBar.height, 24, "", 0xFFCC00);
-        _bonusValueTF.nativeFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
+        _bonusValueFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
         _bonusValueTF.x = -9;
         _bonusValueTF.y = 376;
 
@@ -111,10 +123,12 @@ public class ScoreBar extends AbstractView {
         _timeBar.x = -4;
         _timeBar.y = 132;
 
+        _scoreFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
+
         for (var i:int = 1; i <= 6; i++) {
             var tf: TextField = createTextField(16, 16, 7, String(i*2)+"-");
             tf.hAlign = HAlign.RIGHT;
-            tf.nativeFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
+            tf.touchable = false;
             tf.x = -12;
             tf.y = 140 - i * 19;
             this["_score"+i] = tf;
@@ -122,17 +136,17 @@ public class ScoreBar extends AbstractView {
         }
 
         _timeTF = createTextField(_timeBar.width, _timeBar.height, 10, "00:00");
-        _timeTF.nativeFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
+        _timeFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
         _timeTF.x = -4;
         _timeTF.y = 132;
 
         _bonusTF = createTextField(_timeBar.width, _timeBar.height, 8, _refs.locale.getString("main.score.bonus"));
-        _bonusTF.nativeFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
+        _bonusFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
         _bonusTF.x = -4;
         _bonusTF.y = 151;
 
         _bonusValueTF = createTextField(_timeBar.width, _timeBar.height, 10, "", 0xFFCC00);
-        _bonusValueTF.nativeFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
+        _bonusValueFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
         _bonusValueTF.x = -4;
         _bonusValueTF.y = 160;
 
@@ -142,9 +156,20 @@ public class ScoreBar extends AbstractView {
         TILE = 3;
     }
 
+    override protected function applyFilters():void {
+        for (var i: int = 1; i <= 6; i++) {
+            var tf: TextField = this["_score"+i];
+            tf.nativeFilters = _scoreFilters;
+        }
+        _timeTF.nativeFilters = _timeFilters;
+        _bonusTF.nativeFilters = _bonusFilters;
+        _bonusValueTF.nativeFilters = _bonusValueFilters;
+    }
+
     private function createCoins():void {
         for (var i:int = 0; i < 36; i++) {
             var coin: Image = new Image(_refs.assets.getTexture("main_bonus_coin"));
+            coin.touchable = false;
             coin.y = -i*TILE;
             _coinsContainer.addChild(coin);
         }

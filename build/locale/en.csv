@@ -1,5 +1,6 @@
 id,en
 preloader.selectlang,SELECT LANGUAGE
+main.image.change,CHANGE^THIS^PICTURE
 main.bonus.openletter,OPEN^LETTER
 main.bonus.removeletters,REMOVE^LETTERS
 main.bonus.changepic,ONE MORE^PICTURE
@@ -19,3 +20,6 @@ bank.tile.currency,
 bank.tile.buy,BUY
 alert.connection.title,Error
 alert.connection.msg,No internet connection
+social.post.name,Big header
+social.post.caption,Small header
+social.post.description,Text

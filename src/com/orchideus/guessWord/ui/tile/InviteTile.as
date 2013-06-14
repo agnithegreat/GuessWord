@@ -29,13 +29,16 @@ public class InviteTile extends AbstractView {
 
     private var _text1: TextField;
     private var _text2: TextField;
+    private var _textFilters: Array;
 
     public function InviteTile(refs: CommonRefs) {
         super(refs);
+
+        // TODO: подобрать фильтры
     }
 
     override protected function initialize():void {
-        _back = new Button(_refs.assets.getTexture("main_askhelp_btn_off"));
+        _back = new Button(_refs.assets.getTexture("main_askhelp_btn_off"), "", _refs.assets.getTexture("main_askhelp_btn_off"));
         addChild(_back);
 
         _icon = new Image(_refs.assets.getTexture("main_invitefriends_ico_off"));
@@ -62,14 +65,14 @@ public class InviteTile extends AbstractView {
         _icon.x = 10;
         _icon.y = 10;
 
+        _textFilters = [new GlowFilter(0x666666, 1, 2, 2, 3, 3)];
+
         _text1 = createTextField(_back.width-14, 20, 16, _text[0]);
-        _text1.nativeFilters = [new GlowFilter(0x666666, 1, 2, 2, 3, 3)];
         _text1.autoScale = true;
         _text1.x = 7;
         _text1.y = 67;
 
         _text2 = createTextField(_back.width-14, 20, 16, _text[1]);
-        _text2.nativeFilters = [new GlowFilter(0x666666, 1, 2, 2, 3, 3)];
         _text2.x = 7;
         _text2.y = 67 + _text1.textBounds.height;
     }
@@ -78,16 +81,21 @@ public class InviteTile extends AbstractView {
         _icon.x = 4;
         _icon.y = 4;
 
+        _textFilters = [new GlowFilter(0x666666, 1, 2, 2, 3, 3)];
+
         _text1 = createTextField(_back.width-8, 8, 16, _text[0]);
-        _text1.nativeFilters = [new GlowFilter(0x666666, 1, 2, 2, 3, 3)];
         _text1.autoScale = true;
         _text1.x = 4;
         _text1.y = 32;
 
         _text2 = createTextField(_back.width-8, 8, 16, _text[1]);
-        _text2.nativeFilters = [new GlowFilter(0x666666, 1, 2, 2, 3, 3)];
         _text2.x = 4;
         _text2.y = 32 + _text1.textBounds.height;
+    }
+
+    override protected function applyFilters():void {
+        _text1.nativeFilters = _textFilters;
+        _text2.nativeFilters = _textFilters;
     }
 
     public function enable():void {

@@ -34,10 +34,13 @@ public class MainScreen extends Screen {
         _controller = controller;
 
         super(refs);
+
+        // TODO: buttonMode
     }
 
     override protected function initialize():void {
         _overlay = new Quad(stage.stageWidth, stage.stageHeight, 0);
+        _overlay.touchable = false;
         _overlay.alpha = 0.5;
     }
 

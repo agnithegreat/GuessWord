@@ -45,6 +45,7 @@ public class ImageTile extends AbstractView {
     private var _image: Image;
 
     private var _description: TextField;
+    private var _changeTF: TextField;
 
     public function ImageTile(refs: CommonRefs, pic: Pic) {
         if (!context) {
@@ -64,8 +65,12 @@ public class ImageTile extends AbstractView {
 
         super.initialize();
 
+        _description.touchable = false;
         _description.hAlign = HAlign.LEFT;
         _description.vAlign = VAlign.CENTER;
+
+        _changeTF.touchable = false;
+        _changeTF.text = _refs.locale.getString("main.image.change");
 
         scaleX = scaleY = scaleAmount;
     }
@@ -78,6 +83,10 @@ public class ImageTile extends AbstractView {
         _description.x = 18;
         _description.y = 16;
 
+        _changeTF = createTextField(_border.width*0.9, _border.height*0.9, 60);
+        _changeTF.x = 18;
+        _changeTF.y = 16;
+
         scaleAmount = 0.493;
     }
 
@@ -88,6 +97,10 @@ public class ImageTile extends AbstractView {
         _description = createTextField(_border.width*0.9, _border.height*0.9, 20);
         _description.x = 10;
         _description.y = 10;
+
+        _changeTF = createTextField(_border.width*0.9, _border.height*0.9, 28);
+        _changeTF.x = 10;
+        _changeTF.y = 10;
 
         scaleAmount = 0.496;
     }
@@ -116,10 +129,21 @@ public class ImageTile extends AbstractView {
 
         addChild(_description);
     }
-
     public function hideDescription():void {
         _image.color = 0xFFFFFF;
         removeChild(_description);
+    }
+
+    public function showSelectImage():void {
+        _image.color = 0x666666;
+
+        addChild(_changeTF);
+    }
+    public function hideSelectImage():void {
+        _image.color = 0xFFFFFF;
+        if (_changeTF.parent) {
+            removeChild(_changeTF);
+        }
     }
 
     private function onComplete(event: Event):void {

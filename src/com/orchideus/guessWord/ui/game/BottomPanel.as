@@ -59,6 +59,7 @@ public class BottomPanel extends AbstractView {
         addChild(_slotsContainer);
 
         _error = new ErrorView(_refs, _refs.locale.getString("main.word.mistake"));
+        _error.touchable = false;
         _error.x = stage.stageWidth/2;
         _error.visible = false;
 
