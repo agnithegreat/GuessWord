@@ -29,6 +29,8 @@ public class ErrorView extends AbstractView {
             addChild(slot);
             letter.mistake();
         }
+
+        flatten();
     }
 }
 }

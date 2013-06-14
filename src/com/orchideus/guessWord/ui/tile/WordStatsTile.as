@@ -109,10 +109,11 @@ public class WordStatsTile extends AbstractView {
     }
 
     public function enable():void {
-        _back.upState = _refs.assets.getTexture("main_enemy_btn_up");
-        _back.downState = _refs.assets.getTexture("main_enemy_btn_down");
+        // TODO: uncomment
+//        _back.upState = _refs.assets.getTexture("main_enemy_btn_up");
+//        _back.downState = _refs.assets.getTexture("main_enemy_btn_down");
 
-        _icon.texture = _refs.assets.getTexture("main_enemy_ico_on");
+//        _icon.texture = _refs.assets.getTexture("main_enemy_ico_on");
     }
 
     private function handleClick(event: Event):void {

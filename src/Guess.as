@@ -2,6 +2,7 @@ package {
 import com.orchideus.guessWord.data.DeviceType;
 
 import flash.desktop.NativeApplication;
+import flash.display.Bitmap;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.filesystem.File;
@@ -16,6 +17,17 @@ import starling.utils.ScaleMode;
 import starling.utils.formatString;
 
 public class Guess extends Sprite {
+
+    [Embed(source="../assets/textures/960.jpg")]
+    private static var Background960:Class;
+
+    [Embed(source="../assets/textures/1136.jpg")]
+    private static var Background1136:Class;
+
+    [Embed(source="../assets/textures/2048.jpg")]
+    private static var Background2048:Class;
+
+    private var _background: Bitmap;
 
     private var _assets: AssetManager;
 
@@ -62,10 +74,20 @@ public class Guess extends Sprite {
     }
 
     private function initApp ():void {
+        _background = _deviceType == DeviceType.iPhone4 ? new Background960() : _deviceType == DeviceType.iPhone5 ? new Background1136() : new Background2048();
+        Background960 = Background1136 = Background2048 = null;
+
+        _background.x = viewPort.x;
+        _background.y = viewPort.y;
+        _background.width  = viewPort.width;
+        _background.height = viewPort.height;
+        _background.smoothing = true;
+        addChild(_background);
+
         _starling = new Starling(App, stage, viewPort);
         _starling.stage.stageWidth = _deviceType.size.width;
         _starling.stage.stageHeight = _deviceType.size.height;
-//        _starling.showStats = true;
+        _starling.showStats = true;
         _starling.simulateMultitouch = false;
         _starling.enableErrorChecking = Capabilities.isDebugger;
 
@@ -80,7 +102,7 @@ public class Guess extends Sprite {
 
     private function handleRootCreated(event: Object,  app: App):void {
         _starling.removeEventListener(starling.events.Event.ROOT_CREATED, handleRootCreated);
-        app.start(_assets, basicAssetsPath, _deviceType);
+        app.start(_assets, basicAssetsPath, _deviceType, _background);
         _starling.start();
     }
 }

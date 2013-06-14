@@ -37,11 +37,13 @@ public class MainScreen extends Screen {
     }
 
     override protected function initialize():void {
-        _preloader = new Preloader(_refs, _controller);
-        addChild(_preloader);
-
         _overlay = new Quad(stage.stageWidth, stage.stageHeight, 0);
         _overlay.alpha = 0.5;
+    }
+
+    public function showPreloader():void {
+        _preloader = new Preloader(_refs, _controller);
+        addChild(_preloader);
     }
 
     public function showGame():void {

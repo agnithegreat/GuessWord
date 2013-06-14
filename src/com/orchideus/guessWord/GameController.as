@@ -21,12 +21,13 @@ import com.orchideus.guessWord.game.Score;
 import com.orchideus.guessWord.localization.LocalizationManager;
 import com.orchideus.guessWord.server.Server;
 import com.orchideus.guessWord.server.Service;
+import com.orchideus.guessWord.social.Social;
 import com.orchideus.guessWord.ui.MainScreen;
-
-import flash.desktop.NativeApplication;
 
 import flash.events.TimerEvent;
 import flash.utils.Timer;
+
+import starling.core.Starling;
 
 import starling.display.Sprite;
 import starling.events.Event;
@@ -63,7 +64,10 @@ public class GameController extends EventDispatcher {
 
     private var _locale: LocalizationManager;
 
-    private var _bonusTime: uint;
+    private var _social: Social;
+    public function get social():Social {
+        return _social;
+    }
 
     private var _date: Date;
     private var _serverTime: uint;
@@ -71,6 +75,8 @@ public class GameController extends EventDispatcher {
         var now: Date = new Date();
         return _serverTime + (now.time-_date.time)/1000;
     }
+
+    private var _bonusTime: uint;
 
     private var _timer: Timer;
 
@@ -82,6 +88,10 @@ public class GameController extends EventDispatcher {
     public function GameController(container: Sprite, assets: AssetManager, deviceType: DeviceType, locale: LocalizationManager) {
         _player = new Player();
 
+        _social = new Social();
+        _social.addEventListener(Social.LOGGED_IN, handleLoggedIn);
+        _social.addEventListener(Social.GET_FRIENDS, handleGetFriends);
+
         _timer = new Timer(1000);
         _timer.addEventListener(TimerEvent.TIMER, handleTimer);
 
@@ -89,7 +99,12 @@ public class GameController extends EventDispatcher {
 
         _view = new MainScreen(new CommonRefs(assets, deviceType, _locale), this);
         container.addChild(_view);
+
         addViewEventListeners();
+    }
+
+    public function initPreloader():void {
+        _view.showPreloader();
     }
 
     public function preloaderProgress(value: Number):void {
@@ -97,6 +112,8 @@ public class GameController extends EventDispatcher {
     }
 
     public function init():void {
+        _social.init();
+
         if (_player.lang) {
             crateGame();
         } else {
@@ -116,7 +133,6 @@ public class GameController extends EventDispatcher {
         _server.addEventListener(Server.INTERNET_UNAVAILABLE, handleInternetUnavailable);
 
         _server.getParameters();
-//        _server.getFriendBar("");
 
         _view.showGame();
     }
@@ -128,17 +144,31 @@ public class GameController extends EventDispatcher {
 
     private function addViewEventListeners():void {
         _view.addEventListener(Language.LANGUAGE, handleSelectLanguage);
-        _view.addEventListener(Bank.OPEN, handleOpenBank);
         _view.addEventListener(Pic.SELECT, handleSelectPic);
         _view.addEventListener(Bonus.USE, handleUseBonus);
+        _view.addEventListener(Bank.OPEN, handleOpenBank);
         _view.addEventListener(Bank.BUY, handleBuyBank);
-        _view.addEventListener(Friend.INVITE, handleInvite);
+
+        _view.addEventListener(Social.INVITE, handleInvite);
+        _view.addEventListener(Social.ASK, handleAsk);
     }
 
     private function handleTimer(event: TimerEvent):void {
         if (!levelFinished) {
             _score.time = current_server_time-_bonusTime;
         }
+    }
+
+    // *************************
+    // ** section from social **
+    // *************************
+    private function handleLoggedIn(event: Event):void {
+        _social.getFriends();
+    }
+
+    private function handleGetFriends(event: Event):void {
+        Friend.parseFriends(event.data);
+        _server.getFriendBar(Friend.uids);
     }
 
     // *************************
@@ -210,7 +240,7 @@ public class GameController extends EventDispatcher {
                 break;
             case Server.GET_FRIEND_BAR:
                 if (data.result == "success") {
-                    Friend.parse(data.friends);
+                    Friend.parseAppFriends(data.friends);
                     dispatchEventWith(FRIENDS);
                 }
                 break;
@@ -218,7 +248,9 @@ public class GameController extends EventDispatcher {
     }
 
     private function handleInternetUnavailable(event: Event):void {
-        Service.showAlert(_locale.getString("alert.connection.title"), _locale.getString("alert.connection.msg"));
+        if (Starling.current.isStarted) {
+            Service.showAlert(_locale.getString("alert.connection.title"), _locale.getString("alert.connection.msg"));
+        }
     }
 
     // ************************
@@ -278,10 +310,13 @@ public class GameController extends EventDispatcher {
     // ** section from view **
     // ***********************
     private function handleSelectLanguage(event: Event):void {
-        // TODO: сделать LocaleManager
-        _player.setLanguage((event.data as Language).title);
+        _player.setLanguage((event.data as Language).id);
 
-        crateGame();
+        if (_player.lang=="en") {
+            crateGame();
+        } else {
+            _locale.loadLocale(Language.langs[_player.lang].path, crateGame);
+        }
     }
 
     private function handleOpenBank(event: Event):void {
@@ -302,7 +337,11 @@ public class GameController extends EventDispatcher {
     }
 
     private function handleInvite(event: Event):void {
-        // TODO: invite friend
+        _social.invite();
+    }
+
+    private function handleAsk(event: Event):void {
+        _social.post();
     }
 }
 }

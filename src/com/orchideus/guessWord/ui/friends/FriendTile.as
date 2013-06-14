@@ -9,6 +9,7 @@ package com.orchideus.guessWord.ui.friends {
 import com.orchideus.guessWord.data.CommonRefs;
 import com.orchideus.guessWord.data.Friend;
 import com.orchideus.guessWord.data.Sound;
+import com.orchideus.guessWord.social.Social;
 import com.orchideus.guessWord.ui.abstract.AbstractView;
 
 import flash.filters.GlowFilter;
@@ -17,6 +18,7 @@ import starling.display.Button;
 import starling.display.Image;
 import starling.events.Event;
 import starling.text.TextField;
+import starling.textures.Texture;
 
 public class FriendTile extends AbstractView {
 
@@ -28,6 +30,7 @@ public class FriendTile extends AbstractView {
     private var _levelTF: TextField;
 
     private var _avatar: Image;
+    private var _photo: Image;
     private var _inviteBtn: Button;
     private var _inviteTF: TextField;
 
@@ -48,8 +51,14 @@ public class FriendTile extends AbstractView {
             addChild(_levelIcon);
 
             _avatar = new Image(_refs.assets.getTexture("main_ava_under"));
-            // TODO: подгрузка фотки
             addChild(_avatar);
+
+            if (!_friend.photo) {
+                _friend.addEventListener(Friend.PHOTO, handleLoad);
+                _friend.load();
+            }
+
+            _photo = new Image(_friend.photo);
 
             _inviteBtn = new Button(_refs.assets.getTexture("main_ask_btn_up"), "", _refs.assets.getTexture("main_ask_btn_down"));
             _inviteBtn.addEventListener(Event.TRIGGERED, handleClick);
@@ -77,6 +86,8 @@ public class FriendTile extends AbstractView {
             _inviteTF.touchable = false;
             addChild(_inviteTF);
         }
+
+        flatten();
     }
 
     override protected function initializeIPad():void {
@@ -93,6 +104,12 @@ public class FriendTile extends AbstractView {
 
             _avatar.x = 9;
             _avatar.y = 18;
+
+            _photo.x = 11;
+            _photo.y = 20;
+
+            _photo.width = 100;
+            _photo.height = 100;
 
             _inviteBtn.x = -6;
             _inviteBtn.y = 74;
@@ -130,6 +147,11 @@ public class FriendTile extends AbstractView {
             _avatar.x = 4;
             _avatar.y = 8;
 
+            _photo.x = 5;
+            _photo.y = 9;
+            _photo.width = 50;
+            _photo.height = 50;
+
             _inviteBtn.x = -3;
             _inviteBtn.y = 32;
 
@@ -151,9 +173,14 @@ public class FriendTile extends AbstractView {
         }
     }
 
+    private function handleLoad(event: Event):void {
+        _photo.texture = _friend.photo;
+        addChild(_photo);
+    }
+
     private function handleClick(event: Event):void {
         dispatchEventWith(Sound.SOUND, true, Sound.CLICK);
-        dispatchEventWith(Friend.INVITE, true);
+        dispatchEventWith(Social.INVITE, true);
     }
 }
 }

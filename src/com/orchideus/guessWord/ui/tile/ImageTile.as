@@ -14,6 +14,8 @@ import flash.display.Bitmap;
 import flash.display.Loader;
 import flash.events.Event;
 import flash.net.URLRequest;
+import flash.system.ImageDecodingPolicy;
+import flash.system.LoaderContext;
 
 import starling.core.Starling;
 import starling.display.Image;
@@ -26,6 +28,8 @@ public class ImageTile extends AbstractView {
 
     public static var scaleAmount: Number = 0.496;
     public static const delay: Number = 0.2;
+
+    private static var context: LoaderContext;
 
     private var _pic: Pic;
     public function get pic():Pic {
@@ -43,6 +47,10 @@ public class ImageTile extends AbstractView {
     private var _description: TextField;
 
     public function ImageTile(refs: CommonRefs, pic: Pic) {
+        if (!context) {
+            context = new LoaderContext();
+            context.imageDecodingPolicy = ImageDecodingPolicy.ON_LOAD;
+        }
         _pic = pic;
 
         super(refs);
@@ -86,7 +94,7 @@ public class ImageTile extends AbstractView {
 
     public function load():void {
         var loader:Loader = new Loader();
-        loader.load(new URLRequest(_pic.url));
+        loader.load(new URLRequest(_pic.url), context);
         loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onComplete);
 
         if (_image.parent) {

@@ -10,6 +10,7 @@ import com.orchideus.guessWord.GameController;
 import com.orchideus.guessWord.data.CommonRefs;
 import com.orchideus.guessWord.data.Friend;
 import com.orchideus.guessWord.data.Sound;
+import com.orchideus.guessWord.social.Social;
 import com.orchideus.guessWord.ui.abstract.AbstractView;
 
 import starling.display.Button;
@@ -117,9 +118,9 @@ public class FriendBar extends AbstractView {
     private function addFriends():void {
         clear();
 
-        var amount: int = Math.max(tiles, Friend.FRIENDS_ARRAY.length);
+        var amount: int = Math.max(tiles, Friend.APP_FRIENDS.length);
         for (var i:int = 0; i < amount; i++) {
-            var tile: FriendTile = new FriendTile(_refs, i < Friend.FRIENDS_ARRAY.length ? Friend.FRIENDS_ARRAY[i] : null);
+            var tile: FriendTile = new FriendTile(_refs, i < Friend.APP_FRIENDS.length ? Friend.APP_FRIENDS[i] : null);
             _tiles.push(tile);
         }
 
@@ -170,7 +171,7 @@ public class FriendBar extends AbstractView {
                 updateList(_tiles.length-tiles);
                 break;
             case _invite:
-                dispatchEventWith(Friend.INVITE, true);
+                dispatchEventWith(Social.INVITE, true);
                 break;
         }
     }

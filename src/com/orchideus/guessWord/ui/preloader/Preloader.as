@@ -103,7 +103,7 @@ public class Preloader extends Screen {
         _progress.x = 100;
         _progress.y = 218;
 
-        _progressTF = createTextField(_progress.width, _progress.height, 12);
+        _progressTF = createTextField(_progress.width, _progress.height, 10);
         _progressTF.nativeFilters = [new GlowFilter(0x424242, 1, 3, 3, 3, 3)];
         _progressTF.x = 100;
         _progressTF.y = 218;

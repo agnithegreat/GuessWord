@@ -6,7 +6,10 @@
  * To change this template use File | Settings | File Templates.
  */
 package com.orchideus.guessWord.ui.game {
+import com.orchideus.guessWord.GameController;
 import com.orchideus.guessWord.data.CommonRefs;
+import com.orchideus.guessWord.data.Friend;
+import com.orchideus.guessWord.data.Sound;
 import com.orchideus.guessWord.ui.abstract.AbstractView;
 
 import flash.filters.GlowFilter;
@@ -20,13 +23,17 @@ public class WinPanel extends AbstractView {
 
     public static const CONTINUE: String = "continue_WinPanel";
 
+    private var _controller: GameController;
+
     private var _winTF: TextField;
     private var _msgTF: TextField;
 
     private var _continueBtn: Button;
     private var _continueTF: TextField;
 
-    public function WinPanel(refs: CommonRefs) {
+    public function WinPanel(refs: CommonRefs, controller: GameController) {
+        _controller = controller;
+
         super(refs);
 
         // TODO: подобрать фильтры
@@ -51,8 +58,7 @@ public class WinPanel extends AbstractView {
         _continueTF.touchable = false;
         addChild(_continueTF);
 
-        // TODO: replace amount
-        _msgTF.text = _refs.locale.getString("main.success.msg").replace("[value]", 18);
+        _msgTF.text = _refs.locale.getString("main.success.msg").replace("[value]", Math.max(0, Friend.bestResult-_controller.player.level));
     }
 
     override protected function initializeIPad():void {
@@ -92,6 +98,7 @@ public class WinPanel extends AbstractView {
     }
 
     private function handleContinue(event: Event):void {
+        dispatchEventWith(Sound.SOUND, true, Sound.CLICK);
         dispatchEventWith(CONTINUE);
     }
 }

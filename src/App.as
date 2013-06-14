@@ -8,9 +8,12 @@
 package {
 import com.orchideus.guessWord.GameController;
 import com.orchideus.guessWord.data.DeviceType;
+import com.orchideus.guessWord.data.Language;
 import com.orchideus.guessWord.data.Sound;
 import com.orchideus.guessWord.localization.LocalizationManager;
 import com.orchideus.guessWord.server.Service;
+
+import flash.display.Bitmap;
 
 import flash.filesystem.File;
 
@@ -26,23 +29,21 @@ public class App extends Sprite {
 
     private var _deviceType: DeviceType;
 
+    private var _background: Bitmap;
+
     private var _locale: LocalizationManager;
 
     private var _controller: GameController;
 
-    public function start(assets: AssetManager, assetsPath: String, deviceType: DeviceType):void {
+    public function start(assets: AssetManager, assetsPath: String, deviceType: DeviceType, background: Bitmap):void {
         _assets = assets;
 
         _assetsPath = assetsPath;
 
         _deviceType = deviceType;
 
-        _locale = new LocalizationManager();
-        // TODO: localization select
-        _locale.loadLocale("locale/ru.csv", handleLoadLocale);
-    }
+        _background = background;
 
-    private function handleLoadLocale():void {
         _onLoad = initPreloader;
         _assets.loadQueue(handleProgress);
     }
@@ -65,12 +66,24 @@ public class App extends Sprite {
 
         Service.init();
 
+        _locale = new LocalizationManager();
         _controller = new GameController(this, _assets, _deviceType, _locale);
+
+        var lang: String = _controller.player.lang ? _controller.player.lang : "en";
+        _locale.loadLocale(Language.langs[lang].path, handleLoadLocale);
+    }
+
+    private function handleLoadLocale():void {
+        if (_background) {
+            _background.parent.removeChild(_background);
+            _background = null;
+        }
+
+        _controller.initPreloader();
 
         var dir: File = File.applicationDirectory;
         _assets.enqueue(
             dir.resolvePath("sounds"),
-            dir.resolvePath("fonts"),
             dir.resolvePath(_assetsPath)
         );
         _onLoad = initGame;

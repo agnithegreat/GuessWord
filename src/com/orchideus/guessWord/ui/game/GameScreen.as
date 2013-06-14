@@ -54,7 +54,7 @@ public class GameScreen extends Screen {
         _bottomPanel = new BottomPanel(_refs, _controller);
         addChild(_bottomPanel);
 
-        _winPanel = new WinPanel(_refs);
+        _winPanel = new WinPanel(_refs, _controller);
         _winPanel.addEventListener(WinPanel.CONTINUE, handleContinue);
         addChild(_winPanel);
         _winPanel.visible = false;
