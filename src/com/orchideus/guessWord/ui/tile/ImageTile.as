@@ -75,32 +75,17 @@ public class ImageTile extends AbstractView {
         scaleX = scaleY = scaleAmount;
     }
 
-    override protected function initializeIPad():void {
-        _image.x = 9;
-        _image.y = 8;
-
-        _description = createTextField(_border.width*0.9, _border.height*0.9, 42);
-        _description.x = 18;
-        _description.y = 16;
-
-        _changeTF = createTextField(_border.width*0.9, _border.height*0.9, 60);
-        _changeTF.x = 18;
-        _changeTF.y = 16;
-
-        scaleAmount = 0.493;
-    }
-
     override protected function initializeIPhone():void {
-        _image.x = 5;
-        _image.y = 5;
+        _image.x = 10;
+        _image.y = 10;
 
-        _description = createTextField(_border.width*0.9, _border.height*0.9, 20);
-        _description.x = 10;
-        _description.y = 10;
+        _description = createTextField(_border.width*0.9, _border.height*0.9, 40);
+        _description.x = 20;
+        _description.y = 20;
 
-        _changeTF = createTextField(_border.width*0.9, _border.height*0.9, 28);
-        _changeTF.x = 10;
-        _changeTF.y = 10;
+        _changeTF = createTextField(_border.width*0.9, _border.height*0.9, 56);
+        _changeTF.x = 20;
+        _changeTF.y = 20;
 
         scaleAmount = 0.496;
     }

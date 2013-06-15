@@ -82,78 +82,41 @@ public class ScoreBar extends AbstractView {
         createCoins();
     }
 
-    override protected function initializeIPad():void {
-        _timeBar.x = -9;
-        _timeBar.y = 316;
-
-        _scoreFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
-
-        for (var i:int = 1; i <= 6; i++) {
-            var tf: TextField = createTextField(30, 30, 16, String(i*2)+"-");
-            tf.touchable = false;
-            tf.hAlign = HAlign.RIGHT;
-            tf.x = -20;
-            tf.y = 326 - i * 39;
-            this["_score"+i] = tf;
-            addChild(tf);
-        }
-
-        _timeTF = createTextField(_timeBar.width, _timeBar.height, 24, "00:00");
-        _timeFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
-        _timeTF.x = -9;
-        _timeTF.y = 316;
-
-        _bonusTF = createTextField(_timeBar.width, _timeBar.height, 20, _refs.locale.getString("main.score.bonus"));
-        _bonusFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
-        _bonusTF.x = -9;
-        _bonusTF.y = 354;
-
-        _bonusValueTF = createTextField(_timeBar.width, _timeBar.height, 24, "", 0xFFCC00);
-        _bonusValueFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
-        _bonusValueTF.x = -9;
-        _bonusValueTF.y = 376;
-
-        _coinsContainer.x = 10;
-        _coinsContainer.y = 318;
-
-        TILE = 7;
-    }
-
     override protected function initializeIPhone():void {
-        _timeBar.x = -4;
-        _timeBar.y = 132;
+        _timeBar.x = -8;
+        _timeBar.y = 264;
 
         _scoreFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
 
         for (var i:int = 1; i <= 6; i++) {
-            var tf: TextField = createTextField(16, 16, 7, String(i*2)+"-");
+            var tf: TextField = createTextField(32, 32, 14, String(i*2)+"-");
             tf.hAlign = HAlign.RIGHT;
             tf.touchable = false;
-            tf.x = -12;
-            tf.y = 140 - i * 19;
+            tf.x = -24;
+            tf.y = 280 - i * 38;
             this["_score"+i] = tf;
             addChild(tf);
         }
 
-        _timeTF = createTextField(_timeBar.width, _timeBar.height, 10, "00:00");
+        _timeTF = createTextField(_timeBar.width, _timeBar.height, 20, "00:00");
         _timeFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
-        _timeTF.x = -4;
-        _timeTF.y = 132;
+        _timeTF.x = -8;
+        _timeTF.y = 264;
 
-        _bonusTF = createTextField(_timeBar.width, _timeBar.height, 8, _refs.locale.getString("main.score.bonus"));
+        _bonusTF = createTextField(_timeBar.width, _timeBar.height, 16, _refs.locale.getString("main.score.bonus"));
         _bonusFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
-        _bonusTF.x = -4;
-        _bonusTF.y = 151;
+        _bonusTF.x = -8;
+        _bonusTF.y = 302;
 
-        _bonusValueTF = createTextField(_timeBar.width, _timeBar.height, 10, "", 0xFFCC00);
+        _bonusValueTF = createTextField(_timeBar.width, _timeBar.height, 20, "", 0xFFCC00);
         _bonusValueFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
-        _bonusValueTF.x = -4;
-        _bonusValueTF.y = 160;
+        _bonusValueTF.x = -8;
+        _bonusValueTF.y = 320;
 
-        _coinsContainer.x = 6;
-        _coinsContainer.y = 127;
+        _coinsContainer.x = 12;
+        _coinsContainer.y = 254;
 
-        TILE = 3;
+        TILE = 6;
     }
 
     override protected function applyFilters():void {

@@ -17,19 +17,13 @@ public class CommonRefs {
         return _assets;
     }
 
-    private var _device: DeviceType;
-    public function get device():DeviceType {
-        return _device;
-    }
-
     private var _locale: LocalizationManager;
     public function get locale():LocalizationManager {
         return _locale;
     }
 
-    public function CommonRefs(assets: AssetManager, device: DeviceType, locale: LocalizationManager) {
+    public function CommonRefs(assets: AssetManager, locale: LocalizationManager) {
         _assets = assets;
-        _device = device;
         _locale = locale;
     }
 }

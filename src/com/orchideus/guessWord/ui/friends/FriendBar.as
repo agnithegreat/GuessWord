@@ -75,44 +75,24 @@ public class FriendBar extends AbstractView {
         addFriends();
     }
 
-    override protected function initializeIPad():void {
-        _container.x = 67;
-
-        _leftBtn.x = 46;
-        _leftBtn.y = 15;
-
-        _startBtn.x = 46;
-        _startBtn.y = 55;
-
-        _rightBtn.x = 596;
-        _rightBtn.y = 15;
-
-        _endBtn.x = 596;
-        _endBtn.y = 55;
-
-        _invite.x = 660;
-
-        TILE = 87;
-    }
-
     override protected function initializeIPhone():void {
-        _container.x = 30;
+        _container.x = 60;
 
-        _leftBtn.x = 25;
-        _leftBtn.y = 6;
+        _leftBtn.x = 50;
+        _leftBtn.y = 12;
 
-        _startBtn.x = 25;
-        _startBtn.y = 24;
+        _startBtn.x = 50;
+        _startBtn.y = 48;
 
-        _rightBtn.x = 255;
-        _rightBtn.y = 6;
+        _rightBtn.x = 510;
+        _rightBtn.y = 12;
 
-        _endBtn.x = 255;
-        _endBtn.y = 24;
+        _endBtn.x = 510;
+        _endBtn.y = 48;
 
-        _invite.x = 280;
+        _invite.x = 560;
 
-        TILE = 38;
+        TILE = 76;
     }
 
     private function addFriends():void {

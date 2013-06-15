@@ -91,30 +91,17 @@ public class BottomPanel extends AbstractView {
         addEventListener(LetterTile.MOVE_TO, handleMoveTo);
     }
 
-    override protected function initializeIPad():void {
-        _slotsContainer.y = 712;
-
-        _error.y = 712;
-
-        _lettersContainer.y = 785;
-
-        _deleteBtn.x = 680;
-        _deleteBtn.y = 705;
-
-        TILE = 56;
-    }
-
     override protected function initializeIPhone():void {
-        _slotsContainer.y = 373;
+        _slotsContainer.y = 746;
 
-        _error.y = 373;
+        _error.y = 746;
 
-        _lettersContainer.y = 410;
+        _lettersContainer.y = 820;
 
-        _deleteBtn.x = 225;
-        _deleteBtn.y = 330;
+        _deleteBtn.x = 450;
+        _deleteBtn.y = 660;
 
-        TILE = 31;
+        TILE = 62;
     }
 
     private function handleInit(event: Event):void {

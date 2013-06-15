@@ -36,7 +36,7 @@ public class SlotTile extends AbstractView {
     }
 
     override protected function initializeIPhone():void {
-        _back.x = 2;
+        _back.x = 4;
     }
 
     override public function destroy():void {

@@ -58,30 +58,17 @@ public class BankPopup extends Screen {
         }
     }
 
-    override protected function initializeIPad():void {
-        _title = createTextField(_background.width, 60, 30, _refs.locale.getString("bank.popup.title"));
-        _titleFilters = [new GlowFilter(0, 1, 3, 3, 5, 3)];
-
-        _closeBtn.x = 522;
-        _closeBtn.y = 17;
-
-        _container.x = 42;
-        _container.y = 76;
-
-        TILE = 54;
-    }
-
     override protected function initializeIPhone():void {
-        _title = createTextField(_background.width, 32, 16, _refs.locale.getString("bank.popup.title"));
+        _title = createTextField(_background.width, 64, 32, _refs.locale.getString("bank.popup.title"));
         _titleFilters = [new GlowFilter(0, 1, 3, 3, 5, 3)];
 
-        _closeBtn.x = 271;
-        _closeBtn.y = 9;
+        _closeBtn.x = 542;
+        _closeBtn.y = 18;
 
-        _container.x = 18;
-        _container.y = 35;
+        _container.x = 36;
+        _container.y = 70;
 
-        TILE = 30;
+        TILE = 60;
     }
 
     override protected function applyFilters():void {

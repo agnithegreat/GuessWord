@@ -75,20 +75,13 @@ public class GameScreen extends Screen {
         updateSoundState();
     }
 
-    override protected function initializeIPad():void {
-        _friendBar.y = 916;
-
-        _soundBtn.x = 700;
-        _soundBtn.y = 810;
-    }
-
     override protected function initializeIPhone():void {
         y = (stage.stageHeight-_background.height)/2;
 
-        _friendBar.y = 475;
+        _friendBar.y = 950;
 
-        _soundBtn.x = 55;
-        _soundBtn.y = 328;
+        _soundBtn.x = 110;
+        _soundBtn.y = 656;
     }
 
     private function handleInitGame(event: Event):void {

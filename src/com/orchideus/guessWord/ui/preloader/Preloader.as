@@ -74,50 +74,28 @@ public class Preloader extends Screen {
         _progress.ratioH = 0;
     }
 
-    override protected function initializeIPad():void {
-        _logo.x = 30;
-        _logo.y = 30;
-
-        _title.x = stage.stageWidth/2;
-        _title.y = 180;
-
-        _progress.x = 242;
-        _progress.y = 418;
-
-        _progressTF = createTextField(_progress.width, _progress.height, 20);
-        _progressFilters = [new GlowFilter(0x424242, 1, 3, 3, 3, 3)];
-        _progressTF.x = 242;
-        _progressTF.y = 418;
-
-        _langs.x = 25;
-        _langs.y = 780;
-
-        TILE_WIDTH = 255;
-        TILE_HEIGHT = 85;
-    }
-
     override protected function initializeIPhone():void {
         y = (stage.stageHeight-_background.height)/2;
 
-        _logo.x = 125;
-        _logo.y = (stage.stageHeight-_logo.height) - 10 - y;
+        _logo.x = 250;
+        _logo.y = (stage.stageHeight-_logo.height) - 20 - y;
 
         _title.x = stage.stageWidth/2;
-        _title.y = 100;
+        _title.y = 200;
 
-        _progress.x = 100;
-        _progress.y = 218;
+        _progress.x = 200;
+        _progress.y = 436;
 
-        _progressTF = createTextField(_progress.width, _progress.height, 10);
+        _progressTF = createTextField(_progress.width, _progress.height, 20);
         _progressFilters = [new GlowFilter(0x424242, 1, 3, 3, 3, 3)];
-        _progressTF.x = 100;
-        _progressTF.y = 218;
+        _progressTF.x = 200;
+        _progressTF.y = 436;
 
-        _langs.x = 12;
-        _langs.y = 395;
+        _langs.x = 24;
+        _langs.y = 790;
 
-        TILE_WIDTH = 105;
-        TILE_HEIGHT = 35;
+        TILE_WIDTH = 210;
+        TILE_HEIGHT = 70;
     }
 
     override protected function applyFilters():void {

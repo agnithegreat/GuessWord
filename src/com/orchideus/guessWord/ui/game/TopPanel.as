@@ -54,34 +54,19 @@ public class TopPanel extends AbstractView {
         update();
     }
 
-    override protected function initializeIPad():void {
-        _levelTF = createTextField(70, 40, 36);
-        _levelFilters = [new GlowFilter(0x333333, 1, 3, 3, 3, 3)];
-        _levelTF.x = 64;
-        _levelTF.y = 31;
-
-        _moneyTF = createTextField(88, 30, 24);
-        _moneyFilters = [new GlowFilter(0x333333, 1, 3, 3, 3, 3)];
-        _moneyTF.x = 622;
-        _moneyTF.y = 37;
-
-        _bankBtn.x = 712;
-        _bankBtn.y = 24;
-    }
-
     override protected function initializeIPhone():void {
-        _levelTF = createTextField(35, 20, 16);
+        _levelTF = createTextField(70, 40, 32);
         _levelFilters = [new GlowFilter(0x333333, 1, 3, 3, 3, 3)];
-        _levelTF.x = 30;
-        _levelTF.y = 53;
+        _levelTF.x = 60;
+        _levelTF.y = 106;
 
-        _moneyTF = createTextField(44, 12, 12);
+        _moneyTF = createTextField(88, 24, 24);
         _moneyFilters = [new GlowFilter(0x333333, 1, 3, 3, 3, 3)];
-        _moneyTF.x = 250;
-        _moneyTF.y = 57;
+        _moneyTF.x = 500;
+        _moneyTF.y = 114;
 
-        _bankBtn.x = 292;
-        _bankBtn.y = 51;
+        _bankBtn.x = 584;
+        _bankBtn.y = 102;
     }
 
     override protected function applyFilters():void {

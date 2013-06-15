@@ -7,7 +7,6 @@
  */
 package com.orchideus.guessWord.ui.abstract {
 import com.orchideus.guessWord.data.CommonRefs;
-import com.orchideus.guessWord.data.DeviceType;
 
 import starling.display.Sprite;
 import starling.events.Event;
@@ -28,16 +27,8 @@ public class AbstractView extends Sprite {
     }
 
     protected function initialize():void {
-        if (_refs.device == DeviceType.iPad) {
-            initializeIPad();
-        } else {
-            initializeIPhone();
-        }
+        initializeIPhone();
         applyFilters();
-    }
-
-    protected function initializeIPad():void {
-
     }
 
     protected function initializeIPhone():void {

@@ -65,56 +65,30 @@ public class WordStatsTile extends AbstractView {
         addEventListener(TouchEvent.TOUCH, handleClick);
     }
 
-    override protected function initializeIPad():void {
-        _icon.x = 8;
-        _icon.y = 10;
+    override protected function initializeIPhone():void {
+        _icon.x = 6;
+        _icon.y = 8;
 
-        _photo.x = 10;
-        _photo.y = 12;
+        _photo.x = 8;
+        _photo.y = 10;
         _photo.width = _icon.width-4;
         _photo.height = _icon.height-4;
 
         _textFilters = [new GlowFilter(0x666666, 1, 2, 2, 3, 3)];
 
-        _text1 = createTextField(125, 20, 16, _text[0]);
+        _text1 = createTextField(120, 20, 32, _text[0]);
         _text1.autoScale = true;
-        _text1.x = 70;
-        _text1.y = 10;
+        _text1.x = 64;
+        _text1.y = 8;
 
-        _text2 = createTextField(125, 20, 16, _text[1]);
+        _text2 = createTextField(120, 20, 32, _text[1]);
         _text2.autoScale = true;
-        _text2.x = 70;
-        _text2.y = 10 + _text1.textBounds.height;
+        _text2.x = 64;
+        _text2.y = 8 + _text1.textBounds.height;
 
-        _text3 = createTextField(125, 20, 16, _text[2]);
-        _text3.x = 70;
-        _text3.y = 10 + _text1.textBounds.height + _text2.textBounds.height;
-    }
-
-    override protected function initializeIPhone():void {
-        _icon.x = 3;
-        _icon.y = 4;
-
-        _photo.x = 4;
-        _photo.y = 5;
-        _photo.width = _icon.width-2;
-        _photo.height = _icon.height-2;
-
-        _textFilters = [new GlowFilter(0x666666, 1, 2, 2, 3, 3)];
-
-        _text1 = createTextField(60, 10, 16, _text[0]);
-        _text1.autoScale = true;
-        _text1.x = 32;
-        _text1.y = 4;
-
-        _text2 = createTextField(60, 10, 16, _text[1]);
-        _text2.autoScale = true;
-        _text2.x = 32;
-        _text2.y = 4 + _text1.textBounds.height;
-
-        _text3 = createTextField(60, 10, 16, _text[2]);
-        _text3.x = 32;
-        _text3.y = 4 + _text1.textBounds.height + _text2.textBounds.height;
+        _text3 = createTextField(120, 20, 32, _text[2]);
+        _text3.x = 64;
+        _text3.y = 8 + _text1.textBounds.height + _text2.textBounds.height;
     }
 
     override protected function applyFilters():void {

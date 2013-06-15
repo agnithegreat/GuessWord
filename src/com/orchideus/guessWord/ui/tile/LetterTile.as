@@ -68,15 +68,8 @@ public class LetterTile extends AbstractView {
         update();
     }
 
-    override protected function initializeIPad():void {
-        _tf = createTextField(width, height, 32, "", 0x857d59);
-        _tfFilters = [new GlowFilter(0xFFFFFF, 1, 1, 1, 3, 3),
-                             new DropShadowFilter(2, 90, 0, 0.75, 2, 2, 3, 3, true),
-                             new DropShadowFilter(2, 90, 0xFFFFFF, 1, 1, 1, 3, 3)];
-    }
-
     override protected function initializeIPhone():void {
-        _tf = createTextField(width, height, 18, "", 0x857d59);
+        _tf = createTextField(width, height, 36, "", 0x857d59);
         _tfFilters = [new GlowFilter(0xFFFFFF, 1, 1, 1, 3, 3),
                              new DropShadowFilter(2, 90, 0, 0.75, 2, 2, 3, 3, true),
                              new DropShadowFilter(2, 90, 0xFFFFFF, 1, 1, 1, 3, 3)];

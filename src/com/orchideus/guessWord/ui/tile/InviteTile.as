@@ -61,36 +61,20 @@ public class InviteTile extends AbstractView {
         _back.addEventListener(Event.TRIGGERED, handleClick);
     }
 
-    override protected function initializeIPad():void {
-        _icon.x = 10;
-        _icon.y = 10;
-
-        _textFilters = [new GlowFilter(0x666666, 1, 2, 2, 3, 3)];
-
-        _text1 = createTextField(_back.width-14, 20, 16, _text[0]);
-        _text1.autoScale = true;
-        _text1.x = 7;
-        _text1.y = 67;
-
-        _text2 = createTextField(_back.width-14, 20, 16, _text[1]);
-        _text2.x = 7;
-        _text2.y = 67 + _text1.textBounds.height;
-    }
-
     override protected function initializeIPhone():void {
-        _icon.x = 4;
-        _icon.y = 4;
+        _icon.x = 8;
+        _icon.y = 8;
 
         _textFilters = [new GlowFilter(0x666666, 1, 2, 2, 3, 3)];
 
-        _text1 = createTextField(_back.width-8, 8, 16, _text[0]);
+        _text1 = createTextField(_back.width-16, 16, 32, _text[0]);
         _text1.autoScale = true;
-        _text1.x = 4;
-        _text1.y = 32;
+        _text1.x = 8;
+        _text1.y = 64;
 
-        _text2 = createTextField(_back.width-8, 8, 16, _text[1]);
-        _text2.x = 4;
-        _text2.y = 32 + _text1.textBounds.height;
+        _text2 = createTextField(_back.width-16, 16, 32, _text[1]);
+        _text2.x = 8;
+        _text2.y = 64 + _text1.textBounds.height;
     }
 
     override protected function applyFilters():void {

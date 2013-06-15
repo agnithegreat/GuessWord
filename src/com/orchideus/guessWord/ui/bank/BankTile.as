@@ -74,62 +74,33 @@ public class BankTile extends AbstractView {
         addChild(_buyTF);
     }
 
-    override protected function initializeIPad():void {
+    override protected function initializeIPhone():void {
         _coin.x = -10;
-        _coin.y = 4;
+        _coin.y = 8;
 
-        _value = createTextField(115, 55, 24, String(_bank.value));
+        _value = createTextField(130, 66, 32, String(_bank.value));
         _valueFilters = [new GlowFilter(0, 1, 3, 3, 5, 3)];
-        _value.x = 44;
+        _value.x = 50;
 
         if (_bank.best_value) {
-            _bestValue = createTextField(115, 55, 14, _refs.locale.getString("bank.tile.bestbuy"), 0x006097);
+            _bestValue = createTextField(130, 66, 16, _refs.locale.getString("bank.tile.bestbuy"), 0x006097);
             _bestValueFilters = [new GlowFilter(0xFFFFFF, 1, 3, 3, 5, 3)];
-            _bestValue.x = 122;
+            _bestValue.x = 140;
             _bestValue.y = 2;
             addChild(_bestValue);
         }
 
-        _price = createTextField(195, 55, 24, String(_bank.price)+" "+_refs.locale.getString("bank.tile.currency"));
+        _price = createTextField(210, 66, 32, String(_bank.price)+" "+_refs.locale.getString("bank.tile.currency"));
         _priceFilters = [new GlowFilter(0, 1, 3, 3, 5, 3)];
-        _price.x = 177;
+        _price.x = 200;
 
-        _buyBtn.x = 382;
-        _buyBtn.y = 2;
+        _buyBtn.x = 420;
+        _buyBtn.y = 4;
 
         _buyTF = createTextField(_buyBtn.width, _buyBtn.height, 16, _refs.locale.getString("bank.tile.buy"));
         _buyFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
-        _buyTF.x = 382;
-        _buyTF.y = 2;
-    }
-
-    override protected function initializeIPhone():void {
-        _coin.x = -5;
-        _coin.y = 4;
-
-        _value = createTextField(65, 33, 16, String(_bank.value));
-        _valueFilters = [new GlowFilter(0, 1, 3, 3, 5, 3)];
-        _value.x = 25;
-
-        if (_bank.best_value) {
-            _bestValue = createTextField(65, 33, 8, _refs.locale.getString("bank.tile.bestbuy"), 0x006097);
-            _bestValueFilters = [new GlowFilter(0xFFFFFF, 1, 3, 3, 5, 3)];
-            _bestValue.x = 70;
-            _bestValue.y = 1;
-            addChild(_bestValue);
-        }
-
-        _price = createTextField(105, 33, 16, String(_bank.price)+" "+_refs.locale.getString("bank.tile.currency"));
-        _priceFilters = [new GlowFilter(0, 1, 3, 3, 5, 3)];
-        _price.x = 100;
-
-        _buyBtn.x = 210;
-        _buyBtn.y = 2;
-
-        _buyTF = createTextField(_buyBtn.width, _buyBtn.height, 8, _refs.locale.getString("bank.tile.buy"));
-        _buyFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
-        _buyTF.x = 210;
-        _buyTF.y = 2;
+        _buyTF.x = 420;
+        _buyTF.y = 4;
     }
 
     override protected function applyFilters():void {

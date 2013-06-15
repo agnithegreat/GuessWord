@@ -62,40 +62,22 @@ public class WinPanel extends AbstractView {
         addChild(_continueTF);
     }
 
-    override protected function initializeIPad():void {
-        _winTF = createTextField(stage.stageWidth, 50, 42, _refs.locale.getString("main.success.title"));
-        _winFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
-        _winTF.y = 695;
-
-        _msgTF = createTextField(stage.stageWidth, 60, 18);
-        _msgFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
-        _msgTF.y = 750;
-
-        _continueBtn.x = stage.stageWidth/2;
-        _continueBtn.y = 805;
-
-        _continueTF = createTextField(_continueBtn.width, _continueBtn.height, 30, _refs.locale.getString("main.success.continue"));
-        _continueFilters = [new GlowFilter(0, 1, 3, 3, 4, 3)];
-        _continueTF.x = stage.stageWidth/2;
-        _continueTF.y = 805;
-    }
-
     override protected function initializeIPhone():void {
-        _winTF = createTextField(stage.stageWidth, 50, 20, _refs.locale.getString("main.success.title"));
+        _winTF = createTextField(stage.stageWidth, 100, 40, _refs.locale.getString("main.success.title"));
         _winFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
-        _winTF.y = 330;
+        _winTF.y = 660;
 
-        _msgTF = createTextField(stage.stageWidth, 100, 12);
+        _msgTF = createTextField(stage.stageWidth, 200, 24);
         _msgFilters = [new GlowFilter(0, 1, 3, 3, 3, 3)];
-        _msgTF.y = 370;
+        _msgTF.y = 740;
 
         _continueBtn.x = stage.stageWidth/2;
-        _continueBtn.y = 420;
+        _continueBtn.y = 840;
 
-        _continueTF = createTextField(_continueBtn.width, _continueBtn.height, 18, _refs.locale.getString("main.success.continue"));
+        _continueTF = createTextField(_continueBtn.width, _continueBtn.height, 36, _refs.locale.getString("main.success.continue"));
         _continueFilters = [new GlowFilter(0, 1, 3, 3, 4, 3)];
         _continueTF.x = stage.stageWidth/2;
-        _continueTF.y = 420;
+        _continueTF.y = 840;
     }
 
     override protected function applyFilters():void {

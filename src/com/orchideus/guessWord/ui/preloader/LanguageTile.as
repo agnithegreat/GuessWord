@@ -50,22 +50,13 @@ public class LanguageTile extends AbstractView {
         addChild(_text);
     }
 
-    override protected function initializeIPad():void {
-        _text = createTextField(_back.width*0.8, _back.height, 26, _lang.title);
+    override protected function initializeIPhone():void {
+        _text = createTextField(_back.width*0.8, _back.height, 20, _lang.title);
         _textFilters = [new GlowFilter(0, 1, 2, 2, 2, 3)];
         _text.x = 40;
 
         _icon.x = -10;
-        _icon.y = -5;
-    }
-
-    override protected function initializeIPhone():void {
-        _text = createTextField(_back.width*0.8, _back.height, 10, _lang.title);
-        _textFilters = [new GlowFilter(0, 1, 2, 2, 2, 3)];
-        _text.x = 20;
-
-        _icon.x = -5;
-        _icon.y = -3;
+        _icon.y = -6;
     }
 
     override protected function applyFilters():void {

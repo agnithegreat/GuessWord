@@ -7,7 +7,6 @@
  */
 package {
 import com.orchideus.guessWord.GameController;
-import com.orchideus.guessWord.data.DeviceType;
 import com.orchideus.guessWord.data.Language;
 import com.orchideus.guessWord.data.Sound;
 import com.orchideus.guessWord.localization.LocalizationManager;
@@ -25,20 +24,16 @@ public class App extends Sprite {
     private var _assetsPath: String;
     private var _onLoad: Function;
 
-    private var _deviceType: DeviceType;
-
     private var _background: Bitmap;
 
     private var _locale: LocalizationManager;
 
     private var _controller: GameController;
 
-    public function start(assets: AssetManager, assetsPath: String, deviceType: DeviceType, background: Bitmap):void {
+    public function start(assets: AssetManager, assetsPath: String, background: Bitmap):void {
         _assets = assets;
 
         _assetsPath = assetsPath;
-
-        _deviceType = deviceType;
 
         _background = background;
 
@@ -63,7 +58,7 @@ public class App extends Sprite {
         Fonts.init();
 
         _locale = new LocalizationManager();
-        _controller = new GameController(this, _assets, _deviceType, _locale);
+        _controller = new GameController(this, _assets, _locale);
 
         var lang: String = _controller.player.lang ? _controller.player.lang : "en";
         _locale.loadLocale(Language.langs[lang].path, handleLoadLocale);

@@ -34,26 +34,15 @@ public class LeftPanel extends AbstractView {
         super.initialize();
     }
 
-    override protected function initializeIPad():void {
-        _openLetter.x = 4;
-        _openLetter.y = 105;
-
-        _removeLetters.x = 4;
-        _removeLetters.y = 257;
-
-        _changePic.x = 4;
-        _changePic.y = 409;
-    }
-
     override protected function initializeIPhone():void {
-        _openLetter.x = 1;
-        _openLetter.y = 90;
+        _openLetter.x = 2;
+        _openLetter.y = 180;
 
-        _removeLetters.x = 1;
-        _removeLetters.y = 165;
+        _removeLetters.x = 2;
+        _removeLetters.y = 330;
 
-        _changePic.x = 1;
-        _changePic.y = 240;
+        _changePic.x = 2;
+        _changePic.y = 480;
     }
 }
 }

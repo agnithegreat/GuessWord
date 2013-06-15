@@ -9,7 +9,6 @@ package com.orchideus.guessWord {
 import com.orchideus.guessWord.data.Bank;
 import com.orchideus.guessWord.data.Bonus;
 import com.orchideus.guessWord.data.CommonRefs;
-import com.orchideus.guessWord.data.DeviceType;
 import com.orchideus.guessWord.data.Friend;
 import com.orchideus.guessWord.data.Language;
 import com.orchideus.guessWord.data.Pic;
@@ -20,7 +19,6 @@ import com.orchideus.guessWord.game.Game;
 import com.orchideus.guessWord.game.Score;
 import com.orchideus.guessWord.localization.LocalizationManager;
 import com.orchideus.guessWord.server.Server;
-import com.orchideus.guessWord.server.Service;
 import com.orchideus.guessWord.social.Social;
 import com.orchideus.guessWord.ui.MainScreen;
 
@@ -88,7 +86,7 @@ public class GameController extends EventDispatcher {
         return _tempData;
     }
 
-    public function GameController(container: Sprite, assets: AssetManager, deviceType: DeviceType, locale: LocalizationManager) {
+    public function GameController(container: Sprite, assets: AssetManager, locale: LocalizationManager) {
         _player = new Player();
 
         _social = new Social();
@@ -101,7 +99,7 @@ public class GameController extends EventDispatcher {
 
         _locale = locale;
 
-        _view = new MainScreen(new CommonRefs(assets, deviceType, _locale), this);
+        _view = new MainScreen(new CommonRefs(assets, _locale), this);
         container.addChild(_view);
 
         addViewEventListeners();
@@ -116,8 +114,6 @@ public class GameController extends EventDispatcher {
     }
 
     public function init():void {
-        Service.init(handleUpdateMoney);
-
         _social.init();
 
         if (_player.lang) {
@@ -136,7 +132,6 @@ public class GameController extends EventDispatcher {
         _server = new Server();
         _server.init("1", _player.uid);
         _server.addEventListener(Server.DATA, handleData);
-        _server.addEventListener(Server.INTERNET_UNAVAILABLE, handleInternetUnavailable);
 
         _server.getParameters();
 
@@ -266,12 +261,6 @@ public class GameController extends EventDispatcher {
         }
     }
 
-    private function handleInternetUnavailable(event: Event):void {
-        if (Starling.current.isStarted) {
-            Service.showAlert(_locale.getString("alert.connection.title"), _locale.getString("alert.connection.msg"));
-        }
-    }
-
     // ************************
     // ** section from model **
     // ************************
@@ -343,12 +332,11 @@ public class GameController extends EventDispatcher {
     }
 
     private function handleOpenBank(event: Event):void {
-//        _view.showBank();
-        Service.showOffers();
+        _view.showBank();
     }
 
     private function handleBuyBank(event: Event):void {
-        Service.makePurchase(event.data as Bank);
+//        Social.makePurchase(event.data as Bank);
     }
 
     private function handleSelectPic(event: Event):void {

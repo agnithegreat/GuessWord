@@ -97,85 +97,44 @@ public class FriendTile extends AbstractView {
         }
     }
 
-    override protected function initializeIPad():void {
+    override protected function initializeIPhone():void {
         if (_friend) {
-            _invite.y = -10;
+            _invite.y = -6;
 
             _levelIcon.x = 4;
-            _levelIcon.y = -12;
+            _levelIcon.y = -8;
 
-            _levelTF = createTextField(44, 18, 14, String(_friend.level));
+            _levelTF = createTextField(40, 20, 12, String(_friend.level));
             _levelFilters = [new GlowFilter(0, 1, 2, 2, 2, 3)];
-            _levelTF.x = 26;
-            _levelTF.y = -3;
+            _levelTF.x = 22;
+            _levelTF.y = -2;
 
-            _avatar.x = 9;
-            _avatar.y = 18;
+            _avatar.x = 8;
+            _avatar.y = 16;
 
-            _photo.x = 11;
-            _photo.y = 20;
+            _photo.x = 10;
+            _photo.y = 18;
             _photo.width = _avatar.width-4;
             _photo.height = _avatar.height-4;
 
             _inviteBtn.x = -6;
-            _inviteBtn.y = 74;
+            _inviteBtn.y = 64;
 
-            _inviteTF = createTextField(_inviteBtn.width, _inviteBtn.height, 12, _refs.locale.getString("main.friends.ask"));
+            _inviteTF = createTextField(_inviteBtn.width, _inviteBtn.height, 10, _refs.locale.getString("main.friends.ask"));
             _inviteFilters = [new GlowFilter(0, 1, 2, 2, 2, 3)];
             _inviteTF.x = -6;
-            _inviteTF.y = 74;
+            _inviteTF.y = 64;
         } else {
-            _avatar.x = 13;
-            _avatar.y = 16;
+            _avatar.x = 12;
+            _avatar.y = 14;
 
             _inviteBtn.x = -6;
-            _inviteBtn.y = 62;
+            _inviteBtn.y = 56;
 
-            _inviteTF = createTextField(_inviteBtn.width, _inviteBtn.height, 12, _refs.locale.getString("main.friends.invite"));
+            _inviteTF = createTextField(74, 42, 10, _refs.locale.getString("main.friends.invite"));
             _inviteFilters = [new GlowFilter(0, 1, 2, 2, 2, 3)];
             _inviteTF.x = -6;
-            _inviteTF.y = 62;
-        }
-    }
-
-    override protected function initializeIPhone():void {
-        if (_friend) {
-            _invite.y = -3;
-
-            _levelIcon.x = 2;
-            _levelIcon.y = -4;
-
-            _levelTF = createTextField(20, 10, 6, String(_friend.level));
-            _levelFilters = [new GlowFilter(0, 1, 2, 2, 2, 3)];
-            _levelTF.x = 11;
-            _levelTF.y = -1;
-
-            _avatar.x = 4;
-            _avatar.y = 8;
-
-            _photo.x = 5;
-            _photo.y = 9;
-            _photo.width = _avatar.width-2;
-            _photo.height = _avatar.height-2;
-
-            _inviteBtn.x = -3;
-            _inviteBtn.y = 32;
-
-            _inviteTF = createTextField(_inviteBtn.width, _inviteBtn.height, 5, _refs.locale.getString("main.friends.ask"));
-            _inviteFilters = [new GlowFilter(0, 1, 2, 2, 2, 3)];
-            _inviteTF.x = -3;
-            _inviteTF.y = 32;
-        } else {
-            _avatar.x = 6;
-            _avatar.y = 7;
-
-            _inviteBtn.x = -3;
-            _inviteBtn.y = 28;
-
-            _inviteTF = createTextField(37, 21, 5, _refs.locale.getString("main.friends.invite"));
-            _inviteFilters = [new GlowFilter(0, 1, 2, 2, 2, 3)];
-            _inviteTF.x = -3;
-            _inviteTF.y = 28;
+            _inviteTF.y = 56;
         }
     }
 

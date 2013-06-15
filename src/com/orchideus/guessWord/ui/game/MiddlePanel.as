@@ -84,16 +84,10 @@ public class MiddlePanel extends AbstractView {
         _picsContainer.addChild(_pic4);
     }
 
-    override protected function initializeIPad():void {
-        _picsContainer.y = 95;
-
-        TILE = 595;
-    }
-
     override protected function initializeIPhone():void {
-        _picsContainer.y = 80;
+        _picsContainer.y = 160;
 
-        TILE = 242;
+        TILE = 484;
     }
 
     public function update():void {

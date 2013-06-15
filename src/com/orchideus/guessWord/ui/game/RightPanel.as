@@ -59,32 +59,18 @@ public class RightPanel extends AbstractView {
         }
     }
 
-    override protected function initializeIPad():void {
-        _bar.x = 697;
-        _bar.y = 283;
-
-        _wordStats.x = 282;
-        _wordStats.y = 13;
-
-        _askHelp.x = 686;
-        _askHelp.y = 92;
-
-        _invite.x = 686;
-        _invite.y = 211;
-    }
-
     override protected function initializeIPhone():void {
-        _bar.x = 288;
-        _bar.y = 188;
+        _bar.x = 576;
+        _bar.y = 376;
 
-        _wordStats.x = 112;
-        _wordStats.y = 46;
+        _wordStats.x = 224;
+        _wordStats.y = 92;
 
-        _askHelp.x = 282;
-        _askHelp.y = 80;
+        _askHelp.x = 564;
+        _askHelp.y = 160;
 
-        _invite.x = 282;
-        _invite.y = 138;
+        _invite.x = 564;
+        _invite.y = 276;
     }
 
     private function handleInit(event: Event):void {
