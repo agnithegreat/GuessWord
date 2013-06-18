@@ -155,6 +155,7 @@ public class GameController extends EventDispatcher {
         _view.addEventListener(Bank.OPEN, handleOpenBank);
         _view.addEventListener(Bank.BUY, handleBuyBank);
 
+        _view.addEventListener(Social.LOGIN, handleLogin);
         _view.addEventListener(Social.INVITE, handleInvite);
         _view.addEventListener(Social.ASK, handleAsk);
     }
@@ -358,6 +359,10 @@ public class GameController extends EventDispatcher {
         } else {
             _game.zoom();
         }
+    }
+
+    private function handleLogin(event: Event):void {
+        _social.login();
     }
 
     private function handleInvite(event: Event):void {

@@ -12,6 +12,7 @@ import starling.events.EventDispatcher;
 
 public class Social extends EventDispatcher {
 
+    public static const LOGIN: String = "login_Social";
     public static const INVITE: String = "invite_Social";
     public static const ASK: String = "ask_Social";
 

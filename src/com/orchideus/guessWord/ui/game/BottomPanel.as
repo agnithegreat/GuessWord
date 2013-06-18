@@ -113,6 +113,7 @@ public class BottomPanel extends AbstractView {
 
         _deleteBtn.x = 225;
         _deleteBtn.y = 330;
+        _deleteBtn.visible = false;
 
         TILE = 31;
     }

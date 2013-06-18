@@ -85,6 +85,7 @@ public class RightPanel extends AbstractView {
 
         _invite.x = 282;
         _invite.y = 138;
+        _invite.visible = false;
     }
 
     private function handleInit(event: Event):void {

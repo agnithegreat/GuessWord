@@ -17,6 +17,7 @@ import flash.filters.GlowFilter;
 import starling.display.Button;
 import starling.events.Event;
 import starling.text.TextField;
+import starling.textures.Texture;
 
 public class TopPanel extends AbstractView {
 
@@ -28,6 +29,8 @@ public class TopPanel extends AbstractView {
     private var _moneyTF: TextField;
     private var _moneyFilters: Array;
     private var _bankBtn: Button;
+
+    private var _bankTouch: Button;
 
     public function TopPanel(refs: CommonRefs, player: Player) {
         _player = player;
@@ -82,6 +85,13 @@ public class TopPanel extends AbstractView {
 
         _bankBtn.x = 292;
         _bankBtn.y = 51;
+
+        _bankTouch = new Button(Texture.fromColor(35, 30, 0xFFFFFFFF));
+        _bankTouch.addEventListener(Event.TRIGGERED, handleBank);
+        _bankTouch.alpha = 0;
+        addChildAt(_bankTouch, 0);
+        _bankTouch.x = 220;
+        _bankTouch.y = 47;
     }
 
     override protected function applyFilters():void {

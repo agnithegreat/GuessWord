@@ -12,6 +12,7 @@ import com.orchideus.guessWord.data.Sound;
 import com.orchideus.guessWord.game.Game;
 import com.orchideus.guessWord.ui.abstract.Screen;
 import com.orchideus.guessWord.ui.friends.FriendBar;
+import com.orchideus.guessWord.ui.friends.FriendBarPlaceholder;
 
 import starling.display.Button;
 import starling.events.Event;
@@ -27,6 +28,7 @@ public class GameScreen extends Screen {
     private var _bottomPanel: BottomPanel;
     private var _winPanel: WinPanel;
 
+    private var _friendBarPlaceholder: FriendBarPlaceholder;
     private var _friendBar: FriendBar;
 
     private var _soundBtn: Button;
@@ -36,6 +38,7 @@ public class GameScreen extends Screen {
 
         _controller.addEventListener(GameController.CHANGE_IMAGE, handleChangeImage);
         _controller.addEventListener(GameController.IMAGE_CHANGED, handleImageChanged);
+        _controller.addEventListener(GameController.FRIENDS, handleFriends);
 
         _controller.game.addEventListener(Game.INIT, handleInitGame);
         _controller.game.addEventListener(Game.WIN, handleWin);
@@ -63,8 +66,10 @@ public class GameScreen extends Screen {
         addChild(_winPanel);
         _winPanel.visible = false;
 
+        _friendBarPlaceholder = new FriendBarPlaceholder(_refs);
+        addChild(_friendBarPlaceholder);
+
         _friendBar = new FriendBar(_refs, _controller);
-        addChild(_friendBar);
 
         _soundBtn = new Button(_refs.assets.getTexture("main_sound_up"), "", _refs.assets.getTexture("main_sound_down"));
         _soundBtn.addEventListener(Event.TRIGGERED, handleSound);
@@ -76,6 +81,7 @@ public class GameScreen extends Screen {
     }
 
     override protected function initializeIPad():void {
+        _friendBarPlaceholder.y = 916;
         _friendBar.y = 916;
 
         _soundBtn.x = 700;
@@ -85,10 +91,12 @@ public class GameScreen extends Screen {
     override protected function initializeIPhone():void {
         y = (stage.stageHeight-_background.height)/2;
 
+        _friendBarPlaceholder.y = 475;
         _friendBar.y = 475;
 
         _soundBtn.x = 55;
         _soundBtn.y = 328;
+        _soundBtn.visible = false;
     }
 
     private function handleInitGame(event: Event):void {
@@ -115,6 +123,13 @@ public class GameScreen extends Screen {
 
         _bottomPanel.visible = false;
         _winPanel.visible = true;
+    }
+
+    private function handleFriends(event: Event):void {
+        if (_friendBarPlaceholder.parent) {
+            removeChild(_friendBarPlaceholder);
+        }
+        addChild(_friendBar);
     }
 
     private function handleContinue(event: Event):void {

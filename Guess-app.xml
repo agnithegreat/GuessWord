@@ -18,12 +18,15 @@
     <filename>Guess The Word</filename>
 
     <!-- The name that is displayed in the AIR application installer. May have multiple values for each language. See samples or xsd schema file. Optional. -->
-    <name>Guess The Word</name>
+    <name>
+        <text xml:lang="ru">Отгадай слово</text>
+        <text xml:lang="en">Guess Word</text>
+    </name>
 
     <!-- A string value of the format <0-999>.<0-999>.<0-999> that represents application version which can be used to check for application upgrade.
          Values can also be 1-part or 2-part. It is not necessary to have a 3-part value.
          An updated version of application must have a versionNumber value higher than the previous version. Required for namespace >= 2.5. -->
-    <versionNumber>0.0.1</versionNumber>
+    <versionNumber>0.1.2</versionNumber>
 
     <!-- A string value (such as "v1", "2.5", or "Alpha 1") that represents the version of the application, as it should be shown to users. Optional. -->
     <!--<versionLabel></versionLabel>-->
@@ -41,9 +44,12 @@
     <!--<publisherID></publisherID>-->
 
     <!-- Identifies the ActionScript extensions used by an application. -->
-    <!--<extensions>
-        <extensionID></extensionID>
-    </extensions>-->
+    <extensions>
+        <extensionID>com.freshplanet.AirAlert</extensionID>
+        <extensionID>com.freshplanet.AirFacebook</extensionID>
+        <extensionID>com.freshplanet.AirInAppPurchase</extensionID>
+        <extensionID>com.tapjoy.extensions</extensionID>
+    </extensions>
 
     <!-- Settings for the application's initial window. Required. -->
     <initialWindow>
@@ -125,25 +131,17 @@
     <!--<programMenuFolder></programMenuFolder>-->
 
     <!-- The icon the system uses for the application. For at least one resolution, specify the path to a PNG file included in the AIR package. Optional. -->
-    <!--<icon>
-        <image16x16></image16x16>
-        <image29x29></image29x29>
-        <image32x32></image32x32>
-        <image36x36></image36x36>
-        <image48x48></image48x48>
-        <image50x50></image50x50>
-        <image57x57></image57x57>
-        <image58x58></image58x58>
-        <image72x72></image72x72>
-        <image96x96></image96x96>
-        <image100x100></image100x100>
-        <image114x114></image114x114>
-        <image128x128></image128x128>
-        <image144x144></image144x144>
-        <image512x512></image512x512>
-        <image732x412></image732x412>
-        <image1024x1024></image1024x1024>
-    </icon>-->
+    <icon>
+        <image29x29>icons/29.png</image29x29>
+        <image57x57>icons/57.png</image57x57>
+        <image58x58>icons/58.png</image58x58>
+        <image72x72>icons/72.png</image72x72>
+        <image100x100>icons/100.png</image100x100>
+        <image114x114>icons/114.png</image114x114>
+        <image144x144>icons/144.png</image144x144>
+        <image512x512>icons/512.png</image512x512>
+        <image1024x1024>icons/1024.png</image1024x1024>
+    </icon>
 
     <!-- Whether the application handles the update when a user double-clicks an update version of the AIR file (true),
          or the default AIR application installer handles the update (false). Optional. Default false. -->
@@ -190,6 +188,16 @@
             <!--<string>UIStatusBarStyleBlackOpaque</string>-->
             <!--<key>UIRequiresPersistentWiFi</key>-->
             <!--<string>YES</string>-->
+
+            <key>CFBundleURLTypes</key>
+            <array>
+                <dict>
+                    <key>CFBundleURLSchemes</key>
+                    <array>
+                        <string>fb100000013942889</string>
+                    </array>
+                </dict>
+            </array>
             ]]>
         </InfoAdditions>
 
