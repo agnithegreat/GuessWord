@@ -6,7 +6,10 @@
  * To change this template use File | Settings | File Templates.
  */
 package com.orchideus.guessWord.social {
-import com.freshplanet.ane.AirFacebook.Facebook;
+import com.facebook.graph.Facebook;
+import com.facebook.graph.data.FacebookAuthResponse;
+
+import flash.system.Security;
 
 import starling.events.EventDispatcher;
 
@@ -16,81 +19,59 @@ public class Social extends EventDispatcher {
     public static const ASK: String = "ask_Social";
 
     public static const LOGGED_IN: String = "logged_in_Social";
-    public static const GET_ME: String = "get_me_Social";
     public static const GET_FRIENDS: String = "get_friends_Social";
 
     public static var appID: String = "205742966216110";
+    public static var appSecret: String = "674e74cea065e1a166f47cbe623521d4";
     public static var permissions: Array = ["user_about_me", "offline_access", "publish_stream", "read_friendlists"];
 
-    private var _facebook: Facebook;
-    public function get isInitiated():Boolean {
-        return Boolean(_facebook);
-    }
+    private var _apiSecuredPath:String = "https://graph.facebook.com";
+    private var _apiUnsecuredPath:String = "http://graph.facebook.com";
+    private var _userAuth : Boolean = false;
+
+    private var _session: FacebookAuthResponse;
     public function get session():Boolean {
-        return isInitiated && _facebook.isSessionOpen;
+        return Boolean(_session);
     }
 
-    private var _me: Object;
     public function get uid():String {
-        return _me.id;
+        return _session ? _session.uid : null;
     }
 
     public function init():void {
-        if (Facebook.isSupported) {
-            _facebook = Facebook.getInstance();
-            _facebook.init(appID);
-
-            if (session) {
-                dispatchEventWith(LOGGED_IN);
-            }
-        }
+        Security.loadPolicyFile(_apiSecuredPath + "/crossdomain.xml");
+        Security.loadPolicyFile(_apiUnsecuredPath + "/crossdomain.xml");
+        Facebook.init(appID, handleInit, {cookie: true, "appId":appID,
+            perms: permissions.toString()});
     }
 
-    public function login():void {
-        if (isInitiated) {
-            _facebook.openSessionWithPermissions(permissions, handleOpenSession);
-        }
-    }
-
-    public function getMe():void {
-        if (session) {
-            _facebook.requestWithGraphPath("/me", null, "GET", handleGetMe);
+    private function handleInit(success: Object, fail: Object):void {
+        if (success) {
+            Facebook.login(handleLogin, {scope: permissions.toString()});
         }
     }
 
     public function getFriends():void {
-        if (session) {
-            _facebook.requestWithGraphPath("/me/friends", {fields: "id,installed"}, "GET", handleGetFriends);
-        }
+        Facebook.api("/me/friends", handleGetFriends, {fields: "installed"}, "GET");
     }
 
     public function invite(message: String):void {
-        if (session) {
-            _facebook.dialog("apprequests", {"message": message});
-        } else {
-            login();
-        }
+        Facebook.ui("apprequest", {"message": message});
     }
 
     public function post(url: String, name: String, caption: String, description: String, to: String = null):void {
-        if (session) {
-            _facebook.dialog("feed", {"to": to, "picture": url, "name": name, "caption": caption, "description": description});
-        }
+        Facebook.ui("stream.publish", {"to": to, "picture": url, "name": name, "caption": caption, "description": description});
     }
 
-    private function handleOpenSession(success: Boolean, userCancelled: Boolean, error: String = null):void {
+    private function handleLogin(success: Object, fail: Object):void {
         if (success) {
+            _session = success as FacebookAuthResponse;
             dispatchEventWith(LOGGED_IN);
         }
     }
 
-    private function handleGetMe(data: Object):void {
-        _me = data;
-        dispatchEventWith(GET_ME);
-    }
-
-    private function handleGetFriends(data: Object):void {
-        dispatchEventWith(GET_FRIENDS, false, data);
+    private function handleGetFriends(success: Object, fail: Object):void {
+        dispatchEventWith(GET_FRIENDS, false, success);
     }
 }
 }

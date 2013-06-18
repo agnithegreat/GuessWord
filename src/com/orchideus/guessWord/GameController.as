@@ -25,8 +25,6 @@ import com.orchideus.guessWord.ui.MainScreen;
 import flash.events.TimerEvent;
 import flash.utils.Timer;
 
-import starling.core.Starling;
-
 import starling.display.Sprite;
 import starling.events.Event;
 import starling.events.EventDispatcher;
@@ -91,7 +89,6 @@ public class GameController extends EventDispatcher {
 
         _social = new Social();
         _social.addEventListener(Social.LOGGED_IN, handleLoggedIn);
-        _social.addEventListener(Social.GET_ME, handleGetMe);
         _social.addEventListener(Social.GET_FRIENDS, handleGetFriends);
 
         _timer = new Timer(1000);
@@ -117,13 +114,15 @@ public class GameController extends EventDispatcher {
         _social.init();
 
         if (_player.lang) {
-            crateGame();
+            if (_player.uid) {
+                createGame();
+            }
         } else {
             dispatchEventWith(SHOW_LANGUAGES);
         }
     }
 
-    private function crateGame():void {
+    private function createGame():void {
         _game = new Game();
         _game.addEventListener(Game.SEND_WORD, handleSendWord);
 
@@ -168,15 +167,17 @@ public class GameController extends EventDispatcher {
     // ** section from social **
     // *************************
     private function handleLoggedIn(event: Event):void {
-        _social.getMe();
-    }
-
-    private function handleGetMe(event: Event):void {
-        _social.getFriends();
+        if (_social.uid) {
+            _player.uid = _social.uid;
+            if (!_game) {
+                createGame();
+            }
+            _social.getFriends();
+        }
     }
 
     private function handleGetFriends(event: Event):void {
-        Friend.parseFriends(event.data);
+        Friend.parseFriends(event.data as Array);
         _server.getFriendBar(_social.uid, Friend.uids);
     }
 
@@ -325,9 +326,9 @@ public class GameController extends EventDispatcher {
         _player.setLanguage((event.data as Language).id);
 
         if (_player.lang=="en") {
-            crateGame();
+            createGame();
         } else {
-            _locale.loadLocale(Language.langs[_player.lang].path, crateGame);
+            _locale.loadLocale(Language.langs[_player.lang].path, createGame);
         }
     }
 

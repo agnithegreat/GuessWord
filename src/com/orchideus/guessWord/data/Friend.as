@@ -39,10 +39,10 @@ public class Friend extends EventDispatcher {
         return APP_FRIENDS.length>0 && APP_FRIENDS[0].level>=level ? APP_FRIENDS[0] : null;
     }
 
-    public static function parseFriends(data: Object):void {
-        var len: int = data.data.length;
+    public static function parseFriends(data: Array):void {
+        var len: int = data.length;
         for (var i:int = 0; i < len; i++) {
-            var fr: Object = data.data[i];
+            var fr: Object = data[i];
             var friend: Friend = FRIENDS[fr.id] ? FRIENDS[fr.id] : new Friend();
             friend.parseSocial(fr);
             FRIENDS[fr.id] = friend;

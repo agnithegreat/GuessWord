@@ -41,7 +41,7 @@ public class Server extends EventDispatcher {
         return _url;
     }
 
-    private var _controllerURL: String = _url+"controller_ios.php";
+    private var _controllerURL: String = _url+"controller.php";
 
     private var _loader: URLLoader;
 
@@ -112,8 +112,8 @@ public class Server extends EventDispatcher {
         if (!data) {
             data = {};
         }
-        data.ios_id = uid;
-        data.network = "0";
+        data.vk_id = uid;
+        data.network = "4";
         data.game_type = "1";
         requestVars.data = JSON.stringify(data);
 
@@ -136,7 +136,7 @@ public class Server extends EventDispatcher {
 }
 
     private function handleComplete(event:Event):void {
-        trace(_loader.data);
+        trace("data", _loader.data);
 
         var data: Object = JSON.parse(_loader.data);
 

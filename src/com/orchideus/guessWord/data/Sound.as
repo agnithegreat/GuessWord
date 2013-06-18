@@ -6,8 +6,6 @@
  * To change this template use File | Settings | File Templates.
  */
 package com.orchideus.guessWord.data {
-import flash.media.AudioPlaybackMode;
-import flash.media.SoundMixer;
 import flash.net.SharedObject;
 
 import starling.display.Stage;
@@ -15,6 +13,8 @@ import starling.events.Event;
 import starling.utils.AssetManager;
 
 public class Sound {
+
+    public static var sounds: Array = [BTN_OVER, CLICK, SMALL_PIC, BIG_PIC, CHANGE_PIC, OPEN_LETTER, REMOVE_LETTERS, BACKSPACE, BETTER_SCORE, WIN, LOSE];
 
     public static const SOUND: String = "sound_Sound";
 
@@ -42,8 +42,6 @@ public class Sound {
     private static var _assets: AssetManager;
 
     public static function init(assets: AssetManager):void {
-        SoundMixer.audioPlaybackMode = AudioPlaybackMode.AMBIENT;
-
         _data = SharedObject.getLocal("data");
         _assets = assets;
     }

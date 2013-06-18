@@ -6,8 +6,6 @@
  * To change this template use File | Settings | File Templates.
  */
 package com.orchideus.guessWord.data {
-import com.laiyonghao.Uuid;
-
 import flash.net.SharedObject;
 
 import starling.events.EventDispatcher;
@@ -20,6 +18,10 @@ public class Player extends EventDispatcher {
 
     public function get uid():String {
         return _data.data.uid;
+    }
+    public function set uid(value: String):void {
+        _data.data.uid = value;
+        save();
     }
 
     public function get level():int {
@@ -39,6 +41,9 @@ public class Player extends EventDispatcher {
     }
 
     public function parse(data: Object):void {
+        if (data.hasOwnProperty("fb_id")) {
+            _data.data.uid = data.fb_id;
+        }
         if (data.hasOwnProperty("level")) {
             _data.data.level = data.level;
         }
@@ -68,7 +73,6 @@ public class Player extends EventDispatcher {
     }
 
     private function setDefaultValues():void {
-        _data.data.uid = (new Uuid()).toString();
         _data.data.sound = true;
         _data.data.created = true;
         _data.data.level = 1;

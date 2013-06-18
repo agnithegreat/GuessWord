@@ -12,7 +12,6 @@ import com.orchideus.guessWord.data.Sound;
 import com.orchideus.guessWord.localization.LocalizationManager;
 
 import flash.display.Bitmap;
-import flash.filesystem.File;
 
 import starling.core.Starling;
 import starling.display.Sprite;
@@ -21,7 +20,6 @@ import starling.utils.AssetManager;
 public class App extends Sprite {
 
     private var _assets:AssetManager;
-    private var _assetsPath: String;
     private var _onLoad: Function;
 
     private var _background: Bitmap;
@@ -30,10 +28,8 @@ public class App extends Sprite {
 
     private var _controller: GameController;
 
-    public function start(assets: AssetManager, assetsPath: String, background: Bitmap):void {
+    public function start(assets: AssetManager,  background: Bitmap):void {
         _assets = assets;
-
-        _assetsPath = assetsPath;
 
         _background = background;
 
@@ -72,11 +68,10 @@ public class App extends Sprite {
 
         _controller.initPreloader();
 
-        var dir: File = File.applicationDirectory;
-        _assets.enqueue(
-            dir.resolvePath("sounds"),
-            dir.resolvePath(_assetsPath)
-        );
+        _assets.enqueue("textures/2x/main.png", "textures/2x/main.xml");
+        for (var i:int = 0; i < Sound.sounds.length; i++) {
+            _assets.enqueue("sounds/"+Sound.sounds[i]+".mp3");
+        }
         _onLoad = initGame;
         _assets.loadQueue(handleProgress);
     }

@@ -1,17 +1,15 @@
 package {
-import flash.desktop.NativeApplication;
 import flash.display.Bitmap;
 import flash.display.Sprite;
 import flash.events.Event;
-import flash.filesystem.File;
 import flash.geom.Rectangle;
 import flash.system.Capabilities;
 
 import starling.core.Starling;
 import starling.events.Event;
 import starling.utils.AssetManager;
-import starling.utils.formatString;
 
+[SWF(frameRate="60", width="640", height="960")]
 public class Guess extends Sprite {
 
     [Embed(source="../assets/textures/960.jpg")]
@@ -19,14 +17,11 @@ public class Guess extends Sprite {
 
     private var _background: Bitmap;
 
-    // TODO: replace by self-created
     private var _assets: AssetManager;
 
     private var viewPort:Rectangle;
 
     private var _starling: Starling;
-
-    private var basicAssetsPath:String;
 
     public function Guess() {
         if (stage) {
@@ -48,12 +43,7 @@ public class Guess extends Sprite {
 
         _assets = new AssetManager(1);
 
-        basicAssetsPath = formatString("textures/{0}x", 2);
-
-        var dir: File = File.applicationDirectory;
-        _assets.enqueue(
-                dir.resolvePath(formatString("preloader/{0}x", 2))
-        );
+        _assets.enqueue("preloader/2x/preloader.png", "preloader/2x/preloader.xml");
         initApp ();
     }
 
@@ -76,17 +66,11 @@ public class Guess extends Sprite {
         _starling.enableErrorChecking = Capabilities.isDebugger;
 
         _starling.addEventListener(starling.events.Event.ROOT_CREATED, handleRootCreated);
-
-        NativeApplication.nativeApplication.addEventListener(
-                flash.events.Event.ACTIVATE, function (e:*):void { _starling.start(); });
-
-        NativeApplication.nativeApplication.addEventListener(
-                flash.events.Event.DEACTIVATE, function (e:*):void { _starling.stop(); });
     }
 
     private function handleRootCreated(event: Object,  app: App):void {
         _starling.removeEventListener(starling.events.Event.ROOT_CREATED, handleRootCreated);
-        app.start(_assets, basicAssetsPath, _background);
+        app.start(_assets, _background);
         _starling.start();
     }
 }
